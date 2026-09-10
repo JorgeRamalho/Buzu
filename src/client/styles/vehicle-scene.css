@@ -1,0 +1,194 @@
+.hero-visual {
+  --scene-x: 0px;
+  isolation: isolate;
+}
+
+.sun-disc {
+  display: none;
+}
+
+/* Mantém os indicadores superiores em uma mesma linha, em lados opostos. */
+.label-bottom {
+  top: 56px;
+  bottom: auto;
+  left: 9%;
+}
+
+.label-neighborhoods {
+  right: 9%;
+  top: 56px;
+  bottom: auto;
+  width: 270px;
+  max-width: calc(100% - 36px);
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  column-gap: 8px;
+  padding: 10px 12px;
+}
+
+.label-neighborhoods small {
+  grid-column: 2 / 4;
+  width: 100%;
+  max-width: none;
+  white-space: normal;
+  line-height: 1.35;
+  text-align: left;
+  font-size: 8px;
+}
+
+.neighborhood-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #2f8c63;
+  font: 8px var(--mono);
+  white-space: nowrap;
+}
+
+.neighborhood-live i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #42a875;
+  box-shadow: 0 0 0 3px rgba(66, 168, 117, .12);
+}
+
+.label-neighborhoods.is-changing {
+  animation: neighborhood-switch .38s ease both;
+}
+
+@keyframes neighborhood-switch {
+  0% { opacity: 0; transform: translateY(5px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .label-neighborhoods.is-changing { animation: none; }
+}
+
+.city-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(247, 246, 241, .1) 0 56%, rgba(82, 105, 91, .12) 56% 100%);
+}
+
+.city-skyline {
+  position: absolute;
+  right: -8%;
+  bottom: 18%;
+  width: 112%;
+  height: 28%;
+  opacity: .28;
+  transform: translate3d(calc(var(--scene-x) * -.25), 0, 0);
+  background: repeating-linear-gradient(90deg, #526d6b 0 33px, transparent 33px 45px, #6b827a 45px 76px, transparent 76px 90px);
+  clip-path: polygon(0 42%, 5% 42%, 5% 16%, 13% 16%, 13% 35%, 19% 35%, 19% 5%, 28% 5%, 28% 44%, 35% 44%, 35% 24%, 43% 24%, 43% 48%, 51% 48%, 51% 12%, 61% 12%, 61% 40%, 70% 40%, 70% 2%, 79% 2%, 79% 32%, 88% 32%, 88% 12%, 96% 12%, 96% 43%, 100% 43%, 100% 100%, 0 100%);
+}
+
+.city-road {
+  position: absolute;
+  left: -10%;
+  bottom: 8%;
+  width: 120%;
+  height: 18%;
+  background: #6e7c78;
+  transform: translate3d(calc(var(--scene-x) * .5), 0, 0) skewY(-2deg);
+  opacity: .65;
+}
+
+.city-road::before,
+.city-road::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 239, 187, .7);
+}
+
+.city-road::before { top: 24%; }
+.city-road::after { bottom: 23%; }
+
+.traffic-vehicle {
+  position: absolute;
+  z-index: 2;
+  bottom: 6%;
+  width: 46px;
+  height: 18px;
+  border-radius: 5px 7px 3px 3px;
+  background: var(--coral);
+  box-shadow: 0 7px 0 -2px rgba(16, 36, 48, .25);
+  transform: translateX(-90px);
+  animation: city-traffic 15s linear infinite;
+}
+
+.traffic-vehicle::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: -7px;
+  width: 22px;
+  height: 9px;
+  border-radius: 5px 6px 0 0;
+  background: #42656b;
+}
+
+.traffic-vehicle::after {
+  content: '••';
+  position: absolute;
+  left: 7px;
+  bottom: -8px;
+  color: var(--ink);
+  font-size: 14px;
+  letter-spacing: 22px;
+}
+
+.traffic-car { left: 8%; animation-delay: -2s; transform: scale(.7); }
+.traffic-car-two { left: 72%; bottom: 7%; background: #d6a94f; animation-duration: 17s; animation-delay: -9s; transform: scale(.58); }
+.traffic-moto { left: 36%; bottom: 9%; width: 22px; height: 8px; border-radius: 8px; background: var(--ink); animation-duration: 11s; animation-delay: -7s; transform: scale(.7); }
+.traffic-moto::before { left: 8px; top: -11px; width: 5px; height: 12px; border-radius: 5px; background: var(--coral); }
+.traffic-moto::after { content: '•'; left: 2px; bottom: -12px; font-size: 14px; letter-spacing: 10px; }
+.traffic-moto-two { left: 82%; bottom: 10%; animation-duration: 13s; animation-delay: -4s; transform: scale(.55); }
+.traffic-van { left: 22%; bottom: 7%; width: 52px; height: 23px; background: #e8e1cf; animation-duration: 21s; animation-delay: -15s; transform: scale(.64); }
+.traffic-van::before { left: 8px; top: -9px; width: 33px; height: 12px; background: #5e7778; }
+.traffic-van::after { left: 8px; bottom: -9px; letter-spacing: 28px; }
+.traffic-truck { left: 64%; bottom: 6%; width: 64px; height: 25px; background: #c8d1cc; animation-duration: 24s; animation-delay: -18s; transform: scale(.62); }
+.traffic-truck::before { left: 36px; top: -11px; width: 23px; height: 14px; background: #577174; }
+.traffic-truck::after { left: 9px; bottom: -9px; letter-spacing: 36px; }
+.traffic-bus { left: 55%; bottom: 8%; width: 70px; height: 27px; border-radius: 5px 8px 4px 4px; background: #d6a94f; animation-duration: 19s; animation-delay: -12s; }
+.traffic-bus::before { left: 8px; top: -10px; width: 44px; height: 12px; background: #466871; }
+.traffic-bus::after { left: 10px; bottom: -9px; letter-spacing: 35px; }
+
+@keyframes city-traffic {
+  from { transform: translateX(-90px); }
+  to { transform: translateX(650px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .traffic-vehicle {
+    animation: none;
+    transform: translateX(180px);
+  }
+}
+
+@media (max-width: 700px) {
+  .city-road { bottom: 9%; height: 15%; }
+  .traffic-bus { display: none; }
+  .traffic-vehicle { bottom: 5%; animation-duration: 12s; }
+  .traffic-truck { display: none; }
+  .traffic-van { transform: scale(.52); }
+  .label-bottom {
+    top: 23px;
+    bottom: auto;
+    left: 6%;
+  }
+  .label-neighborhoods {
+    left: 6%;
+    right: auto;
+    top: 23px;
+    bottom: auto;
+    width: calc(100% - 12%);
+    max-width: 270px;
+  }
+}

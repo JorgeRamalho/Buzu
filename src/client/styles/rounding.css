@@ -1,0 +1,80 @@
+/* Acabamento de superfícies: curvas discretas para melhorar a leitura e o toque. */
+.button,
+.route-search,
+.feature-card,
+.map-panel,
+.departures,
+.account-form-wrap,
+.visual-label,
+.search-drawer,
+.filter-button,
+.mini-card {
+  border-radius: 12px;
+}
+
+.button-small,
+.route-button {
+  border-radius: 8px;
+}
+
+.route-search,
+.feature-card,
+.map-panel,
+.departures,
+.account-form-wrap {
+  overflow: hidden;
+}
+
+.route-field input,
+.search-inner input,
+.account-form-wrap input[type="text"],
+.account-form-wrap input[type="email"],
+.account-form-wrap input[type="tel"],
+.account-form-wrap input[type="date"],
+.account-form-wrap input[type="password"] {
+  border-radius: 6px;
+}
+
+.line-badge {
+  border-radius: 7px;
+}
+
+.filter-button {
+  border-radius: 7px;
+}
+
+.status-more,
+.card-link,
+.text-link {
+  border-radius: 6px;
+}
+
+.icon-button:focus-visible,
+.button:focus-visible,
+.filter-button:focus-visible,
+.status-more:focus-visible,
+.card-link:focus-visible,
+.text-link:focus-visible,
+.route-field input:focus-visible,
+.account-form-wrap input:focus-visible {
+  outline: 3px solid rgba(255, 111, 84, .28);
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .main-nav.mobile-open {
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+.footer-brand .brand {
+  width: max-content;
+  padding: 10px 13px;
+  border-radius: 9px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.footer-brand .brand-name {
+  color: var(--ink);
+}

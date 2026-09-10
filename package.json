@@ -1,0 +1,13 @@
+{
+  "name": "buzu-portal",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portal Buzzu com API para mobilidade urbana, autenticação e carteira de transporte.",
+  "scripts": {
+    "start": "node src/server/server.js",
+    "dev": "node --watch src/server/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

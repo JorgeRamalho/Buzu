@@ -1,0 +1,33 @@
+.route-field {
+  position: relative;
+}
+
+.location-button {
+  display: block;
+  margin: 12px 0 0 19px;
+  border: 0;
+  background: transparent;
+  color: var(--coral);
+  cursor: pointer;
+  font: 9px var(--mono);
+  padding: 4px 0;
+  white-space: nowrap;
+}
+
+.location-button:hover {
+  color: var(--coral-dark);
+  text-decoration: underline;
+}
+
+.location-button:focus-visible {
+  outline: 3px solid rgba(255, 111, 84, .28);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (max-width: 700px) {
+  .location-button {
+    position: static;
+    margin: 12px 0 0 17px;
+  }
+}

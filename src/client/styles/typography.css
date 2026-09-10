@@ -1,0 +1,72 @@
+/* Hierarquia tipográfica do Buzzu: display expressivo, leitura neutra e dados técnicos. */
+:root {
+  --display: 'Archivo', sans-serif;
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.brand-name,
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 650;
+  font-variation-settings: 'wdth' 92;
+}
+
+.brand-name {
+  letter-spacing: -1px;
+}
+
+h1 {
+  font-size: clamp(48px, 4.9vw, 72px);
+  line-height: 1;
+  letter-spacing: -2.2px;
+  max-width: 620px;
+}
+
+h2 {
+  line-height: 1.02;
+  letter-spacing: -1.2px;
+}
+
+h3 {
+  letter-spacing: -.7px;
+}
+
+h1 em,
+h2 em {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -1.8px;
+}
+
+.hero-text,
+.feature-card p,
+.account-copy > p:not(.eyebrow),
+.form-header p {
+  line-height: 1.65;
+}
+
+.route-field label,
+.account-form-wrap label,
+.visual-label small,
+.departure-item small {
+  letter-spacing: .01em;
+}
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: clamp(46px, 12.5vw, 56px);
+    line-height: .98;
+    letter-spacing: -1.8px;
+  }
+
+  h2 {
+    letter-spacing: -1.2px;
+  }
+}

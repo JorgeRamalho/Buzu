@@ -1,0 +1,89 @@
+.status-scroll {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.status-track,
+.status-copy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  flex: none;
+}
+
+.status-track {
+  animation: status-marquee 26s linear infinite;
+  will-change: transform;
+}
+
+.status-copy {
+  padding-right: 42px;
+}
+
+.status-scroll:hover .status-track,
+.status-scroll:focus-within .status-track {
+  animation-play-state: paused;
+}
+
+@keyframes status-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 700px) {
+  .status-bar {
+    height: auto;
+    min-height: 82px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 5%;
+    background: #dcefe5;
+    border-bottom: 1px solid #c8dfd2;
+    box-shadow: 0 5px 16px rgba(39, 91, 69, .08);
+  }
+
+  .status-live {
+    min-height: 22px;
+    gap: 9px;
+    font-size: 10px;
+  }
+
+  .status-live strong {
+    color: #1e6d4b;
+    font-weight: 700;
+    letter-spacing: .2px;
+  }
+
+  .status-live span {
+    color: #648277;
+  }
+
+  .status-scroll {
+    display: block;
+    flex: 1;
+    width: 100%;
+    min-height: 25px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(73, 126, 101, .2);
+  }
+
+  .status-track {
+    animation-duration: 19s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-track {
+    animation: none;
+  }
+}

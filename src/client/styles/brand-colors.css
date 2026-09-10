@@ -1,0 +1,20 @@
+:root {
+  --coral: #f05a28;
+  --coral-dark: #c9421f;
+}
+
+.icon-button:focus-visible,
+.button:focus-visible,
+.filter-button:focus-visible,
+.status-more:focus-visible,
+.card-link:focus-visible,
+.text-link:focus-visible,
+.route-field input:focus-visible,
+.account-form-wrap input:focus-visible,
+.location-button:focus-visible {
+  outline-color: rgba(240, 90, 40, .3);
+}
+
+.neighborhood-live i {
+  box-shadow: 0 0 0 3px rgba(240, 90, 40, .12);
+}

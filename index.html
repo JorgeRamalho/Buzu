@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c1f2d">
+  <meta name="description" content="Buzzu: mobilidade urbana inteligente em Curitiba. Consulte linhas, horários, tubos e cuide do seu cartão transporte.">
+  <title>Buzzu | Seu caminho começa aqui</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/client/styles/styles.css">
+  <link rel="stylesheet" href="./src/client/styles/rounding.css">
+  <link rel="stylesheet" href="./src/client/styles/typography.css">
+  <link rel="stylesheet" href="./src/client/styles/status-motion.css">
+  <link rel="stylesheet" href="./src/client/styles/maps.css">
+  <link rel="stylesheet" href="./src/client/styles/search.css">
+  <link rel="stylesheet" href="./src/client/styles/vehicle-scene.css">
+  <link rel="stylesheet" href="./src/client/styles/brand-colors.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Buzzu início">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">buzzu<span>.</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a class="active" href="#inicio">Início</a>
+        <a href="#rotas">Rotas e horários</a>
+        <a href="#cartao">Meu cartão</a>
+        <a href="#cidade">A cidade</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" aria-label="Pesquisar" data-search-toggle>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+        </button>
+        <a class="login-link" href="#conta">Entrar</a>
+        <a class="button button-dark button-small" href="#conta">Criar conta</a>
+        <button class="menu-button" aria-label="Abrir menu" data-menu-toggle><span></span><span></span></button>
+      </div>
+    </header>
+
+    <div class="search-drawer" data-search-drawer>
+      <div class="search-inner"><label for="global-search">O que você procura?</label><input id="global-search" type="search" placeholder="Linha, tubo ou endereço"><button class="icon-button" aria-label="Fechar pesquisa" data-search-close>×</button></div>
+    </div>
+
+    <div class="status-bar" aria-label="Status da operação">
+      <div class="status-live"><i></i><strong>Operação normal</strong><span>Atualizado agora</span></div>
+      <div class="status-scroll"><span>Próxima saída</span><strong>303 Centenário</strong><b>3 min</b><span class="status-divider"></span><span>Tubo Rodoferroviária</span><strong>Expresso 203</strong><b>7 min</b><span class="status-divider"></span><span>Centro Cívico</span><strong>Linha 372</strong><b>12 min</b></div>
+    </div>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span>Mobilidade que entende você</p>
+          <h1>O melhor caminho<br><em>é o seu.</em></h1>
+          <p class="hero-text">Rotas inteligentes, tempo real e tudo o que você precisa para se mover por Curitiba com mais leveza.</p>
+          <div class="route-search" id="rotas">
+            <div class="route-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"></circle><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"></path></svg><div><label for="from">De onde você sai?</label><input id="from" placeholder="Ex.: Praça Rui Barbosa"></div></div>
+            <div class="route-swap" aria-hidden="true">↕</div>
+            <div class="route-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4Z"></path><path d="m4 7 8 4 8-4M12 11v10"></path></svg><div><label for="to">Para onde você vai?</label><input id="to" placeholder="Ex.: Jardim Botânico"></div></div>
+            <button class="button button-coral route-button" data-route-search>Encontrar rota <span>→</span></button>
+          </div>
+          <p class="route-note"><span>✦</span> Você também pode buscar por linha, tubo ou ponto de referência.</p>
+        </div>
+        <div class="hero-visual" aria-label="Ilustração de um ônibus Buzzu em Curitiba">
+          <div class="visual-grid"></div><div class="sun-disc"></div>
+          <div class="bus-scene"><div class="bus-shadow"></div><div class="bus"><div class="bus-top"><span>303</span> CENTENÁRIO</div><div class="bus-window"><i></i><i></i><i></i><i></i></div><div class="bus-body"><div class="bus-lights"></div><div class="bus-door"></div><div class="bus-wheel wheel-one"></div><div class="bus-wheel wheel-two"></div></div></div></div>
+          <div class="visual-label label-neighborhoods" data-neighborhood-panel><span class="label-dot"></span><strong data-neighborhood-name>Bairros em destaque</strong><span class="neighborhood-live"><i></i> Online · Movimento em tempo real</span><small data-neighborhood-status>Carregando condições locais...</small></div>
+        </div>
+      </section>
+
+      <section class="quick-section" id="cartao">
+        <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span>Feito para o seu dia</p><h2>Tudo em um só lugar.</h2></div><a class="text-link" href="#cidade">Explorar o Buzzu <span>↗</span></a></div>
+        <div class="feature-grid">
+          <article class="feature-card card-coral"><div class="card-top"><span class="card-icon">⌁</span><span class="card-arrow">↗</span></div><h3>Planeje sua viagem</h3><p>Combine linhas e descubra o caminho mais rápido até o seu destino.</p><button class="card-link" data-route-focus>Buscar uma rota <span>→</span></button><div class="route-lines"></div></article>
+          <article class="feature-card card-dark"><div class="card-top"><span class="card-icon card-icon-light">◒</span><span class="card-arrow">↗</span></div><h3>Seu cartão, do seu jeito</h3><p>Consulte o saldo, recarregue e acompanhe seus pagamentos sem complicação.</p><a class="card-link" href="#conta">Acessar meu cartão <span>→</span></a><div class="mini-card"><span>buzzu</span><b>•••• 0384</b></div></article>
+          <article class="feature-card card-sand"><div class="card-top"><span class="card-icon">◉</span><span class="card-arrow">↗</span></div><h3>Veja tudo em tempo real</h3><p>Partidas, chegadas e alertas dos principais tubos do Centro.</p><a class="card-link" href="#status">Ver status agora <span>→</span></a><div class="signal-bars"><i></i><i></i><i></i><i></i><i></i></div></article>
+        </div>
+      </section>
+
+      <section class="live-section" id="status"><div class="live-header"><div><p class="eyebrow"><span class="eyebrow-line"></span>Agora em Curitiba</p><h2>O pulso da cidade.</h2></div><div class="live-meta"><span class="pulse-dot"></span>Dados atualizados em tempo real <button class="icon-button refresh" aria-label="Atualizar dados">↻</button></div></div><div class="live-layout"><div class="map-panel"><div class="map-toolbar"><span>Mapa da operação</span><button class="filter-button">Centro de Curitiba <span>⌄</span></button></div><div class="map-art"><div class="map-road road-a"></div><div class="map-road road-b"></div><div class="map-road road-c"></div><div class="map-road road-d"></div><div class="map-river"></div><div class="map-pin pin-a"><b>R</b><span>Rodoferroviária</span></div><div class="map-pin pin-b"><b>●</b><span>Praça Rui Barbosa</span></div><div class="map-pin pin-c"><b>J</b><span>Centro Cívico</span></div><div class="map-label">Centro</div><div class="map-scale">500 m</div></div></div><div class="departures"><div class="departure-head"><span>Próximas chegadas</span><a href="#rotas">Ver todas ↗</a></div><div class="departure-item"><div class="line-badge badge-red">203</div><div><strong>Expresso Santa Cândida</strong><small>Tubo Rodoferroviária · Sentido norte</small></div><b class="arrival">3 min</b></div><div class="departure-item"><div class="line-badge badge-green">303</div><div><strong>Centenário / Campo Comprido</strong><small>Tubo Praça Rui Barbosa · Plataforma 2</small></div><b class="arrival">7 min</b></div><div class="departure-item"><div class="line-badge badge-blue">372</div><div><strong>Augusto Stresser</strong><small>Estação Centro Cívico · Sentido bairro</small></div><b class="arrival">12 min</b></div><div class="departure-item"><div class="line-badge badge-yellow">022</div><div><strong>Interbairros II</strong><small>Tubo Passeio Público · Sentido sul</small></div><b class="arrival">16 min</b></div></div></div></section>
+
+      <section class="account-section" id="conta"><div class="account-copy"><p class="eyebrow"><span class="eyebrow-line"></span>Uma conta para toda jornada</p><h2>Seu Buzzu,<br><em>mais perto.</em></h2><p>Salve seus lugares favoritos, receba alertas da sua linha e tenha sua carteira de transporte sempre à mão.</p><a class="button button-dark" href="#cadastro">Criar minha conta <span>→</span></a></div><div class="account-form-wrap" id="cadastro"><div class="form-header"><span class="form-step">01 <i>/ 02</i></span><h3>Vamos começar?</h3><p>Crie seu acesso em poucos passos.</p></div><form id="signup-form"><label>Como podemos te chamar?<input required type="text" name="name" placeholder="Seu nome completo"></label><label>Seu melhor e-mail<input required type="email" name="email" placeholder="voce@email.com"></label><div class="form-row"><label>Celular<input type="tel" name="phone" placeholder="(41) 99999-9999"></label><label>Data de nascimento<input type="date" name="birth"></label></div><label class="check-label"><input type="checkbox" required> <span>Aceito os termos de uso e a política de privacidade.</span></label><button class="button button-coral" type="submit">Continuar cadastro <span>→</span></button><p class="form-message" role="status"></p></form></div></section>
+    </main>
+    <footer class="site-footer" id="cidade"><div class="footer-brand"><a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span class="brand-name">buzzu<span>.</span></span></a><p>Movendo Curitiba<br>para frente.</p></div><div class="footer-links"><div><strong>Explorar</strong><a href="#rotas">Rotas e horários</a><a href="#status">Status da operação</a><a href="#cartao">Cartão transporte</a></div><div><strong>Suporte</strong><a href="#conta">Central de ajuda</a><a href="#conta">Fale com a gente</a><a href="#conta">Acessibilidade</a></div><div><strong>Siga o Buzzu</strong><a href="#cidade">Instagram ↗</a><a href="#cidade">LinkedIn ↗</a><a href="#cidade">X / Twitter ↗</a></div></div><div class="footer-bottom"><span>© 2024 Buzzu Mobilidade Urbana</span><span>Feito em Curitiba <span class="heart">♥</span></span></div></footer>
+  </div>
+  <script src="./src/client/scripts/app.js"></script>
+</body>
+</html>
