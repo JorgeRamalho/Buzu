@@ -1,0 +1,210 @@
+.account-section {
+  grid-template-columns: minmax(240px, .82fr) minmax(320px, 1.18fr);
+  align-items: center;
+  gap: clamp(36px, 7vw, 92px);
+  padding: clamp(72px, 9vw, 118px) clamp(7%, 13%, 15%) clamp(76px, 9vw, 118px);
+}
+
+.account-copy {
+  max-width: 360px;
+}
+
+.account-copy h2 {
+  max-width: 320px;
+  margin-bottom: 22px;
+}
+
+.account-copy > p:not(.eyebrow) {
+  max-width: 315px;
+  margin-bottom: 28px;
+}
+
+.account-form-wrap {
+  width: 100%;
+  max-width: 510px;
+  justify-self: end;
+  padding: clamp(28px, 4vw, 40px);
+  background: var(--paper);
+  box-shadow: 0 20px 45px rgba(78, 35, 26, .15);
+}
+
+.form-header {
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e7e8e1;
+  margin-bottom: 24px;
+}
+
+.form-step {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 99px;
+  background: #fff0e9;
+  color: var(--coral-dark);
+  font-size: 9px;
+  letter-spacing: .08em;
+}
+
+.form-header h3 {
+  margin: 17px 0 7px;
+  font-size: clamp(23px, 2.4vw, 29px);
+}
+
+.form-header p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+#signup-form {
+  display: grid;
+  gap: 18px;
+}
+
+#signup-form > label:not(.check-label) {
+  display: block;
+  width: 100%;
+  margin: 0;
+  color: #64736f;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+#signup-form > .password-field {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+#signup-form input[type="text"],
+#signup-form input[type="email"],
+#signup-form input[type="tel"],
+#signup-form input[type="date"],
+#signup-form input[type="password"] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  height: 40px;
+  margin-top: 6px;
+  padding: 0 11px;
+  border: 1px solid #dce2dc;
+  border-radius: 7px;
+  background: #fff;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+#signup-form input:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(240, 90, 40, .12);
+}
+
+#signup-form input:invalid:not(:placeholder-shown) {
+  border-color: #d46a58;
+  box-shadow: 0 0 0 3px rgba(212, 106, 88, .1);
+}
+
+#signup-form input:valid:not(:placeholder-shown) {
+  border-color: #9ac9af;
+}
+
+#signup-form input::placeholder {
+  color: #aab5b1;
+  font-size: 11px;
+}
+
+#signup-form .form-row {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+#signup-form .form-row label {
+  min-width: 0;
+  margin: 0;
+}
+
+#signup-form .check-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: #73817d;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+#signup-form .check-label input {
+  flex: 0 0 auto;
+  margin: 1px 0 0;
+  accent-color: var(--coral);
+}
+
+#signup-form .button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 2px;
+}
+
+#signup-form .button:disabled {
+  cursor: wait;
+  opacity: .72;
+  transform: none;
+}
+
+.form-message {
+  margin: -7px 0 0;
+  min-height: 15px;
+}
+
+.account-form-wrap::after {
+  content: 'Seus dados são protegidos e usados apenas para sua conta Buzzu.';
+  display: block;
+  margin-top: 16px;
+  color: #91a09b;
+  font: 9px/1.5 var(--mono);
+}
+
+@media (max-width: 700px) {
+  .account-section {
+    grid-template-columns: 1fr;
+    gap: 38px;
+    padding: 68px 7% 74px;
+  }
+
+  .account-copy,
+  .account-form-wrap {
+    max-width: none;
+  }
+
+  .account-copy h2 {
+    max-width: none;
+  }
+
+  .account-form-wrap {
+    justify-self: stretch;
+    padding: 26px 18px 20px;
+  }
+
+  .form-header {
+    margin-bottom: 20px;
+  }
+
+  #signup-form {
+    gap: 16px;
+  }
+
+  #signup-form input[type="text"],
+  #signup-form input[type="email"],
+  #signup-form input[type="tel"],
+  #signup-form input[type="date"],
+  #signup-form input[type="password"] {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  #signup-form .form-row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}

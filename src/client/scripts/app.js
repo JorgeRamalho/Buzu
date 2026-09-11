@@ -260,8 +260,22 @@ loadTransitStatus();
 const signupForm = document.querySelector('#signup-form');
 if (signupForm && !signupForm.querySelector('[name="password"]')) {
   const passwordLabel = document.createElement('label');
+  passwordLabel.className = 'password-field';
   passwordLabel.innerHTML = 'Crie uma senha<input required type="password" name="password" minlength="8" placeholder="Mínimo de 8 caracteres">';
   signupForm.querySelector('.form-row')?.before(passwordLabel);
+}
+
+if (signupForm) {
+  const autocomplete = { name: 'name', email: 'email', phone: 'tel', birth: 'bday', password: 'new-password' };
+  Object.entries(autocomplete).forEach(([name, value]) => {
+    const field = signupForm.querySelector(`[name="${name}"]`);
+    if (field) field.autocomplete = value;
+  });
+  signupForm.querySelector('[name="email"]')?.setAttribute('inputmode', 'email');
+  signupForm.querySelector('[name="phone"]')?.setAttribute('inputmode', 'tel');
+  signupForm.querySelectorAll('input').forEach(field => field.addEventListener('blur', () => {
+    field.classList.toggle('was-touched', true);
+  }));
 }
 
 searchToggle?.addEventListener('click', () => {
@@ -318,7 +332,14 @@ document.querySelector('#signup-form')?.addEventListener('submit', async (event)
   event.preventDefault();
   const message = document.querySelector('.form-message');
   const button = event.currentTarget.querySelector('button');
+  if (!event.currentTarget.checkValidity()) {
+    event.currentTarget.querySelectorAll('input').forEach(field => field.classList.add('was-touched'));
+    message.textContent = 'Revise os campos destacados antes de continuar.';
+    event.currentTarget.reportValidity();
+    return;
+  }
   button.disabled = true;
+  button.innerHTML = 'Criando sua conta <span>...</span>';
   try {
     const response = await fetch(`${API}/auth/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(event.currentTarget))) });
     const result = await response.json();
