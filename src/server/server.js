@@ -10,7 +10,7 @@ const CLIENT_DIR = path.join(ROOT, 'src', 'client');
 const DATA_DIR = path.join(ROOT, 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const SESSION_SECRET = process.env.SESSION_SECRET || 'development-only-change-me';
-const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8' };
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml' };
 
 loadEnv();
 const demoStatus = {
@@ -53,7 +53,7 @@ async function transitStatus() {
     return { ...demoStatus, warning: process.env.URBS_REALTIME_URL ? 'Fonte URBS indisponível ou incompatível; exibindo demonstração.' : 'Configure URBS_REALTIME_URL após obter acesso oficial.' };
   }
 }
-function serveStatic(req, res, pathname) { const file = pathname === '/' ? 'index.html' : pathname.slice(1); const safe = path.normalize(file).replace(/^\.\.(?:[\\/]|$)/, ''); const fromRoot = pathname === '/' || safe.startsWith(`src${path.sep}client${path.sep}`); const base = fromRoot ? ROOT : CLIENT_DIR; const target = path.join(base, safe); const relative = path.relative(base, target); if (relative.startsWith('..') || path.isAbsolute(relative) || !fs.existsSync(target) || fs.statSync(target).isDirectory()) return send(res, 404, { error: 'Não encontrado' }); res.writeHead(200, { 'Content-Type': MIME[path.extname(target)] || 'application/octet-stream' }); fs.createReadStream(target).pipe(res); }
+function serveStatic(req, res, pathname) { const file = pathname === '/' ? 'index.html' : pathname.slice(1); const safe = path.normalize(file).replace(/^\.\.(?:[\\/]|$)/, ''); const rootTarget = path.join(ROOT, safe); const clientTarget = path.join(CLIENT_DIR, safe); const target = pathname === '/' || fs.existsSync(rootTarget) ? rootTarget : clientTarget; const base = target === rootTarget ? ROOT : CLIENT_DIR; const relative = path.relative(base, target); if (relative.startsWith('..') || path.isAbsolute(relative) || !fs.existsSync(target) || fs.statSync(target).isDirectory()) return send(res, 404, { error: 'Não encontrado' }); res.writeHead(200, { 'Content-Type': MIME[path.extname(target)] || 'application/octet-stream' }); fs.createReadStream(target).pipe(res); }
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);

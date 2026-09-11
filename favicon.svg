@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>Marca Buzzu</title>
+  <rect width="64" height="64" rx="14" fill="#fffdf9"/>
+  <g transform="translate(14 12) skewX(-14)">
+    <rect width="9" height="28" rx="3" fill="#f05a28"/>
+    <rect x="14" width="9" height="40" rx="3" fill="#102430"/>
+    <rect x="28" width="9" height="34" rx="3" fill="#f05a28"/>
+  </g>
+</svg>

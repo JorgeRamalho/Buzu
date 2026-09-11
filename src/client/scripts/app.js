@@ -257,6 +257,65 @@ async function loadTransitStatus() {
 
 loadTransitStatus();
 
+// ── Mapa SVG: tempos de chegada ao vivo nos cards dos pins ────
+(function initMapCards() {
+  const STATIONS = [
+    { rowsId: 'rows-rodo', lines: [
+      { badge:'203', name:'Expresso Santa Cândida', min:3,  color:'#db5a4b' },
+      { badge:'502', name:'Expresso Leste',         min:7,  color:'#459b70' },
+      { badge:'218', name:'Bacacheri / Centro',     min:11, color:'#4f82a0' },
+    ]},
+    { rowsId: 'rows-praca', lines: [
+      { badge:'303', name:'Centenário / Campo Comprido', min:2,  color:'#459b70' },
+      { badge:'022', name:'Interbairros II',              min:6,  color:'#c9a34b' },
+      { badge:'280', name:'Campo Comprido / Batel',       min:10, color:'#db5a4b' },
+    ]},
+    { rowsId: 'rows-civico', lines: [
+      { badge:'372', name:'Augusto Stresser',   min:4,  color:'#4f82a0' },
+      { badge:'270', name:'Birigui / Água Verde', min:9, color:'#7b5ea7' },
+      { badge:'500', name:'Linha Verde Norte',  min:12, color:'#459b70' },
+    ]},
+    { rowsId: 'rows-botanico', lines: [
+      { badge:'510', name:'Vila Hauer / Boqueirão',   min:5,  color:'#2e9e5b' },
+      { badge:'520', name:'Jd. Botânico / Rebouças',  min:8,  color:'#4f82a0' },
+      { badge:'530', name:'Guabirotuba / Batel',      min:14, color:'#c9a34b' },
+    ]},
+  ];
+
+  function render(station) {
+    const el = document.getElementById(station.rowsId);
+    if (!el) return;
+    el.innerHTML = station.lines
+      .slice().sort((a,b) => a.min - b.min)
+      .map(l => `<div class="gmap-row">
+        <span class="gmap-badge" style="background:${l.color}">${l.badge}</span>
+        <span>${l.name}</span>
+        <b>${l.min <= 0 ? 'Chegando' : l.min + ' min'}</b>
+      </div>`).join('');
+  }
+
+  function tick() {
+    STATIONS.forEach(s => {
+      s.lines.forEach(l => {
+        l.min--;
+        if (l.min < 0) l.min = 5 + Math.floor(Math.random() * 10);
+      });
+      render(s);
+    });
+  }
+
+  STATIONS.forEach(render);
+  setInterval(tick, 20000);
+
+  // Clique no label abre/fecha o card (mobile)
+  document.querySelectorAll('.gmap-pin-label').forEach(label => {
+    label.addEventListener('click', () => {
+      const card = label.querySelector('.gmap-card');
+      if (card) card.classList.toggle('is-open');
+    });
+  });
+})();
+
 // --- Scroll contínuo de chegadas: todas as linhas de Curitiba ---
 (function initDepartureScroll() {
   const track = document.getElementById('departure-track');

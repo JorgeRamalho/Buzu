@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#0c1f2d">
   <meta name="description" content="Buzzu: mobilidade urbana inteligente em Curitiba. Consulte linhas, horários, tubos e cuide do seu cartão transporte.">
   <title>Buzzu | Seu caminho começa aqui</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,6 +20,7 @@
   <link rel="stylesheet" href="./src/client/styles/vehicle-scene.css">
   <link rel="stylesheet" href="./src/client/styles/brand-colors.css">
   <link rel="stylesheet" href="./src/client/styles/account-form.css">
+  <link rel="stylesheet" href="./src/client/styles/departures.css">
   <link rel="stylesheet" href="./src/client/styles/privacy.css">
 </head>
 <body>
@@ -83,7 +86,306 @@
       </section>
 
       <div class="live-header"><div><p class="eyebrow"><span class="eyebrow-line"></span>Agora em Curitiba</p><h2>O pulso da cidade.</h2></div><div class="live-meta"><span class="pulse-dot"></span>Dados atualizados em tempo real <button class="icon-button refresh" aria-label="Atualizar dados">↻</button></div></div>
-      <section class="live-section" id="status"><div class="live-layout"><div class="map-panel"><div class="map-toolbar"><span>Mapa da operação</span><button class="filter-button">Centro de Curitiba <span>⌄</span></button></div><div class="map-art"><div class="map-road road-a"></div><div class="map-road road-b"></div><div class="map-road road-c"></div><div class="map-road road-d"></div><div class="map-river"></div><div class="map-pin pin-a"><b>R</b><span>Rodoferroviária</span></div><div class="map-pin pin-b"><b>●</b><span>Praça Rui Barbosa</span></div><div class="map-pin pin-c"><b>J</b><span>Centro Cívico</span></div><div class="map-label">Centro</div><div class="map-scale">500 m</div></div></div><div class="departures"><div class="departure-track" id="departure-track"></div></div></div></section>
+      <section class="live-section" id="status"><div class="live-layout"><div class="map-panel">
+
+  <div class="map-toolbar">
+    <span>Mapa da operação</span>
+    <button class="filter-button">Centro de Curitiba <span>⌄</span></button>
+  </div>
+
+  <div class="map-art" id="map-art">
+
+    <!-- ══════════════════════════════════════════════════
+         SVG MAPA — Centro de Curitiba
+         ViewBox: 800 × 420 unidades
+         Baseado na malha viária real do centro
+    ═══════════════════════════════════════════════════ -->
+    <svg class="map-svg" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+      <!-- ── Fundo geral (cor de quarteirão Google) ── -->
+      <rect width="800" height="420" fill="#f2efe9"/>
+
+      <!-- ══ QUARTEIRÕES / BLOCOS URBANOS ══ -->
+      <!-- Distribuídos seguindo a malha real do centro de Curitiba -->
+      <g fill="#e8e4dc" stroke="#d8d3c8" stroke-width="0.4">
+        <!-- Coluna oeste -->
+        <rect x="18"  y="18"  width="68" height="52"/>
+        <rect x="18"  y="82"  width="68" height="52"/>
+        <rect x="18"  y="146" width="68" height="52"/>
+        <rect x="18"  y="210" width="68" height="52"/>
+        <rect x="18"  y="274" width="68" height="52"/>
+        <rect x="18"  y="338" width="68" height="58"/>
+        <!-- Coluna 2 -->
+        <rect x="102" y="18"  width="64" height="52"/>
+        <rect x="102" y="82"  width="64" height="52"/>
+        <rect x="102" y="146" width="64" height="52"/>
+        <rect x="102" y="210" width="64" height="52"/>
+        <rect x="102" y="274" width="64" height="52"/>
+        <rect x="102" y="338" width="64" height="58"/>
+        <!-- Coluna 3 -->
+        <rect x="182" y="18"  width="70" height="52"/>
+        <rect x="182" y="82"  width="70" height="52"/>
+        <rect x="182" y="146" width="70" height="52"/>
+        <rect x="182" y="210" width="70" height="52"/>
+        <rect x="182" y="274" width="70" height="52"/>
+        <rect x="182" y="338" width="70" height="58"/>
+        <!-- Coluna 4 -->
+        <rect x="268" y="18"  width="64" height="52"/>
+        <rect x="268" y="82"  width="64" height="52"/>
+        <rect x="268" y="146" width="64" height="52"/>
+        <rect x="268" y="210" width="64" height="52"/>
+        <rect x="268" y="274" width="64" height="52"/>
+        <rect x="268" y="338" width="64" height="58"/>
+        <!-- Coluna central-leste -->
+        <rect x="348" y="18"  width="62" height="52"/>
+        <rect x="348" y="82"  width="62" height="52"/>
+        <rect x="348" y="146" width="62" height="52"/>
+        <rect x="348" y="210" width="62" height="52"/>
+        <rect x="348" y="274" width="62" height="52"/>
+        <rect x="348" y="338" width="62" height="58"/>
+        <!-- Coluna 6 -->
+        <rect x="426" y="18"  width="60" height="52"/>
+        <rect x="426" y="82"  width="60" height="52"/>
+        <rect x="426" y="146" width="60" height="52"/>
+        <rect x="426" y="210" width="60" height="52"/>
+        <!-- Coluna 7 -->
+        <rect x="502" y="18"  width="62" height="52"/>
+        <rect x="502" y="82"  width="62" height="52"/>
+        <rect x="502" y="146" width="62" height="52"/>
+        <rect x="502" y="210" width="62" height="52"/>
+        <!-- Coluna 8 -->
+        <rect x="580" y="18"  width="58" height="52"/>
+        <rect x="580" y="82"  width="58" height="52"/>
+        <rect x="580" y="146" width="58" height="52"/>
+        <!-- Coluna leste -->
+        <rect x="654" y="18"  width="64" height="52"/>
+        <rect x="654" y="82"  width="64" height="52"/>
+        <rect x="654" y="146" width="64" height="52"/>
+        <rect x="718" y="18"  width="64" height="52"/>
+        <rect x="718" y="82"  width="64" height="52"/>
+        <rect x="718" y="146" width="64" height="52"/>
+      </g>
+
+      <!-- ══ PARQUE PASSEIO PÚBLICO ══ -->
+      <rect x="102" y="210" width="64" height="52" fill="#c8e6c4" stroke="#a5c9a0" stroke-width="0.6" rx="2"/>
+      <text x="134" y="232" text-anchor="middle" font-size="5.5" fill="#4a7a45" font-family="Arial,sans-serif" font-weight="600">Passeio</text>
+      <text x="134" y="240" text-anchor="middle" font-size="5.5" fill="#4a7a45" font-family="Arial,sans-serif" font-weight="600">Público</text>
+
+      <!-- ══ JARDIM BOTÂNICO ══ (canto sudeste) -->
+      <rect x="580" y="270" width="200" height="148" fill="#c8e6c4" stroke="#a5c9a0" stroke-width="0.8" rx="3"/>
+      <!-- Estufa icônica (estrutura art nouveau) -->
+      <ellipse cx="672" cy="330" rx="32" ry="22" fill="none" stroke="#4a7a45" stroke-width="1.2" opacity="0.7"/>
+      <line x1="672" y1="308" x2="672" y2="352" stroke="#4a7a45" stroke-width="0.8" opacity="0.6"/>
+      <line x1="640" y1="330" x2="704" y2="330" stroke="#4a7a45" stroke-width="0.8" opacity="0.6"/>
+      <!-- Canteiros decorativos -->
+      <circle cx="650" cy="360" r="8"  fill="#a5c9a0" opacity="0.7"/>
+      <circle cx="672" cy="368" r="6"  fill="#87bb82" opacity="0.7"/>
+      <circle cx="694" cy="360" r="8"  fill="#a5c9a0" opacity="0.7"/>
+      <text x="672" y="395" text-anchor="middle" font-size="7" fill="#2e6e28" font-family="Arial,sans-serif" font-weight="700">Jardim Botânico</text>
+
+      <!-- ══ PRAÇA TIRADENTES ══ -->
+      <rect x="268" y="146" width="64" height="52" fill="#d4ead1" stroke="#a5c9a0" stroke-width="0.5" rx="1"/>
+      <text x="300" y="168" text-anchor="middle" font-size="5" fill="#3a6e35" font-family="Arial,sans-serif" font-weight="600">Praça</text>
+      <text x="300" y="176" text-anchor="middle" font-size="5" fill="#3a6e35" font-family="Arial,sans-serif" font-weight="600">Tiradentes</text>
+
+      <!-- ══ RIO BELÉM ══ (diagonal suave NW→SE) -->
+      <path d="M 0,180 Q 120,195 240,210 Q 360,228 480,260 Q 580,285 700,310 L 800,330 L 800,345 Q 680,325 560,298 Q 440,272 310,248 Q 180,224 60,208 Z"
+            fill="#b8d8e8" stroke="#8ab8d0" stroke-width="0.8" opacity="0.85"/>
+      <text x="180" y="220" font-size="6" fill="#4a7a9a" font-family="Arial,sans-serif" font-style="italic" transform="rotate(-6 180 220)">Rio Belém</text>
+
+      <!-- ══ RUAS HORIZONTAIS ══ -->
+      <!-- Av. Marechal Floriano Peixoto (principal N) -->
+      <rect x="0"   y="70"  width="800" height="12" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="400" y="79"  text-anchor="middle" font-size="6" fill="#7a7060" font-family="Arial,sans-serif" font-weight="600">Av. Marechal Floriano Peixoto</text>
+
+      <!-- R. Cândido Lopes -->
+      <rect x="0"   y="134" width="800" height="10" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="200" y="142" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif">R. Cândido Lopes</text>
+
+      <!-- Av. Luiz Xavier / Rua XV de Novembro (calçadão) -->
+      <rect x="0"   y="198" width="560" height="11" fill="#f5f0e8" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="280" y="207" text-anchor="middle" font-size="6" fill="#8a6a30" font-family="Arial,sans-serif" font-weight="700">Rua XV de Novembro (Calçadão)</text>
+
+      <!-- R. Marechal Deodoro -->
+      <rect x="0"   y="262" width="800" height="10" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="180" y="270" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif">R. Marechal Deodoro</text>
+
+      <!-- Av. Sete de Setembro -->
+      <rect x="0"   y="326" width="800" height="11" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="220" y="335" text-anchor="middle" font-size="6" fill="#7a7060" font-family="Arial,sans-serif" font-weight="600">Av. Sete de Setembro</text>
+
+      <!-- R. Presidente Faria (sul) -->
+      <rect x="0"   y="396" width="800" height="10" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="200" y="404" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif">R. Presidente Faria</text>
+
+      <!-- ══ RUAS VERTICAIS ══ -->
+      <!-- R. João Negrão (oeste) -->
+      <rect x="86"  y="0" width="10" height="420" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="91"  y="50" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 91 50)">R. João Negrão</text>
+
+      <!-- R. Ébano Pereira -->
+      <rect x="166" y="0" width="10" height="420" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="171" y="110" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 171 110)">R. Ébano Pereira</text>
+
+      <!-- Av. Visconde de Guarapuava -->
+      <rect x="252" y="0" width="12" height="420" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="258" y="60" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 258 60)">Av. Visconde de Guarapuava</text>
+
+      <!-- R. Voluntários da Pátria -->
+      <rect x="332" y="0" width="10" height="420" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="337" y="100" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 337 100)">R. Voluntários da Pátria</text>
+
+      <!-- Av. João Pessoa (central) -->
+      <rect x="410" y="0" width="12" height="420" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="416" y="55" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 416 55)">Av. João Pessoa</text>
+
+      <!-- R. Tibagi -->
+      <rect x="488" y="0" width="10" height="420" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="493" y="90" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 493 90)">R. Tibagi</text>
+
+      <!-- Av. Cândido de Abreu (N→Centro Cívico) -->
+      <rect x="564" y="0" width="12" height="270" fill="#fff8ee" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="570" y="80" text-anchor="middle" font-size="5.5" fill="#8a6a30" font-family="Arial,sans-serif" font-weight="600" transform="rotate(-90 570 80)">Av. Cândido de Abreu</text>
+
+      <!-- R. Mateus Leme (leste) -->
+      <rect x="644" y="0" width="10" height="270" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="649" y="100" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 649 100)">R. Mateus Leme</text>
+
+      <!-- R. Dr. Muricy -->
+      <rect x="718" y="0" width="10" height="270" fill="#ffffff" stroke="#d0ccc4" stroke-width="0.3"/>
+      <text x="723" y="85" text-anchor="middle" font-size="5.5" fill="#7a7060" font-family="Arial,sans-serif" transform="rotate(-90 723 85)">R. Dr. Muricy</text>
+
+      <!-- ══ CORREDORES DE ÔNIBUS (destaque laranja) ══ -->
+      <!-- Corredor Marechal Floriano (BRT) -->
+      <rect x="0"   y="72"  width="800" height="4" fill="#ff9950" opacity="0.55"/>
+      <!-- Corredor Linha Verde (Av. Cândido de Abreu) -->
+      <rect x="566" y="0"   width="4"  height="270" fill="#459b70" opacity="0.5"/>
+      <!-- Corredor Sete de Setembro -->
+      <rect x="0"   y="328" width="560" height="4" fill="#4f82a0" opacity="0.45"/>
+
+      <!-- Legenda dos corredores -->
+      <rect x="12" y="6" width="8" height="4" fill="#ff9950" rx="1"/>
+      <text x="23" y="11" font-size="5" fill="#7a7060" font-family="Arial,sans-serif">Corredor expresso</text>
+      <rect x="80" y="6" width="8" height="4" fill="#459b70" rx="1"/>
+      <text x="91" y="11" font-size="5" fill="#7a7060" font-family="Arial,sans-serif">Linha Verde</text>
+      <rect x="140" y="6" width="8" height="4" fill="#4f82a0" rx="1"/>
+      <text x="151" y="11" font-size="5" fill="#7a7060" font-family="Arial,sans-serif">Corredor azul</text>
+
+      <!-- ══ PINS DAS 4 ESTAÇÕES ══ -->
+
+      <!-- PIN 1 — Rodoferroviária (oeste, ~Av. Afonso Camargo) -->
+      <!-- Sombra do pin -->
+      <ellipse cx="56" cy="296" rx="9" ry="4" fill="rgba(0,0,0,0.18)"/>
+      <!-- Corpo do pin -->
+      <path d="M56,248 C46,248 38,256 38,266 C38,282 56,296 56,296 C56,296 74,282 74,266 C74,256 66,248 56,248 Z" fill="#db5a4b"/>
+      <path d="M56,248 C46,248 38,256 38,266 C38,282 56,296 56,296 C56,296 74,282 74,266 C74,256 66,248 56,248 Z" fill="none" stroke="#b84030" stroke-width="1.2"/>
+      <circle cx="56" cy="266" r="8" fill="white"/>
+      <text x="56" y="269.5" text-anchor="middle" font-size="7.5" fill="#db5a4b" font-family="Arial,sans-serif" font-weight="800">R</text>
+
+      <!-- PIN 2 — Praça Rui Barbosa (centro) -->
+      <ellipse cx="300" cy="228" rx="9" ry="4" fill="rgba(0,0,0,0.18)"/>
+      <path d="M300,180 C290,180 282,188 282,198 C282,214 300,228 300,228 C300,228 318,214 318,198 C318,188 310,180 300,180 Z" fill="#459b70"/>
+      <path d="M300,180 C290,180 282,188 282,198 C282,214 300,228 300,228 C300,228 318,214 318,198 C318,188 310,180 300,180 Z" fill="none" stroke="#2e7050" stroke-width="1.2"/>
+      <circle cx="300" cy="198" r="8" fill="white"/>
+      <text x="300" y="201.5" text-anchor="middle" font-size="6.5" fill="#459b70" font-family="Arial,sans-serif" font-weight="800">●</text>
+
+      <!-- PIN 3 — Centro Cívico (norte, Av. Cândido de Abreu) -->
+      <ellipse cx="574" cy="98" rx="9" ry="4" fill="rgba(0,0,0,0.18)"/>
+      <path d="M574,50 C564,50 556,58 556,68 C556,84 574,98 574,98 C574,98 592,84 592,68 C592,58 584,50 574,50 Z" fill="#4f82a0"/>
+      <path d="M574,50 C564,50 556,58 556,68 C556,84 574,98 574,98 C574,98 592,84 592,68 C592,58 584,50 574,50 Z" fill="none" stroke="#2e5a78" stroke-width="1.2"/>
+      <circle cx="574" cy="68" r="8" fill="white"/>
+      <text x="574" y="71.5" text-anchor="middle" font-size="6" fill="#4f82a0" font-family="Arial,sans-serif" font-weight="800">J</text>
+
+      <!-- PIN 4 — Jardim Botânico (sudeste) -->
+      <ellipse cx="672" cy="298" rx="9" ry="4" fill="rgba(0,0,0,0.18)"/>
+      <path d="M672,250 C662,250 654,258 654,268 C654,284 672,298 672,298 C672,298 690,284 690,268 C690,258 682,250 672,250 Z" fill="#2e9e5b"/>
+      <path d="M672,250 C662,250 654,258 654,268 C654,284 672,298 672,298 C672,298 690,284 690,268 C690,258 682,250 672,250 Z" fill="none" stroke="#1a6e3a" stroke-width="1.2"/>
+      <circle cx="672" cy="268" r="8" fill="white"/>
+      <text x="672" y="271.5" text-anchor="middle" font-size="6.5" fill="#2e9e5b" font-family="Arial,sans-serif" font-weight="800">JB</text>
+
+      <!-- ══ ESCALA ══ -->
+      <line x1="700" y1="408" x2="760" y2="408" stroke="#8a8070" stroke-width="1.5"/>
+      <line x1="700" y1="404" x2="700" y2="412" stroke="#8a8070" stroke-width="1.5"/>
+      <line x1="760" y1="404" x2="760" y2="412" stroke="#8a8070" stroke-width="1.5"/>
+      <text x="730" y="404" text-anchor="middle" font-size="6" fill="#8a8070" font-family="Arial,sans-serif">500 m</text>
+
+      <!-- Rosa dos ventos simplificada -->
+      <text x="776" y="408" text-anchor="middle" font-size="9" fill="#8a8070" font-family="Arial,sans-serif">N</text>
+      <line x1="776" y1="410" x2="776" y2="418" stroke="#8a8070" stroke-width="1"/>
+
+    </svg><!-- /map-svg -->
+
+    <!-- ══ LABELS DOS PINS (DOM — para permitir hover card) ══ -->
+
+    <!-- Rodoferroviária -->
+    <div class="gmap-pin-label label-rodo">
+      <div class="gmap-card" id="card-rodo">
+        <div class="gmap-card-title">
+          <span class="gmap-dot" style="background:#db5a4b"></span>
+          Rodoferroviária
+        </div>
+        <div class="gmap-card-rows" id="rows-rodo">
+          <div class="gmap-row"><span class="gmap-badge" style="background:#db5a4b">203</span><span>Expresso Santa Cândida</span><b data-min="3">3 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#459b70">502</span><span>Expresso Leste</span><b data-min="7">7 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#4f82a0">218</span><span>Bacacheri / Centro</span><b data-min="11">11 min</b></div>
+        </div>
+        <div class="gmap-card-foot">12 plataformas · Acesso PcD</div>
+      </div>
+    </div>
+
+    <!-- Praça Rui Barbosa -->
+    <div class="gmap-pin-label label-praca">
+      <div class="gmap-card" id="card-praca">
+        <div class="gmap-card-title">
+          <span class="gmap-dot" style="background:#459b70"></span>
+          Praça Rui Barbosa
+        </div>
+        <div class="gmap-card-rows" id="rows-praca">
+          <div class="gmap-row"><span class="gmap-badge" style="background:#459b70">303</span><span>Centenário / Campo Comprido</span><b data-min="2">2 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#c9a34b">022</span><span>Interbairros II</span><b data-min="6">6 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#db5a4b">280</span><span>Campo Comprido / Batel</span><b data-min="10">10 min</b></div>
+        </div>
+        <div class="gmap-card-foot">18 tubos · Calçadão</div>
+      </div>
+    </div>
+
+    <!-- Centro Cívico -->
+    <div class="gmap-pin-label label-civico">
+      <div class="gmap-card" id="card-civico">
+        <div class="gmap-card-title">
+          <span class="gmap-dot" style="background:#4f82a0"></span>
+          Centro Cívico
+        </div>
+        <div class="gmap-card-rows" id="rows-civico">
+          <div class="gmap-row"><span class="gmap-badge" style="background:#4f82a0">372</span><span>Augusto Stresser</span><b data-min="4">4 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#7b5ea7">270</span><span>Birigui / Água Verde</span><b data-min="9">9 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#459b70">500</span><span>Linha Verde Norte</span><b data-min="12">12 min</b></div>
+        </div>
+        <div class="gmap-card-foot">6 plataformas · Próx. Palácio do Governo</div>
+      </div>
+    </div>
+
+    <!-- Jardim Botânico -->
+    <div class="gmap-pin-label label-botanico">
+      <div class="gmap-card" id="card-botanico">
+        <div class="gmap-card-title">
+          <span class="gmap-dot" style="background:#2e9e5b"></span>
+          Jardim Botânico
+        </div>
+        <div class="gmap-card-rows" id="rows-botanico">
+          <div class="gmap-row"><span class="gmap-badge" style="background:#2e9e5b">510</span><span>Vila Hauer / Boqueirão</span><b data-min="5">5 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#4f82a0">520</span><span>Jd. Botânico / Rebouças</span><b data-min="8">8 min</b></div>
+          <div class="gmap-row"><span class="gmap-badge" style="background:#c9a34b">530</span><span>Guabirotuba / Batel</span><b data-min="14">14 min</b></div>
+        </div>
+        <div class="gmap-card-foot">Estufa Art Nouveau · Visitação livre</div>
+      </div>
+    </div>
+
+  </div><!-- /map-art -->
+</div><!-- /map-panel -->
+
+<div class="departures"><div class="departure-track" id="departure-track"></div></div>
+</div></section>
 
       <section class="account-section" id="conta">
         <div class="account-copy">
