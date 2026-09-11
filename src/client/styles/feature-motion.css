@@ -1,0 +1,237 @@
+.feature-grid {
+  perspective: 1200px;
+}
+
+.feature-card {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  opacity: 0;
+  transform: translateY(34px);
+  transform-style: preserve-3d;
+  transition:
+    opacity .7s cubic-bezier(.22, .78, .36, 1),
+    transform .55s cubic-bezier(.22, .78, .36, 1),
+    box-shadow .45s ease;
+  will-change: transform, opacity;
+}
+
+.feature-card.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(var(--card-index, 0) * 120ms);
+}
+
+.feature-card:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(220px circle at var(--pointer-x) var(--pointer-y), rgba(255, 255, 255, .28), transparent 68%);
+  transition: opacity .4s ease;
+}
+
+.card-sand:before {
+  background: radial-gradient(220px circle at var(--pointer-x) var(--pointer-y), rgba(255, 255, 255, .6), transparent 68%);
+}
+
+.feature-card.is-revealed:hover,
+.feature-card.is-revealed:focus-within {
+  transform: translateY(-10px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  box-shadow: 0 26px 48px rgba(16, 36, 48, .18);
+}
+
+.feature-card:hover:before,
+.feature-card:focus-within:before {
+  opacity: 1;
+}
+
+.feature-card h3,
+.feature-card p {
+  transition: transform .45s cubic-bezier(.22, .78, .36, 1);
+}
+
+.feature-card:hover h3,
+.feature-card:focus-within h3 {
+  transform: translateX(5px);
+}
+
+.feature-card:hover p,
+.feature-card:focus-within p {
+  transform: translateX(3px);
+}
+
+.card-icon {
+  display: inline-block;
+  transition: transform .5s cubic-bezier(.22, .78, .36, 1);
+}
+
+.feature-card:hover .card-icon,
+.feature-card:focus-within .card-icon {
+  transform: rotate(-12deg) scale(1.18);
+}
+
+.card-arrow {
+  display: inline-block;
+  transition: transform .45s cubic-bezier(.22, .78, .36, 1), opacity .3s ease;
+  opacity: .75;
+}
+
+.feature-card:hover .card-arrow,
+.feature-card:focus-within .card-arrow {
+  transform: translate(5px, -5px);
+  opacity: 1;
+}
+
+.card-link {
+  z-index: 1;
+  transition: transform .35s cubic-bezier(.22, .78, .36, 1);
+}
+
+.card-link:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 26px;
+  bottom: -6px;
+  height: 1px;
+  background: currentColor;
+  opacity: .5;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s cubic-bezier(.22, .78, .36, 1);
+}
+
+.feature-card:hover .card-link:after,
+.card-link:focus-visible:after {
+  transform: scaleX(1);
+}
+
+.card-link span {
+  display: inline-block;
+  transition: transform .35s cubic-bezier(.22, .78, .36, 1);
+}
+
+.feature-card:hover .card-link span,
+.card-link:hover span,
+.card-link:focus-visible span {
+  transform: translateX(7px);
+}
+
+.route-lines {
+  transition: transform .8s cubic-bezier(.22, .78, .36, 1);
+}
+
+.feature-card.is-revealed .route-lines {
+  animation: route-orbit 18s linear infinite;
+}
+
+.feature-card:hover .route-lines {
+  animation-play-state: paused;
+  transform: rotate(-16deg) scale(1.12);
+}
+
+@keyframes route-orbit {
+  from {
+    transform: rotate(-28deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(-20deg) scale(1.05);
+  }
+
+  to {
+    transform: rotate(-28deg) scale(1);
+  }
+}
+
+.mini-card {
+  transition: transform .6s cubic-bezier(.22, .78, .36, 1), box-shadow .45s ease;
+}
+
+.feature-card.is-revealed .mini-card {
+  animation: mini-card-float 6s ease-in-out infinite;
+}
+
+.feature-card:hover .mini-card,
+.feature-card:focus-within .mini-card {
+  animation-play-state: paused;
+  transform: rotate(-2deg) translateY(-12px) scale(1.05);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, .28);
+}
+
+@keyframes mini-card-float {
+  0%, 100% {
+    transform: rotate(-9deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(-6deg) translateY(-8px);
+  }
+}
+
+.signal-bars i {
+  transform-origin: bottom;
+  transition: background .3s ease;
+}
+
+.feature-card.is-revealed .signal-bars i {
+  animation: signal-pulse 1.6s ease-in-out infinite;
+}
+
+.feature-card.is-revealed .signal-bars i:nth-child(2) {
+  animation-delay: .18s;
+}
+
+.feature-card.is-revealed .signal-bars i:nth-child(3) {
+  animation-delay: .36s;
+}
+
+.feature-card.is-revealed .signal-bars i:nth-child(4) {
+  animation-delay: .54s;
+}
+
+.feature-card.is-revealed .signal-bars i:nth-child(5) {
+  animation-delay: .72s;
+}
+
+.feature-card:hover .signal-bars i,
+.feature-card:focus-within .signal-bars i {
+  animation-duration: .8s;
+}
+
+@keyframes signal-pulse {
+  0%, 100% {
+    transform: scaleY(.45);
+    opacity: .65;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .feature-card,
+  .feature-card.is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .feature-card.is-revealed:hover,
+  .feature-card.is-revealed:focus-within {
+    transform: none;
+  }
+
+  .feature-card.is-revealed .route-lines,
+  .feature-card.is-revealed .mini-card,
+  .feature-card.is-revealed .signal-bars i {
+    animation: none;
+  }
+}
