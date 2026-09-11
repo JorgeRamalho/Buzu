@@ -232,6 +232,51 @@ if (heroVisual && !heroVisual.querySelector('.city-scene')) {
   heroVisual.addEventListener('pointerleave', () => heroVisual.style.setProperty('--scene-x', '0px'));
 }
 
+const featureCards = document.querySelectorAll('.feature-card');
+if (featureCards.length) {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  featureCards.forEach((card, index) => card.style.setProperty('--card-index', index));
+
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    featureCards.forEach(card => card.classList.add('is-revealed'));
+  } else {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.25 });
+    featureCards.forEach(card => revealObserver.observe(card));
+  }
+
+  if (!reducedMotion) {
+    featureCards.forEach(card => {
+      let framePending = false;
+      card.addEventListener('pointermove', event => {
+        if (framePending) return;
+        framePending = true;
+        requestAnimationFrame(() => {
+          const bounds = card.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width;
+          const y = (event.clientY - bounds.top) / bounds.height;
+          card.style.setProperty('--pointer-x', `${x * 100}%`);
+          card.style.setProperty('--pointer-y', `${y * 100}%`);
+          card.style.setProperty('--tilt-x', `${(0.5 - y) * 7}deg`);
+          card.style.setProperty('--tilt-y', `${(x - 0.5) * 7}deg`);
+          framePending = false;
+        });
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--pointer-x', '50%');
+        card.style.setProperty('--pointer-y', '50%');
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+      });
+    });
+  }
+}
+
 async function loadTransitStatus() {
   try {
     const response = await fetch(`${API}/transit/status`);
