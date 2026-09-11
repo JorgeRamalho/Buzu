@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c1f2d">
+  <meta name="description" content="Buzzu: Política de Privacidade, LGPD e Política de Cookies.">
+  <title>Buzzu | Privacidade & Cookies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/client/styles/styles.css">
+  <link rel="stylesheet" href="./src/client/styles/typography.css">
+  <link rel="stylesheet" href="./src/client/styles/brand-colors.css">
+  <link rel="stylesheet" href="./src/client/styles/privacy.css">
+</head>
+<body>
+<div class="legal-shell">
+
+  <!-- Header -->
+  <header class="site-header">
+    <a class="brand" href="./index.html" aria-label="Buzzu início">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="brand-name">buzzu<span>.</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <a href="./index.html">Início</a>
+      <a href="./index.html#rotas">Rotas e horários</a>
+      <a href="./index.html#cartao">Meu cartão</a>
+      <a href="./index.html#cidade">A cidade</a>
+    </nav>
+    <div class="header-actions">
+      <a class="login-link" href="./index.html#conta">Entrar</a>
+      <a class="button button-coral button-small" href="./index.html#conta">Criar conta</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="legal-hero">
+    <p class="eyebrow"><span class="eyebrow-line"></span>Transparência e respeito</p>
+    <h1>Privacidade<br><em>de verdade.</em></h1>
+    <p>Aqui você encontra de forma clara como tratamos seus dados, seus direitos como titular e como usamos cookies nesta plataforma.</p>
+    <span class="legal-updated">Última atualização: janeiro de 2025</span>
+  </section>
+
+  <!-- Abas -->
+  <nav class="legal-tabs" aria-label="Documentos legais" role="tablist">
+    <button class="legal-tab active" role="tab" aria-selected="true"  data-tab="privacidade">Política de Privacidade</button>
+    <button class="legal-tab"        role="tab" aria-selected="false" data-tab="lgpd">LGPD</button>
+    <button class="legal-tab"        role="tab" aria-selected="false" data-tab="cookies">Política de Cookies</button>
+  </nav>
+
+  <!-- Corpo -->
+  <div class="legal-body">
+
+    <!-- ── Índice lateral (gerado por JS) ── -->
+    <aside class="legal-index" aria-label="Índice do documento">
+      <p class="legal-index-title">Neste documento</p>
+      <div id="legal-index-links"></div>
+    </aside>
+
+    <!-- ── Conteúdo ── -->
+    <div class="legal-content">
+
+      <!-- ════════════════ POLÍTICA DE PRIVACIDADE ════════════════ -->
+      <div class="legal-panel active" id="panel-privacidade" role="tabpanel">
+
+        <div class="legal-section" id="priv-1">
+          <h2>Quem somos</h2>
+          <p>A <strong>Buzzu Mobilidade Urbana Ltda.</strong>, inscrita no CNPJ 00.000.000/0001-00, com sede em Curitiba/PR, é a controladora dos dados pessoais coletados por meio desta plataforma. Qualquer dúvida pode ser enviada para <a href="mailto:privacidade@buzzu.com.br">privacidade@buzzu.com.br</a>.</p>
+        </div>
+
+        <div class="legal-section" id="priv-2">
+          <h2>Quais dados coletamos</h2>
+          <h3>Dados fornecidos por você</h3>
+          <ul>
+            <li>Nome completo, CPF, data de nascimento e celular — para criação de conta.</li>
+            <li>Endereço de e-mail — para autenticação e comunicações.</li>
+            <li>CEP — para sugestão de linhas próximas.</li>
+            <li>Senha — armazenada exclusivamente em formato hash (bcrypt).</li>
+          </ul>
+          <h3>Dados gerados automaticamente</h3>
+          <ul>
+            <li>Endereço IP e identificadores de dispositivo.</li>
+            <li>Dados de localização (somente com sua permissão explícita).</li>
+            <li>Logs de acesso, rotas consultadas e interações com o app.</li>
+            <li>Cookies e tecnologias similares (veja nossa <button class="inline-tab-link" data-tab="cookies">Política de Cookies</button>).</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="priv-3">
+          <h2>Para que usamos seus dados</h2>
+          <div class="legal-box">
+            <strong>Nunca vendemos seus dados.</strong> Toda utilização está vinculada a uma das finalidades abaixo.
+          </div>
+          <ul>
+            <li><strong>Prestação do serviço:</strong> autenticação, cálculo de rotas, histórico de viagens.</li>
+            <li><strong>Melhoria do produto:</strong> análise de uso agregado e anonimizado.</li>
+            <li><strong>Comunicações operacionais:</strong> alertas de linha, notificações de conta.</li>
+            <li><strong>Comunicações de marketing:</strong> apenas se você optou por recebê-las.</li>
+            <li><strong>Cumprimento legal:</strong> obrigações fiscais, judiciais ou regulatórias.</li>
+            <li><strong>Prevenção de fraudes:</strong> segurança da plataforma e dos usuários.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="priv-4">
+          <h2>Base legal para tratamento</h2>
+          <p>Todo tratamento de dados realizado pelo Buzzu está fundamentado em ao menos uma das bases previstas na LGPD (Lei 13.709/2018):</p>
+          <ul>
+            <li><strong>Execução de contrato</strong> — dados necessários para fornecer o serviço.</li>
+            <li><strong>Legítimo interesse</strong> — melhoria da plataforma e prevenção de fraudes.</li>
+            <li><strong>Consentimento</strong> — comunicações de marketing e cookies não essenciais.</li>
+            <li><strong>Obrigação legal</strong> — retenção de logs e dados fiscais exigidos por lei.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="priv-5">
+          <h2>Compartilhamento de dados</h2>
+          <p>Compartilhamos dados somente nas seguintes situações:</p>
+          <ul>
+            <li><strong>Parceiros operacionais:</strong> URBS e IPPUC, para atualização de dados de linhas.</li>
+            <li><strong>Fornecedores de tecnologia:</strong> serviços de nuvem, autenticação e analytics, todos contratados com cláusulas de proteção de dados.</li>
+            <li><strong>Autoridades:</strong> quando exigido por lei, ordem judicial ou órgão regulador.</li>
+          </ul>
+          <div class="legal-box legal-box-info">
+            <strong>Subprocessadores:</strong> todos os fornecedores estão listados em nossa página de subprocessadores, acessível pelo e-mail de privacidade.
+          </div>
+        </div>
+
+        <div class="legal-section" id="priv-6">
+          <h2>Armazenamento e segurança</h2>
+          <ul>
+            <li>Dados armazenados em servidores no Brasil ou em países com nível adequado de proteção.</li>
+            <li>Comunicações protegidas por TLS 1.3.</li>
+            <li>Senhas armazenadas com hash bcrypt (fator 12).</li>
+            <li>Acesso interno restrito por controle de permissões e logs de auditoria.</li>
+            <li>Testes regulares de segurança e programa de divulgação responsável.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="priv-7">
+          <h2>Retenção de dados</h2>
+          <p>Mantemos seus dados pelo tempo necessário para a finalidade declarada ou conforme exigido por lei:</p>
+          <ul>
+            <li><strong>Dados de conta ativa:</strong> enquanto a conta existir.</li>
+            <li><strong>Após exclusão da conta:</strong> anonimização em até 30 dias, exceto dados fiscais (5 anos) e logs de segurança (1 ano).</li>
+            <li><strong>Dados de marketing:</strong> até revogação do consentimento.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="priv-8">
+          <h2>Seus direitos</h2>
+          <p>Como titular, você pode exercer a qualquer momento os direitos previstos nos arts. 17 a 22 da LGPD. Veja nossa <button class="inline-tab-link" data-tab="lgpd">seção de LGPD</button> para o detalhamento completo.</p>
+        </div>
+
+        <div class="legal-section" id="priv-9">
+          <h2>Menores de idade</h2>
+          <div class="legal-box">
+            O Buzzu não é direcionado a menores de 18 anos. Caso identifiquemos cadastro de menor sem consentimento de responsável, os dados serão excluídos imediatamente.
+          </div>
+        </div>
+
+        <div class="legal-section" id="priv-10">
+          <h2>Atualizações desta política</h2>
+          <p>Esta política pode ser atualizada periodicamente. Mudanças relevantes serão comunicadas por e-mail e notificação no app com antecedência mínima de 15 dias. A data da última revisão consta no topo desta página.</p>
+        </div>
+
+        <div class="legal-section" id="priv-11">
+          <h2>Contato e DPO</h2>
+          <p>Para exercer seus direitos, retirar dúvidas ou registrar reclamações:</p>
+          <ul>
+            <li><strong>E-mail:</strong> <a href="mailto:privacidade@buzzu.com.br">privacidade@buzzu.com.br</a></li>
+            <li><strong>Encarregado (DPO):</strong> disponível pelo mesmo e-mail.</li>
+            <li><strong>ANPD:</strong> caso a resposta seja insatisfatória, você pode acionar a Autoridade Nacional de Proteção de Dados em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a>.</li>
+          </ul>
+        </div>
+
+      </div><!-- /panel-privacidade -->
+
+
+      <!-- ════════════════ LGPD ════════════════ -->
+      <div class="legal-panel" id="panel-lgpd" role="tabpanel">
+
+        <div class="legal-section" id="lgpd-1">
+          <h2>O que é a LGPD</h2>
+          <p>A <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018)</strong> regula o tratamento de dados pessoais no Brasil. Ela garante ao cidadão controle sobre suas informações e impõe obrigações às organizações que as tratam. O Buzzu está em conformidade com a LGPD e adota medidas técnicas e organizacionais adequadas.</p>
+          <div class="legal-box legal-box-info">
+            <strong>Autoridade Nacional:</strong> A ANPD é o órgão responsável por fiscalizar o cumprimento da LGPD. Saiba mais em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a>.
+          </div>
+        </div>
+
+        <div class="legal-section" id="lgpd-2">
+          <h2>Seus direitos como titular</h2>
+          <p>O art. 18 da LGPD garante os seguintes direitos, exercíveis a qualquer momento:</p>
+          <div class="rights-grid">
+            <div class="right-card">
+              <span class="right-icon">📋</span>
+              <strong>Confirmação e acesso</strong>
+              <p>Saber se tratamos seus dados e acessar uma cópia completa deles.</p>
+            </div>
+            <div class="right-card">
+              <span class="right-icon">✏️</span>
+              <strong>Correção</strong>
+              <p>Solicitar a correção de dados incompletos, inexatos ou desatualizados.</p>
+            </div>
+            <div class="right-card">
+              <span class="right-icon">🗑️</span>
+              <strong>Eliminação</strong>
+              <p>Pedir a exclusão dos dados tratados com base em seu consentimento.</p>
+            </div>
+            <div class="right-card">
+              <span class="right-icon">🔒</span>
+              <strong>Anonimização ou bloqueio</strong>
+              <p>Solicitar que dados desnecessários sejam anonimizados ou bloqueados.</p>
+            </div>
+            <div class="right-card">
+              <span class="right-icon">📦</span>
+              <strong>Portabilidade</strong>
+              <p>Receber seus dados em formato estruturado para transferi-los a outro fornecedor.</p>
+            </div>
+            <div class="right-card">
+              <span class="right-icon">ℹ️</span>
+              <strong>Informação sobre compartilhamento</strong>
+              <p>Saber com quais entidades públicas ou privadas seus dados foram compartilhados.</p>
+            </div>
+            <div class="right-card">
+              <span class="right-icon">🚫</span>
+              <strong>Revogação do consentimento</strong>
+              <p>Retirar o consentimento a qualquer momento, sem prejuízo do tratamento já realizado.</p>
+            </div>
+            <div class="right-card">
+              <span class="right-icon">⚖️</span>
+              <strong>Revisão de decisões automatizadas</strong>
+              <p>Solicitar revisão de decisões tomadas exclusivamente com base em tratamento automatizado.</p>
+            </div>
+          </div>
+          <p>Para exercer qualquer direito, envie solicitação para <a href="mailto:privacidade@buzzu.com.br">privacidade@buzzu.com.br</a>. Responderemos em até <strong>15 dias corridos</strong>.</p>
+        </div>
+
+        <div class="legal-section" id="lgpd-3">
+          <h2>Como exercer seus direitos</h2>
+          <ol>
+            <li>Envie e-mail para <a href="mailto:privacidade@buzzu.com.br">privacidade@buzzu.com.br</a> com o assunto <em>"Exercício de Direito LGPD"</em>.</li>
+            <li>Informe nome completo, CPF e descreva a solicitação.</li>
+            <li>Podemos solicitar documento de identidade para verificação.</li>
+            <li>Você receberá confirmação de recebimento em até 2 dias úteis.</li>
+            <li>A solicitação será respondida em até 15 dias corridos.</li>
+          </ol>
+          <div class="legal-box">
+            <strong>Gratuidade:</strong> o exercício de direitos é sempre gratuito, exceto em casos de solicitações manifestamente excessivas ou infundadas, conforme art. 19, §2º da LGPD.
+          </div>
+        </div>
+
+        <div class="legal-section" id="lgpd-4">
+          <h2>Bases legais utilizadas</h2>
+          <p>O Buzzu só trata dados pessoais quando há uma base legal válida (art. 7º da LGPD). As principais utilizadas são:</p>
+          <ul>
+            <li><strong>Consentimento (art. 7º, I):</strong> para marketing, cookies não essenciais e geolocalização.</li>
+            <li><strong>Execução de contrato (art. 7º, V):</strong> cadastro, autenticação e uso do serviço.</li>
+            <li><strong>Legítimo interesse (art. 7º, IX):</strong> prevenção de fraudes, segurança e melhoria do produto — sempre com avaliação de impacto prévia.</li>
+            <li><strong>Obrigação legal (art. 7º, II):</strong> logs fiscais, dados contábeis e determinações judiciais.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="lgpd-5">
+          <h2>Encarregado de Dados (DPO)</h2>
+          <p>O Buzzu designou um Encarregado de Proteção de Dados responsável por ser o canal entre a empresa, os titulares e a ANPD:</p>
+          <ul>
+            <li><strong>Contato:</strong> <a href="mailto:privacidade@buzzu.com.br">privacidade@buzzu.com.br</a></li>
+            <li><strong>Prazo de resposta:</strong> até 15 dias corridos.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="lgpd-6">
+          <h2>Incidentes de segurança</h2>
+          <p>Em caso de incidente que possa acarretar risco relevante, o Buzzu se compromete a:</p>
+          <ul>
+            <li>Notificar a ANPD em prazo razoável (até 72 horas após ciência).</li>
+            <li>Comunicar os titulares afetados de forma clara e objetiva.</li>
+            <li>Registrar o incidente e as medidas adotadas em relatório interno.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="lgpd-7">
+          <h2>Relatório de Impacto (RIPD)</h2>
+          <p>Para operações de tratamento que apresentem risco elevado, o Buzzu elabora Relatórios de Impacto à Proteção de Dados, conforme exigido pelo art. 38 da LGPD. Os relatórios ficam disponíveis para a ANPD mediante requisição.</p>
+        </div>
+
+      </div><!-- /panel-lgpd -->
+
+
+      <!-- ════════════════ COOKIES ════════════════ -->
+      <div class="legal-panel" id="panel-cookies" role="tabpanel">
+
+        <div class="legal-section" id="cook-1">
+          <h2>O que são cookies</h2>
+          <p>Cookies são pequenos arquivos de texto armazenados no seu navegador ou dispositivo quando você visita um site. Eles permitem que a plataforma reconheça você, lembre suas preferências e melhore sua experiência.</p>
+        </div>
+
+        <div class="legal-section" id="cook-2">
+          <h2>Cookies que utilizamos</h2>
+          <table class="cookie-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Finalidade</th>
+                <th>Duração</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>buzu_session</code></td>
+                <td>Mantém a sessão autenticada do usuário</td>
+                <td>Sessão</td>
+                <td><span class="cookie-badge badge-essential">Essencial</span></td>
+              </tr>
+              <tr>
+                <td><code>buzu_token</code></td>
+                <td>Token de autenticação persistente</td>
+                <td>30 dias</td>
+                <td><span class="cookie-badge badge-essential">Essencial</span></td>
+              </tr>
+              <tr>
+                <td><code>buzu_cookie_consent</code></td>
+                <td>Registra suas preferências de cookies</td>
+                <td>365 dias</td>
+                <td><span class="cookie-badge badge-essential">Essencial</span></td>
+              </tr>
+              <tr>
+                <td><code>buzu_prefs</code></td>
+                <td>Salva preferências de idioma e tema</td>
+                <td>180 dias</td>
+                <td><span class="cookie-badge badge-functional">Funcional</span></td>
+              </tr>
+              <tr>
+                <td><code>buzu_recent_routes</code></td>
+                <td>Guarda as últimas rotas pesquisadas</td>
+                <td>90 dias</td>
+                <td><span class="cookie-badge badge-functional">Funcional</span></td>
+              </tr>
+              <tr>
+                <td><code>_buzu_analytics</code></td>
+                <td>Análise de uso anônima e agregada</td>
+                <td>365 dias</td>
+                <td><span class="cookie-badge badge-analytics">Analytics</span></td>
+              </tr>
+              <tr>
+                <td><code>_buzu_perf</code></td>
+                <td>Medição de desempenho de páginas</td>
+                <td>30 dias</td>
+                <td><span class="cookie-badge badge-analytics">Analytics</span></td>
+              </tr>
+              <tr>
+                <td><code>_buzu_campaign</code></td>
+                <td>Rastreamento de origem de campanhas</td>
+                <td>60 dias</td>
+                <td><span class="cookie-badge badge-marketing">Marketing</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="legal-section" id="cook-3">
+          <h2>Categorias de cookies</h2>
+          <h3>🟢 Essenciais</h3>
+          <p>Necessários para o funcionamento básico da plataforma. Não podem ser desativados, pois sem eles funções como login e segurança não operam corretamente.</p>
+          <h3>🔵 Funcionais</h3>
+          <p>Melhoram sua experiência lembrando suas preferências. Podem ser desativados, mas algumas funcionalidades serão limitadas.</p>
+          <h3>🟠 Analytics</h3>
+          <p>Coletam informações anônimas e agregadas sobre como o site é usado. Ajudam a entender quais partes do Buzzu são mais utilizadas para direcionar melhorias.</p>
+          <h3>🟡 Marketing</h3>
+          <p>Rastreiam visitas para mensurar efetividade de campanhas. Nunca usados para perfis individuais ou revenda de dados.</p>
+        </div>
+
+        <div class="legal-section" id="cook-4">
+          <h2>Como gerenciar seus cookies</h2>
+          <p>Você pode alterar suas preferências a qualquer momento:</p>
+          <ul>
+            <li><strong>Banner Buzzu:</strong> ao acessar o site pela primeira vez, o banner permite aceitar todos ou configurar individualmente.</li>
+            <li><strong>Central de preferências:</strong> clique em <em>"Configurar cookies"</em> no rodapé a qualquer momento.</li>
+            <li><strong>Navegador:</strong> consulte as instruções do seu navegador para bloquear ou excluir cookies (<a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a>, <a href="https://support.mozilla.org/pt-BR/kb/gerencie-configuracoes-de-armazenamento-local-de-s" target="_blank" rel="noopener">Firefox</a>, <a href="https://support.apple.com/pt-br/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari</a>).</li>
+          </ul>
+          <div class="legal-box">
+            <strong>Atenção:</strong> bloquear cookies essenciais pode impedir o acesso a áreas restritas como a carteira de transporte.
+          </div>
+        </div>
+
+        <div class="legal-section" id="cook-5">
+          <h2>Cookies de terceiros</h2>
+          <p>Algumas funcionalidades utilizam serviços de terceiros que podem instalar seus próprios cookies:</p>
+          <ul>
+            <li><strong>Google Maps API</strong> — exibição de mapas e cálculo de rotas.</li>
+            <li><strong>Open-Meteo</strong> — dados climáticos em tempo real.</li>
+          </ul>
+          <p>Recomendamos consultar as políticas de privacidade desses serviços diretamente em seus sites oficiais.</p>
+        </div>
+
+        <div class="legal-section" id="cook-6">
+          <h2>Atualizações desta política</h2>
+          <p>Esta política de cookies pode ser atualizada quando adicionarmos ou removermos tecnologias de rastreamento. A data de revisão consta sempre no topo desta página. Para mudanças relevantes, comunicaremos via e-mail e notificação no app.</p>
+        </div>
+
+        <div class="legal-section" id="cook-7">
+          <h2>Contato</h2>
+          <p>Dúvidas sobre o uso de cookies: <a href="mailto:privacidade@buzzu.com.br">privacidade@buzzu.com.br</a>.</p>
+        </div>
+
+      </div><!-- /panel-cookies -->
+
+    </div><!-- /legal-content -->
+  </div><!-- /legal-body -->
+
+  <!-- Footer -->
+  <footer class="site-footer" style="background:var(--ink)">
+    <div class="footer-brand">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">buzzu<span>.</span></span>
+      </a>
+      <p>Movendo Curitiba<br>para frente.</p>
+    </div>
+    <div class="footer-links">
+      <div>
+        <strong>Explorar</strong>
+        <a href="./index.html#rotas">Rotas e horários</a>
+        <a href="./index.html#status">Status da operação</a>
+        <a href="./index.html#cartao">Cartão transporte</a>
+      </div>
+      <div>
+        <strong>Legal</strong>
+        <a href="./privacy.html?tab=privacidade" class="active">Política de Privacidade</a>
+        <a href="./privacy.html?tab=lgpd">LGPD</a>
+        <a href="./privacy.html?tab=cookies">Cookies</a>
+      </div>
+      <div>
+        <strong>Suporte</strong>
+        <a href="./index.html#conta">Central de ajuda</a>
+        <a href="./index.html#conta">Fale com a gente</a>
+        <a href="./index.html#conta">Acessibilidade</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Buzzu Mobilidade Urbana</span>
+      <span>Feito em Curitiba <span class="heart">♥</span></span>
+    </div>
+  </footer>
+
+</div><!-- /legal-shell -->
+
+<script>
+// ── Abas ─────────────────────────────────────────────────────
+const tabs    = document.querySelectorAll('.legal-tab');
+const panels  = document.querySelectorAll('.legal-panel');
+const indexEl = document.getElementById('legal-index-links');
+
+function activateTab(tabName) {
+  tabs.forEach(t => {
+    const active = t.dataset.tab === tabName;
+    t.classList.toggle('active', active);
+    t.setAttribute('aria-selected', active);
+  });
+  panels.forEach(p => p.classList.toggle('active', p.id === `panel-${tabName}`));
+  buildIndex(tabName);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  history.replaceState(null, '', `?tab=${tabName}`);
+}
+
+tabs.forEach(tab => tab.addEventListener('click', () => activateTab(tab.dataset.tab)));
+
+// Links inline entre abas
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.inline-tab-link');
+  if (btn) activateTab(btn.dataset.tab);
+});
+
+// ── Índice lateral ────────────────────────────────────────────
+function buildIndex(tabName) {
+  const panel = document.getElementById(`panel-${tabName}`);
+  const sections = panel?.querySelectorAll('.legal-section') || [];
+  indexEl.innerHTML = '';
+  sections.forEach(sec => {
+    const title = sec.querySelector('h2')?.textContent || '';
+    const a = document.createElement('a');
+    a.href = `#${sec.id}`;
+    a.textContent = title;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      sec.scrollIntoView({ behavior: 'smooth' });
+    });
+    indexEl.appendChild(a);
+  });
+}
+
+// ── Ler aba da URL ────────────────────────────────────────────
+const urlTab = new URLSearchParams(location.search).get('tab');
+if (urlTab && ['privacidade','lgpd','cookies'].includes(urlTab)) {
+  activateTab(urlTab);
+} else {
+  buildIndex('privacidade');
+}
+
+// ── Destaque do índice no scroll ──────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      indexEl.querySelectorAll('a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+document.querySelectorAll('.legal-section').forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

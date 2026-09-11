@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="./src/client/styles/vehicle-scene.css">
   <link rel="stylesheet" href="./src/client/styles/brand-colors.css">
   <link rel="stylesheet" href="./src/client/styles/account-form.css">
+  <link rel="stylesheet" href="./src/client/styles/privacy.css">
 </head>
 <body>
   <div class="site-shell">
@@ -37,7 +38,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
         </button>
         <a class="login-link" href="#conta">Entrar</a>
-        <a class="button button-dark button-small" href="#conta">Criar conta</a>
+        <a class="button button-coral button-small" href="#conta">Criar conta</a>
         <button class="menu-button" aria-label="Abrir menu" data-menu-toggle><span></span><span></span></button>
       </div>
     </header>
@@ -55,7 +56,7 @@
       <section class="hero" id="inicio">
         <div class="hero-copy">
           <p class="eyebrow"><span class="eyebrow-line"></span>Mobilidade que entende você</p>
-          <h1>O melhor caminho<br><em>é o seu.</em></h1>
+          <h1>Vai e volta<br><em>pra onde quiser.</em></h1>
           <p class="hero-text">Rotas inteligentes, tempo real e tudo o que você precisa para se mover por Curitiba com mais leveza.</p>
           <div class="route-search" id="rotas">
             <div class="route-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"></circle><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"></path></svg><div><label for="from">De onde você sai?</label><input id="from" placeholder="Ex.: Praça Rui Barbosa"></div></div>
@@ -81,12 +82,263 @@
         </div>
       </section>
 
-      <section class="live-section" id="status"><div class="live-header"><div><p class="eyebrow"><span class="eyebrow-line"></span>Agora em Curitiba</p><h2>O pulso da cidade.</h2></div><div class="live-meta"><span class="pulse-dot"></span>Dados atualizados em tempo real <button class="icon-button refresh" aria-label="Atualizar dados">↻</button></div></div><div class="live-layout"><div class="map-panel"><div class="map-toolbar"><span>Mapa da operação</span><button class="filter-button">Centro de Curitiba <span>⌄</span></button></div><div class="map-art"><div class="map-road road-a"></div><div class="map-road road-b"></div><div class="map-road road-c"></div><div class="map-road road-d"></div><div class="map-river"></div><div class="map-pin pin-a"><b>R</b><span>Rodoferroviária</span></div><div class="map-pin pin-b"><b>●</b><span>Praça Rui Barbosa</span></div><div class="map-pin pin-c"><b>J</b><span>Centro Cívico</span></div><div class="map-label">Centro</div><div class="map-scale">500 m</div></div></div><div class="departures"><div class="departure-head"><span>Próximas chegadas</span><a href="#rotas">Ver todas ↗</a></div><div class="departure-item"><div class="line-badge badge-red">203</div><div><strong>Expresso Santa Cândida</strong><small>Tubo Rodoferroviária · Sentido norte</small></div><b class="arrival">3 min</b></div><div class="departure-item"><div class="line-badge badge-green">303</div><div><strong>Centenário / Campo Comprido</strong><small>Tubo Praça Rui Barbosa · Plataforma 2</small></div><b class="arrival">7 min</b></div><div class="departure-item"><div class="line-badge badge-blue">372</div><div><strong>Augusto Stresser</strong><small>Estação Centro Cívico · Sentido bairro</small></div><b class="arrival">12 min</b></div><div class="departure-item"><div class="line-badge badge-yellow">022</div><div><strong>Interbairros II</strong><small>Tubo Passeio Público · Sentido sul</small></div><b class="arrival">16 min</b></div></div></div></section>
+      <div class="live-header"><div><p class="eyebrow"><span class="eyebrow-line"></span>Agora em Curitiba</p><h2>O pulso da cidade.</h2></div><div class="live-meta"><span class="pulse-dot"></span>Dados atualizados em tempo real <button class="icon-button refresh" aria-label="Atualizar dados">↻</button></div></div>
+      <section class="live-section" id="status"><div class="live-layout"><div class="map-panel"><div class="map-toolbar"><span>Mapa da operação</span><button class="filter-button">Centro de Curitiba <span>⌄</span></button></div><div class="map-art"><div class="map-road road-a"></div><div class="map-road road-b"></div><div class="map-road road-c"></div><div class="map-road road-d"></div><div class="map-river"></div><div class="map-pin pin-a"><b>R</b><span>Rodoferroviária</span></div><div class="map-pin pin-b"><b>●</b><span>Praça Rui Barbosa</span></div><div class="map-pin pin-c"><b>J</b><span>Centro Cívico</span></div><div class="map-label">Centro</div><div class="map-scale">500 m</div></div></div><div class="departures"><div class="departure-track" id="departure-track"></div></div></div></section>
 
-      <section class="account-section" id="conta"><div class="account-copy"><p class="eyebrow"><span class="eyebrow-line"></span>Uma conta para toda jornada</p><h2>Seu Buzzu,<br><em>mais perto.</em></h2><p>Salve seus lugares favoritos, receba alertas da sua linha e tenha sua carteira de transporte sempre à mão.</p><a class="button button-dark" href="#cadastro">Criar minha conta <span>→</span></a></div><div class="account-form-wrap" id="cadastro"><div class="form-header"><span class="form-step">01 <i>/ 02</i></span><h3>Vamos começar?</h3><p>Crie seu acesso em poucos passos.</p></div><form id="signup-form"><label>Como podemos te chamar?<input required type="text" name="name" placeholder="Seu nome completo"></label><label>Seu melhor e-mail<input required type="email" name="email" placeholder="voce@email.com"></label><div class="form-row"><label>Celular<input type="tel" name="phone" placeholder="(41) 99999-9999"></label><label>Data de nascimento<input type="date" name="birth"></label></div><label class="check-label"><input type="checkbox" required> <span>Aceito os termos de uso e a política de privacidade.</span></label><button class="button button-coral" type="submit">Continuar cadastro <span>→</span></button><p class="form-message" role="status"></p></form></div></section>
+      <section class="account-section" id="conta">
+        <div class="account-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span>Uma conta para toda jornada</p>
+          <h2>Seu Buzzu,<br><em>mais perto.</em></h2>
+          <p>Salve seus lugares favoritos, receba alertas da sua linha e tenha sua carteira de transporte sempre à mão.</p>
+          <ul class="account-benefits">
+            <li><span class="benefit-icon">⌁</span><div><strong>Rotas salvas</strong><small>Acesse seus trajetos favoritos com um toque</small></div></li>
+            <li><span class="benefit-icon">◒</span><div><strong>Cartão digital</strong><small>Saldo e recarga diretamente no app</small></div></li>
+            <li><span class="benefit-icon">◉</span><div><strong>Alertas em tempo real</strong><small>Notificações da sua linha antes de sair</small></div></li>
+          </ul>
+          <a class="button button-dark" href="#cadastro">Criar minha conta <span>→</span></a>
+        </div>
+
+        <div class="account-form-wrap" id="cadastro">
+          <div class="form-header">
+            <div class="form-steps" aria-label="Progresso do cadastro">
+              <div class="form-step-item active" data-step="1"><span>1</span><small>Dados pessoais</small></div>
+              <div class="form-step-divider"></div>
+              <div class="form-step-item" data-step="2"><span>2</span><small>Acesso</small></div>
+              <div class="form-step-divider"></div>
+              <div class="form-step-item" data-step="3"><span>3</span><small>Confirmação</small></div>
+            </div>
+          </div>
+
+          <form id="signup-form" novalidate>
+
+            <!-- Etapa 1: Dados pessoais -->
+            <fieldset class="form-fieldset" data-fieldset="1">
+              <legend class="fieldset-legend"><span class="legend-num">01</span>Dados pessoais</legend>
+              <div class="form-field">
+                <label for="name">Nome completo <abbr title="obrigatório">*</abbr></label>
+                <input id="name" required type="text" name="name" placeholder="Ex.: Ana Paula Ferreira" autocomplete="name">
+                <span class="field-hint">Como consta no seu documento</span>
+              </div>
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="birth">Data de nascimento <abbr title="obrigatório">*</abbr></label>
+                  <input id="birth" required type="date" name="birth" autocomplete="bday">
+                </div>
+                <div class="form-field">
+                  <label for="cpf">CPF <abbr title="obrigatório">*</abbr></label>
+                  <input id="cpf" required type="text" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14" autocomplete="off">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="phone">Celular <abbr title="obrigatório">*</abbr></label>
+                  <input id="phone" required type="tel" name="phone" placeholder="(41) 99999-9999" inputmode="tel" autocomplete="tel">
+                </div>
+                <div class="form-field">
+                  <label for="cep">CEP</label>
+                  <input id="cep" type="text" name="cep" placeholder="00000-000" inputmode="numeric" maxlength="9" autocomplete="postal-code">
+                </div>
+              </div>
+              <button type="button" class="button button-coral form-next" data-next="2">Próximo passo <span>→</span></button>
+            </fieldset>
+
+            <!-- Etapa 2: Acesso -->
+            <fieldset class="form-fieldset is-hidden" data-fieldset="2">
+              <legend class="fieldset-legend"><span class="legend-num">02</span>Dados de acesso</legend>
+              <div class="form-field">
+                <label for="email">E-mail <abbr title="obrigatório">*</abbr></label>
+                <input id="email" required type="email" name="email" placeholder="voce@email.com" inputmode="email" autocomplete="email">
+                <span class="field-hint">Usado para login e notificações</span>
+              </div>
+              <div class="form-field">
+                <label for="password">Senha <abbr title="obrigatório">*</abbr></label>
+                <div class="password-wrap">
+                  <input id="password" required type="password" name="password" placeholder="Mínimo 8 caracteres" minlength="8" autocomplete="new-password">
+                  <button type="button" class="toggle-password" aria-label="Mostrar senha">👁</button>
+                </div>
+                <span class="field-hint">Use letras, números e símbolos para uma senha forte</span>
+              </div>
+              <div class="form-field">
+                <label for="password-confirm">Confirmar senha <abbr title="obrigatório">*</abbr></label>
+                <div class="password-wrap">
+                  <input id="password-confirm" required type="password" name="password_confirm" placeholder="Repita sua senha" minlength="8" autocomplete="new-password">
+                  <button type="button" class="toggle-password" aria-label="Mostrar senha">👁</button>
+                </div>
+              </div>
+              <div class="form-row form-nav">
+                <button type="button" class="button button-outline form-back" data-back="1">← Voltar</button>
+                <button type="button" class="button button-coral form-next" data-next="3">Próximo passo <span>→</span></button>
+              </div>
+            </fieldset>
+
+            <!-- Etapa 3: Confirmação -->
+            <fieldset class="form-fieldset is-hidden" data-fieldset="3">
+              <legend class="fieldset-legend"><span class="legend-num">03</span>Confirmação</legend>
+              <div class="form-review" id="form-review"></div>
+              <div class="form-consents">
+                <label class="check-label">
+                  <input type="checkbox" required name="terms">
+                  <span>Li e aceito os <a href="./privacy.html?tab=privacidade" target="_blank" class="form-link">Termos de uso</a> e a <a href="./privacy.html?tab=privacidade" target="_blank" class="form-link">Política de privacidade</a> do Buzzu.</span>
+                </label>
+                <label class="check-label">
+                  <input type="checkbox" name="marketing">
+                  <span>Quero receber novidades, promoções e alertas de linhas por e-mail.</span>
+                </label>
+              </div>
+              <div class="form-row form-nav">
+                <button type="button" class="button button-outline form-back" data-back="2">← Voltar</button>
+                <button class="button button-coral" type="submit">Criar minha conta <span>→</span></button>
+              </div>
+              <p class="form-message" role="status" aria-live="polite"></p>
+            </fieldset>
+
+          </form>
+        </div>
+      </section>
     </main>
-    <footer class="site-footer" id="cidade"><div class="footer-brand"><a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span class="brand-name">buzzu<span>.</span></span></a><p>Movendo Curitiba<br>para frente.</p></div><div class="footer-links"><div><strong>Explorar</strong><a href="#rotas">Rotas e horários</a><a href="#status">Status da operação</a><a href="#cartao">Cartão transporte</a></div><div><strong>Suporte</strong><a href="#conta">Central de ajuda</a><a href="#conta">Fale com a gente</a><a href="#conta">Acessibilidade</a></div><div><strong>Siga o Buzzu</strong><a href="#cidade">Instagram ↗</a><a href="#cidade">LinkedIn ↗</a><a href="#cidade">X / Twitter ↗</a></div></div><div class="footer-bottom"><span>© 2024 Buzzu Mobilidade Urbana</span><span>Feito em Curitiba <span class="heart">♥</span></span></div></footer>
+    <footer class="site-footer" id="cidade"><div class="footer-brand"><a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span class="brand-name">buzzu<span>.</span></span></a><p>Movendo Curitiba<br>para frente.</p></div><div class="footer-links"><div><strong>Explorar</strong><a href="#rotas">Rotas e horários</a><a href="#status">Status da operação</a><a href="#cartao">Cartão transporte</a></div><div><strong>Legal</strong><a href="./privacy.html?tab=privacidade">Política de Privacidade</a><a href="./privacy.html?tab=lgpd">LGPD</a><a href="./privacy.html?tab=cookies">Cookies</a></div><div><strong></strong>Suporte</strong><a href="#conta">Central de ajuda</a><a href="#conta">Fale com a gente</a><a href="#conta">Acessibilidade</a></div><div><strong>Siga o Buzzu</strong><a href="#cidade">Instagram ↗</a><a href="#cidade">LinkedIn ↗</a><a href="#cidade">X / Twitter ↗</a></div></div><div class="footer-bottom"><span>© 2025 Buzzu Mobilidade Urbana</span><span><button class="cookie-settings-trigger" aria-label="Configurar cookies">🍪 Configurar cookies</button></span><span>Feito em Curitiba <span class="heart">♥</span></span></div></footer>
   </div>
+  <!-- ── Banner de cookies ──────────────────────────────────── -->
+  <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Consentimento de cookies" aria-live="polite">
+    <div class="cookie-banner-text">
+      <strong>Usamos cookies 🍪</strong>
+      Usamos cookies essenciais para o funcionamento do site e, com sua permissão, cookies para analytics e marketing. Consulte nossa <a href="./privacy.html?tab=cookies" target="_blank">Política de Cookies</a>.
+    </div>
+    <div class="cookie-banner-actions">
+      <button class="cookie-btn-settings" id="cookie-btn-settings">Configurar</button>
+      <button class="cookie-btn-accept"   id="cookie-btn-accept">Aceitar todos</button>
+    </div>
+  </div>
+
+  <!-- ── Modal de preferências ─────────────────────────────── -->
+  <div class="cookie-modal-overlay" id="cookie-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+    <div class="cookie-modal">
+      <div class="cookie-modal-header">
+        <div>
+          <h3 id="cookie-modal-title">Preferências de cookies</h3>
+          <p>Escolha quais categorias de cookies deseja permitir. Cookies essenciais não podem ser desativados.</p>
+        </div>
+        <button class="cookie-modal-close" id="cookie-modal-close" aria-label="Fechar">×</button>
+      </div>
+      <div class="cookie-modal-body">
+        <div class="cookie-toggle-row">
+          <div class="cookie-toggle-info">
+            <strong>🟢 Essenciais</strong>
+            <small>Necessários para login, segurança e funcionamento básico. Sempre ativos.</small>
+          </div>
+          <label class="toggle-switch" aria-label="Cookies essenciais">
+            <input type="checkbox" checked disabled>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="cookie-toggle-row">
+          <div class="cookie-toggle-info">
+            <strong>🔵 Funcionais</strong>
+            <small>Salvam suas preferências e rotas recentes para uma experiência personalizada.</small>
+          </div>
+          <label class="toggle-switch" aria-label="Cookies funcionais">
+            <input type="checkbox" id="pref-functional" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="cookie-toggle-row">
+          <div class="cookie-toggle-info">
+            <strong>🟠 Analytics</strong>
+            <small>Dados anônimos e agregados sobre uso do site para melhorar o Buzzu.</small>
+          </div>
+          <label class="toggle-switch" aria-label="Cookies de analytics">
+            <input type="checkbox" id="pref-analytics">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="cookie-toggle-row">
+          <div class="cookie-toggle-info">
+            <strong>🟡 Marketing</strong>
+            <small>Mensuração de campanhas. Nunca usados para perfis individuais.</small>
+          </div>
+          <label class="toggle-switch" aria-label="Cookies de marketing">
+            <input type="checkbox" id="pref-marketing">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="cookie-modal-footer">
+        <a href="./privacy.html?tab=cookies" target="_blank" class="text-link" style="font-size:10px;margin-right:auto">Saiba mais ↗</a>
+        <button class="button button-outline" id="cookie-save-prefs">Salvar preferências</button>
+        <button class="cookie-btn-accept" id="cookie-accept-all-modal">Aceitar todos</button>
+      </div>
+    </div>
+  </div>
+
   <script src="./src/client/scripts/app.js"></script>
+  <script>
+  // ── Gerenciamento de cookies ───────────────────────────────
+  (function initCookieConsent() {
+    const STORAGE_KEY = 'buzu_cookie_consent';
+    const banner  = document.getElementById('cookie-banner');
+    const overlay = document.getElementById('cookie-modal-overlay');
+
+    function getConsent() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch { return null; }
+    }
+
+    function saveConsent(prefs) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...prefs, date: new Date().toISOString() }));
+      hideBanner();
+      closeModal();
+    }
+
+    function showBanner() { banner.classList.add('is-visible'); }
+    function hideBanner() { banner.classList.remove('is-visible'); }
+    function openModal()  { overlay.classList.add('is-open'); overlay.querySelector('.cookie-modal').focus(); }
+    function closeModal() { overlay.classList.remove('is-open'); }
+
+    function acceptAll() {
+      document.getElementById('pref-functional').checked = true;
+      document.getElementById('pref-analytics').checked  = true;
+      document.getElementById('pref-marketing').checked  = true;
+      saveConsent({ essential: true, functional: true, analytics: true, marketing: true });
+    }
+
+    function savePrefs() {
+      saveConsent({
+        essential:  true,
+        functional: document.getElementById('pref-functional').checked,
+        analytics:  document.getElementById('pref-analytics').checked,
+        marketing:  document.getElementById('pref-marketing').checked,
+      });
+    }
+
+    // Carrega prefs salvas no modal
+    function loadPrefsIntoModal() {
+      const c = getConsent();
+      if (!c) return;
+      document.getElementById('pref-functional').checked = c.functional ?? true;
+      document.getElementById('pref-analytics').checked  = c.analytics  ?? false;
+      document.getElementById('pref-marketing').checked  = c.marketing  ?? false;
+    }
+
+    // Eventos
+    document.getElementById('cookie-btn-accept').addEventListener('click', acceptAll);
+    document.getElementById('cookie-btn-settings').addEventListener('click', () => { loadPrefsIntoModal(); openModal(); });
+    document.getElementById('cookie-modal-close').addEventListener('click', closeModal);
+    document.getElementById('cookie-save-prefs').addEventListener('click', savePrefs);
+    document.getElementById('cookie-accept-all-modal').addEventListener('click', acceptAll);
+    document.querySelectorAll('.cookie-settings-trigger').forEach(btn =>
+      btn.addEventListener('click', () => { loadPrefsIntoModal(); openModal(); })
+    );
+
+    // Fecha modal clicando fora
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+    // Fecha com Esc
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Mostra banner se ainda não há consentimento
+    if (!getConsent()) {
+      setTimeout(showBanner, 1200);
+    }
+  })();
+  </script>
 </body>
 </html>

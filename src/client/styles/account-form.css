@@ -1,12 +1,15 @@
+/* ── Layout da seção ─────────────────────────────────────────── */
 .account-section {
   grid-template-columns: minmax(240px, .82fr) minmax(320px, 1.18fr);
-  align-items: center;
+  align-items: start;
   gap: clamp(36px, 7vw, 92px);
   padding: clamp(72px, 9vw, 118px) clamp(7%, 13%, 15%) clamp(76px, 9vw, 118px);
 }
 
 .account-copy {
   max-width: 360px;
+  position: sticky;
+  top: 100px;
 }
 
 .account-copy h2 {
@@ -16,134 +19,334 @@
 
 .account-copy > p:not(.eyebrow) {
   max-width: 315px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
+  color: #ffe2da;
+  font-size: 12px;
+  line-height: 1.8;
 }
 
+.account-copy .button {
+  background: var(--ink);
+}
+
+/* ── Benefícios ──────────────────────────────────────────────── */
+.account-benefits {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.account-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.benefit-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.12);
+  border-radius: 8px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.account-benefits strong {
+  display: block;
+  font-size: 11px;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.account-benefits small {
+  font-size: 10px;
+  color: #ffd8ce;
+  line-height: 1.4;
+}
+
+/* ── Card do formulário ──────────────────────────────────────── */
 .account-form-wrap {
   width: 100%;
-  max-width: 510px;
+  max-width: 530px;
   justify-self: end;
-  padding: clamp(28px, 4vw, 40px);
   background: var(--paper);
-  box-shadow: 0 20px 45px rgba(78, 35, 26, .15);
+  box-shadow: 0 20px 45px rgba(78, 35, 26, .18);
 }
 
+/* ── Steps de progresso ──────────────────────────────────────── */
 .form-header {
-  padding-bottom: 22px;
+  padding: 22px 32px;
   border-bottom: 1px solid #e7e8e1;
-  margin-bottom: 24px;
+  background: #f9f8f4;
 }
 
-.form-step {
-  display: inline-flex;
+.form-steps {
+  display: flex;
   align-items: center;
-  min-height: 24px;
-  padding: 0 9px;
-  border-radius: 99px;
-  background: #fff0e9;
-  color: var(--coral-dark);
-  font-size: 9px;
-  letter-spacing: .08em;
+  gap: 0;
 }
 
-.form-header h3 {
-  margin: 17px 0 7px;
-  font-size: clamp(23px, 2.4vw, 29px);
+.form-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: none;
 }
 
-.form-header p {
-  margin-bottom: 0;
-  color: var(--muted);
-}
-
-#signup-form {
+.form-step-item span {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   display: grid;
-  gap: 18px;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  background: #e4e6e0;
+  color: #8a9490;
+  transition: background .25s, color .25s;
 }
 
-#signup-form > label:not(.check-label) {
-  display: block;
-  width: 100%;
-  margin: 0;
-  color: #64736f;
-  font-size: 10px;
+.form-step-item small {
+  font: 9px/1 var(--mono);
+  color: #a3aca8;
+  white-space: nowrap;
+  transition: color .25s;
+}
+
+.form-step-item.active span,
+.form-step-item.done span {
+  background: var(--coral);
+  color: #fff;
+}
+
+.form-step-item.done span::after {
+  content: '✓';
+}
+
+.form-step-item.active small,
+.form-step-item.done small {
+  color: var(--coral-dark);
   font-weight: 700;
 }
 
-#signup-form > .password-field {
-  grid-column: 1 / -1;
-  min-width: 0;
+.form-step-divider {
+  flex: 1;
+  height: 1px;
+  background: #dce2dc;
+  margin: 0 8px 14px;
+  min-width: 24px;
 }
 
-#signup-form input[type="text"],
-#signup-form input[type="email"],
-#signup-form input[type="tel"],
-#signup-form input[type="date"],
-#signup-form input[type="password"] {
+/* ── Fieldsets ───────────────────────────────────────────────── */
+#signup-form {
+  padding: 28px 32px 24px;
+}
+
+.form-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-fieldset.is-hidden {
+  display: none;
+}
+
+.fieldset-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.4px;
+  margin-bottom: 4px;
+  padding: 0;
+}
+
+.legend-num {
+  font: 10px var(--mono);
+  color: var(--coral);
+  letter-spacing: .05em;
+}
+
+/* ── Campos ──────────────────────────────────────────────────── */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-field label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64736f;
+}
+
+.form-field label abbr {
+  text-decoration: none;
+  color: var(--coral);
+  margin-left: 2px;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="tel"],
+.form-field input[type="date"],
+.form-field input[type="password"] {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  height: 40px;
-  margin-top: 6px;
-  padding: 0 11px;
+  height: 42px;
+  padding: 0 12px;
   border: 1px solid #dce2dc;
-  border-radius: 7px;
+  border-radius: 6px;
   background: #fff;
+  font-size: 12px;
+  color: var(--ink);
   transition: border-color .2s, box-shadow .2s;
 }
 
-#signup-form input:focus {
+.form-field input:focus {
+  outline: none;
   border-color: var(--coral);
-  box-shadow: 0 0 0 3px rgba(240, 90, 40, .12);
+  box-shadow: 0 0 0 3px rgba(255, 111, 84, .13);
 }
 
-#signup-form input:invalid:not(:placeholder-shown) {
+.form-field input:invalid:not(:placeholder-shown) {
   border-color: #d46a58;
   box-shadow: 0 0 0 3px rgba(212, 106, 88, .1);
 }
 
-#signup-form input:valid:not(:placeholder-shown) {
+.form-field input:valid:not(:placeholder-shown) {
   border-color: #9ac9af;
 }
 
-#signup-form input::placeholder {
-  color: #aab5b1;
+.form-field input::placeholder {
+  color: #b0b9b5;
   font-size: 11px;
 }
 
-#signup-form .form-row {
+.field-hint {
+  font: 9px var(--mono);
+  color: #a3aca8;
+  line-height: 1.4;
+}
+
+/* ── Linha dupla ─────────────────────────────────────────────── */
+.form-row {
   display: grid;
-  width: 100%;
-  min-width: 0;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
 }
 
-#signup-form .form-row label {
-  min-width: 0;
-  margin: 0;
+/* ── Senha com olhinho ───────────────────────────────────────── */
+.password-wrap {
+  position: relative;
 }
 
-#signup-form .check-label {
+.password-wrap input {
+  padding-right: 42px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: #8a9490;
+  padding: 4px;
+}
+
+/* ── Revisão de dados ────────────────────────────────────────── */
+.form-review {
+  background: #f4f6f2;
+  border-radius: 6px;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  font-size: 10px;
+}
+
+.review-item strong {
+  display: block;
+  color: #8a9490;
+  font: 9px var(--mono);
+  margin-bottom: 3px;
+}
+
+.review-item span {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+/* ── Consentimentos ──────────────────────────────────────────── */
+.form-consents {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.check-label {
+  display: flex !important;
   align-items: flex-start;
-  gap: 8px;
-  margin: 0;
+  gap: 9px;
+  margin: 0 !important;
   color: #73817d;
   font-size: 10px;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
-#signup-form .check-label input {
-  flex: 0 0 auto;
-  margin: 1px 0 0;
+.check-label input[type="checkbox"] {
+  flex: none;
+  margin-top: 2px;
   accent-color: var(--coral);
+  width: 14px;
+  height: 14px;
+}
+
+.form-link {
+  color: var(--coral);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── Navegação entre etapas ──────────────────────────────────── */
+.form-nav {
+  margin-top: 4px;
+}
+
+.button-outline {
+  background: transparent;
+  border: 1px solid #d0d5d0 !important;
+  color: var(--ink);
+  font-size: 11px;
+}
+
+.button-outline:hover {
+  background: #f4f6f2;
+  transform: none;
 }
 
 #signup-form .button {
-  width: 100%;
-  min-height: 48px;
-  margin-top: 2px;
+  min-height: 46px;
 }
 
 #signup-form .button:disabled {
@@ -152,19 +355,26 @@
   transform: none;
 }
 
+/* ── Mensagem de status ──────────────────────────────────────── */
 .form-message {
-  margin: -7px 0 0;
+  margin: 0;
   min-height: 15px;
+  font-size: 10px !important;
+  color: #319160 !important;
 }
 
+/* ── Rodapé do card ──────────────────────────────────────────── */
 .account-form-wrap::after {
-  content: 'Seus dados são protegidos e usados apenas para sua conta Buzzu.';
+  content: '🔒  Seus dados são protegidos e usados apenas para sua conta Buzzu.';
   display: block;
-  margin-top: 16px;
+  padding: 14px 32px;
+  border-top: 1px solid #e7e8e1;
+  background: #f9f8f4;
   color: #91a09b;
   font: 9px/1.5 var(--mono);
 }
 
+/* ── Responsivo ──────────────────────────────────────────────── */
 @media (max-width: 700px) {
   .account-section {
     grid-template-columns: 1fr;
@@ -172,9 +382,9 @@
     padding: 68px 7% 74px;
   }
 
-  .account-copy,
-  .account-form-wrap {
+  .account-copy {
     max-width: none;
+    position: static;
   }
 
   .account-copy h2 {
@@ -182,29 +392,36 @@
   }
 
   .account-form-wrap {
+    max-width: none;
     justify-self: stretch;
-    padding: 26px 18px 20px;
   }
 
-  .form-header {
-    margin-bottom: 20px;
-  }
-
+  .form-header,
   #signup-form {
-    gap: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
-  #signup-form input[type="text"],
-  #signup-form input[type="email"],
-  #signup-form input[type="tel"],
-  #signup-form input[type="date"],
-  #signup-form input[type="password"] {
-    height: 44px;
-    font-size: 16px;
-  }
-
-  #signup-form .form-row {
+  .form-row {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+
+  .form-review {
+    grid-template-columns: 1fr;
+  }
+
+  .account-form-wrap::after {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .form-field input[type="text"],
+  .form-field input[type="email"],
+  .form-field input[type="tel"],
+  .form-field input[type="date"],
+  .form-field input[type="password"] {
+    height: 46px;
+    font-size: 16px;
   }
 }

@@ -257,26 +257,112 @@ async function loadTransitStatus() {
 
 loadTransitStatus();
 
-const signupForm = document.querySelector('#signup-form');
-if (signupForm && !signupForm.querySelector('[name="password"]')) {
-  const passwordLabel = document.createElement('label');
-  passwordLabel.className = 'password-field';
-  passwordLabel.innerHTML = 'Crie uma senha<input required type="password" name="password" minlength="8" placeholder="Mínimo de 8 caracteres">';
-  signupForm.querySelector('.form-row')?.before(passwordLabel);
-}
+// --- Scroll contínuo de chegadas: todas as linhas de Curitiba ---
+(function initDepartureScroll() {
+  const track = document.getElementById('departure-track');
+  if (!track) return;
 
-if (signupForm) {
-  const autocomplete = { name: 'name', email: 'email', phone: 'tel', birth: 'bday', password: 'new-password' };
-  Object.entries(autocomplete).forEach(([name, value]) => {
-    const field = signupForm.querySelector(`[name="${name}"]`);
-    if (field) field.autocomplete = value;
-  });
-  signupForm.querySelector('[name="email"]')?.setAttribute('inputmode', 'email');
-  signupForm.querySelector('[name="phone"]')?.setAttribute('inputmode', 'tel');
-  signupForm.querySelectorAll('input').forEach(field => field.addEventListener('blur', () => {
-    field.classList.toggle('was-touched', true);
-  }));
-}
+  const LINES = [
+    { code: '101', name: 'Centro / Capão Raso',           stop: 'Terminal Capão Raso · Sentido centro',          color: '#db5a4b' },
+    { code: '110', name: 'Terminal Boqueirão',             stop: 'Tubo Praça Rui Barbosa · Sentido bairro',       color: '#459b70' },
+    { code: '172', name: 'Pinheirinho / Centro',           stop: 'Terminal Pinheirinho · Sentido centro',         color: '#4f82a0' },
+    { code: '203', name: 'Expresso Santa Cândida',         stop: 'Tubo Rodoferroviária · Sentido norte',          color: '#db5a4b' },
+    { code: '208', name: 'Circular Centro',                stop: 'Praça Tiradentes · Circular',                   color: '#c9a34b' },
+    { code: '218', name: 'Bacacheri / Centro',             stop: 'Estação Cabral · Sentido centro',               color: '#459b70' },
+    { code: '222', name: 'Bairro Alto / Rodoferroviária',  stop: 'Terminal Bairro Alto · Sentido sul',            color: '#4f82a0' },
+    { code: '270', name: 'Birigui / Água Verde',           stop: 'Tubo Água Verde · Plataforma 1',                color: '#7b5ea7' },
+    { code: '280', name: 'Campo Comprido / Batel',         stop: 'Estação Batel · Sentido bairro',                color: '#db5a4b' },
+    { code: '290', name: 'Santa Felicidade / Centro',      stop: 'Terminal Santa Felicidade · Sentido centro',    color: '#459b70' },
+    { code: '303', name: 'Centenário / Campo Comprido',    stop: 'Tubo Praça Rui Barbosa · Plataforma 2',         color: '#459b70' },
+    { code: '311', name: 'Boa Vista / Centro',             stop: 'Terminal Boa Vista · Sentido centro',           color: '#c9a34b' },
+    { code: '320', name: 'Cabral / Portão',                stop: 'Tubo Cabral · Sentido sul',                     color: '#4f82a0' },
+    { code: '335', name: 'Cajuru / Rodoferroviária',       stop: 'Terminal Cajuru · Sentido centro',              color: '#db5a4b' },
+    { code: '340', name: 'Cidade Industrial / Centro',     stop: 'Terminal CIC · Sentido centro',                 color: '#7b5ea7' },
+    { code: '356', name: 'Sítio Cercado / Fazendinha',     stop: 'Terminal Sítio Cercado · Sentido bairro',       color: '#459b70' },
+    { code: '372', name: 'Augusto Stresser',               stop: 'Estação Centro Cívico · Sentido bairro',        color: '#4f82a0' },
+    { code: '380', name: 'Uberaba / Centro',               stop: 'Terminal Uberaba · Sentido centro',             color: '#db5a4b' },
+    { code: '390', name: 'Xaxim / Portão',                 stop: 'Terminal Xaxim · Sentido bairro',               color: '#c9a34b' },
+    { code: '400', name: 'Prado Velho / Rebouças',         stop: 'Tubo Rebouças · Sentido bairro',                color: '#459b70' },
+    { code: '414', name: 'Tatuquara / Centro',             stop: 'Terminal Tatuquara · Sentido centro',           color: '#4f82a0' },
+    { code: '418', name: 'Tingui / Ahú',                   stop: 'Terminal Tingui · Sentido bairro',              color: '#7b5ea7' },
+    { code: '022', name: 'Interbairros II',                stop: 'Tubo Passeio Público · Sentido sul',            color: '#c9a34b' },
+    { code: '023', name: 'Interbairros III',               stop: 'Terminal Portão · Circular bairros',            color: '#db5a4b' },
+    { code: '500', name: 'Linha Verde Norte',              stop: 'Estação Marechal Floriano · Sentido norte',     color: '#2e9e5b' },
+    { code: '501', name: 'Linha Verde Sul',                stop: 'Estação Marechal Floriano · Sentido sul',       color: '#2e9e5b' },
+    { code: '502', name: 'Expresso Leste',                 stop: 'Terminal Guadalupe · Sentido centro',           color: '#db5a4b' },
+    { code: '503', name: 'Expresso Oeste',                 stop: 'Terminal Campo Comprido · Sentido centro',      color: '#459b70' },
+    { code: '510', name: 'Vila Hauer / Boqueirão',         stop: 'Terminal Boqueirão · Sentido bairro',           color: '#4f82a0' },
+    { code: '520', name: 'Jardim Botânico / Rebouças',     stop: 'Tubo Jardim Botânico · Sentido centro',         color: '#7b5ea7' },
+    { code: '530', name: 'Guabirotuba / Batel',            stop: 'Estação Batel · Plataforma 3',                  color: '#c9a34b' },
+    { code: '540', name: 'Fazendinha / Portão',            stop: 'Terminal Fazendinha · Sentido bairro',          color: '#db5a4b' },
+    { code: '550', name: 'Orleans / Rodoferroviária',      stop: 'Terminal Orleans · Sentido centro',             color: '#459b70' },
+    { code: '560', name: 'Hugo Lange / Juvevê',            stop: 'Tubo Cabral · Sentido norte',                   color: '#4f82a0' },
+    { code: '570', name: 'Pinheirinho / CIC',              stop: 'Terminal Pinheirinho · Sentido bairro',         color: '#7b5ea7' },
+    { code: '580', name: 'Santa Quitéria / Centro',        stop: 'Tubo Batel · Sentido centro',                   color: '#c9a34b' },
+    { code: '590', name: 'Novo Mundo / Portão',            stop: 'Terminal Portão · Plataforma 4',                color: '#db5a4b' },
+    { code: '600', name: 'Riviera / Boqueirão',            stop: 'Terminal Boqueirão · Sentido bairro',           color: '#459b70' },
+    { code: '610', name: 'Umbará / Pinheirinho',           stop: 'Terminal Umbará · Sentido centro',              color: '#4f82a0' },
+    { code: '620', name: 'Tarumã / Cabral',                stop: 'Tubo Cabral · Plataforma 1',                    color: '#7b5ea7' },
+    { code: '630', name: 'Atuba / Santa Cândida',          stop: 'Terminal Santa Cândida · Sentido sul',          color: '#c9a34b' },
+    { code: '640', name: 'São Braz / CIC',                 stop: 'Terminal São Braz · Sentido bairro',            color: '#db5a4b' },
+    { code: '650', name: 'Vista Alegre / Boa Vista',       stop: 'Terminal Boa Vista · Plataforma 2',             color: '#459b70' },
+    { code: '660', name: 'Pilarzinho / Tingui',            stop: 'Terminal Tingui · Sentido centro',              color: '#4f82a0' },
+    { code: '670', name: 'Mercês / Batel',                 stop: 'Tubo Batel · Sentido bairro',                   color: '#7b5ea7' },
+    { code: '680', name: 'Capão da Imbuia / Cajuru',       stop: 'Terminal Cajuru · Plataforma 3',                color: '#c9a34b' },
+    { code: '690', name: 'Hauer / Boqueirão',              stop: 'Terminal Boqueirão · Sentido norte',            color: '#db5a4b' },
+    { code: '700', name: 'São João / Centro Cívico',       stop: 'Estação Centro Cívico · Sentido bairro',        color: '#459b70' },
+    { code: '710', name: 'Caximba / Tatuquara',            stop: 'Terminal Tatuquara · Plataforma 1',             color: '#4f82a0' },
+    { code: '720', name: 'Ganchinho / Sítio Cercado',      stop: 'Terminal Sítio Cercado · Sentido centro',       color: '#7b5ea7' },
+  ];
+
+  // Gera tempos aleatórios entre 1 e 30 min
+  function buildItems() {
+    return LINES.map(line => ({
+      ...line,
+      minutes: Math.floor(Math.random() * 30) + 1
+    })).sort((a, b) => a.minutes - b.minutes);
+  }
+
+  function renderItem(item, hidden = false) {
+    const div = document.createElement('div');
+    div.className = 'departure-item';
+    if (hidden) div.setAttribute('aria-hidden', 'true');
+    div.innerHTML = `
+      <div class="line-badge" style="background:${item.color}">${item.code}</div>
+      <div><strong>${item.name}</strong><small>${item.stop}</small></div>
+      <b class="arrival">${item.minutes} min</b>`;
+    return div;
+  }
+
+  function populate() {
+    const items = buildItems();
+    track.innerHTML = '';
+
+    // Conjunto original
+    items.forEach(item => track.appendChild(renderItem(item)));
+    // Cópia duplicada para o loop sem corte
+    items.forEach(item => track.appendChild(renderItem(item, true)));
+
+    // Altura de metade do track = altura de um conjunto
+    requestAnimationFrame(() => {
+      const half = track.scrollHeight / 2;
+      // duração proporcional: ~2.2s por item
+      const dur = Math.round(items.length * 2.2);
+      track.style.setProperty('--scroll-dur', `${dur}s`);
+      track.style.setProperty('--scroll-half', `${half}px`);
+      track.classList.add('is-running');
+    });
+  }
+
+  populate();
+  // Atualiza os tempos a cada 60 s mantendo o scroll
+  setInterval(() => {
+    track.classList.remove('is-running');
+    populate();
+  }, 60000);
+})();
+
+// Autocomplete do formulário
 
 searchToggle?.addEventListener('click', () => {
   searchDrawer.classList.add('is-open');
@@ -327,6 +413,120 @@ document.querySelector('[data-route-focus]')?.addEventListener('click', () => {
   document.querySelector('#from')?.focus();
   window.scrollTo({ top: document.querySelector('.hero').offsetTop, behavior: 'smooth' });
 });
+
+// ── Formulário multi-etapas ───────────────────────────────────
+(function initMultiStepForm() {
+  const form = document.getElementById('signup-form');
+  if (!form) return;
+
+  const fieldsets = form.querySelectorAll('.form-fieldset');
+  const stepItems = document.querySelectorAll('.form-step-item');
+
+  function goTo(stepNum) {
+    fieldsets.forEach(fs => fs.classList.add('is-hidden'));
+    const target = form.querySelector(`[data-fieldset="${stepNum}"]`);
+    if (target) target.classList.remove('is-hidden');
+
+    stepItems.forEach(item => {
+      const n = parseInt(item.dataset.step);
+      item.classList.remove('active', 'done');
+      if (n < stepNum) item.classList.add('done');
+      if (n === stepNum) item.classList.add('active');
+    });
+
+    // Popula revisão na etapa 3
+    if (stepNum === 3) buildReview();
+  }
+
+  function validateFieldset(fs) {
+    const inputs = fs.querySelectorAll('input[required]');
+    let valid = true;
+    inputs.forEach(input => {
+      if (!input.checkValidity()) {
+        input.classList.add('was-touched');
+        valid = false;
+      }
+    });
+    // Verifica senhas iguais na etapa 2
+    if (fs.dataset.fieldset === '2') {
+      const pw = form.querySelector('#password');
+      const pwc = form.querySelector('#password-confirm');
+      if (pw && pwc && pw.value !== pwc.value) {
+        pwc.setCustomValidity('As senhas não coincidem.');
+        pwc.classList.add('was-touched');
+        valid = false;
+      } else if (pwc) {
+        pwc.setCustomValidity('');
+      }
+    }
+    return valid;
+  }
+
+  function buildReview() {
+    const review = document.getElementById('form-review');
+    if (!review) return;
+    const data = {
+      'Nome': form.querySelector('[name="name"]')?.value || '—',
+      'CPF': form.querySelector('[name="cpf"]')?.value || '—',
+      'Nascimento': form.querySelector('[name="birth"]')?.value || '—',
+      'Celular': form.querySelector('[name="phone"]')?.value || '—',
+      'CEP': form.querySelector('[name="cep"]')?.value || '—',
+      'E-mail': form.querySelector('[name="email"]')?.value || '—',
+    };
+    review.innerHTML = Object.entries(data).map(([label, value]) =>
+      `<div class="review-item"><strong>${label}</strong><span>${value}</span></div>`
+    ).join('');
+  }
+
+  // Botões próximo
+  form.querySelectorAll('.form-next').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const currentFs = form.querySelector(`.form-fieldset:not(.is-hidden)`);
+      if (!validateFieldset(currentFs)) {
+        currentFs.querySelector('input:invalid')?.focus();
+        return;
+      }
+      goTo(parseInt(btn.dataset.next));
+    });
+  });
+
+  // Botões voltar
+  form.querySelectorAll('.form-back').forEach(btn => {
+    btn.addEventListener('click', () => goTo(parseInt(btn.dataset.back)));
+  });
+
+  // Toggle mostrar/ocultar senha
+  form.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.previousElementSibling;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+        btn.setAttribute('aria-label', 'Ocultar senha');
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁';
+        btn.setAttribute('aria-label', 'Mostrar senha');
+      }
+    });
+  });
+
+  // Máscara simples de CPF
+  form.querySelector('[name="cpf"]')?.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+    else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+    else if (v.length > 3) v = v.replace(/(\d{3})(\d{0,3})/, '$1.$2');
+    e.target.value = v;
+  });
+
+  // Máscara de CEP
+  form.querySelector('[name="cep"]')?.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+    if (v.length > 5) v = v.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+    e.target.value = v;
+  });
+})();
 
 document.querySelector('#signup-form')?.addEventListener('submit', async (event) => {
   event.preventDefault();
