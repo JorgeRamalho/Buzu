@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0c1f2d">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0, proxy-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="description" content="Buzzu: mobilidade urbana inteligente em Curitiba. Consulte linhas, horários, tubos e cuide do seu cartão transporte.">
   <title>Buzzu | Seu caminho começa aqui</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
@@ -32,7 +35,7 @@
       </a>
       <nav class="main-nav" aria-label="Navegação principal">
         <a class="active" href="#inicio">Início</a>
-        <a href="#rotas">Rotas e horários</a>
+        <a href="#pulso-cidade">Rotas e horários</a>
         <a href="#cartao">Meu cartão</a>
         <a href="#cidade">A cidade</a>
       </nav>
@@ -61,12 +64,38 @@
           <p class="eyebrow"><span class="eyebrow-line"></span>Mobilidade que entende você</p>
           <h1>Vai e volta<br><em>pra onde quiser.</em></h1>
           <p class="hero-text">Rotas inteligentes, tempo real e tudo o que você precisa para se mover por Curitiba com mais leveza.</p>
-          <div class="route-search" id="rotas">
-            <div class="route-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"></circle><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"></path></svg><div><label for="from">De onde você sai?</label><input id="from" placeholder="Ex.: Praça Rui Barbosa"></div></div>
-            <div class="route-swap" aria-hidden="true">↕</div>
-            <div class="route-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4Z"></path><path d="m4 7 8 4 8-4M12 11v10"></path></svg><div><label for="to">Para onde você vai?</label><input id="to" placeholder="Ex.: Jardim Botânico"></div></div>
-            <button class="button button-coral route-button" data-route-search>Encontrar rota <span>→</span></button>
+          <div class="route-plan">
+            <div class="route-search" id="rotas">
+              <div class="route-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"></circle><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"></path></svg><div class="route-field-copy"><label for="from">De onde você sai?</label><input id="from" placeholder="Ex.: Praça Rui Barbosa" autocomplete="off"></div></div>
+              <div class="route-swap" aria-hidden="true">↕</div>
+              <div class="route-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4Z"></path><path d="m4 7 8 4 8-4M12 11v10"></path></svg><div class="route-field-copy"><label for="to">Para onde você vai?</label><input id="to" placeholder="Ex.: Jardim Botânico" autocomplete="off"></div></div>
+              <div class="route-search-actions">
+                <button type="button" class="tubo-picker-trigger" id="tubo-picker-open" aria-expanded="false" aria-controls="tubo-picker-panel" aria-haspopup="dialog" aria-label="Abrir lista de tubos e estações de Curitiba"><span class="tubo-picker-trigger-label">TUBO</span><span class="tubo-picker-trigger-chevron" aria-hidden="true">⌄</span></button>
+                <button type="button" class="button button-coral route-button" data-route-search>Encontrar rota <span>→</span></button>
+              </div>
+            </div>
+            <div class="route-results-panel" id="route-results-panel" role="region" aria-label="Resultados da rota" aria-live="polite"></div>
           </div>
+          <div class="tubo-picker-modal" id="tubo-picker-modal" hidden>
+            <button type="button" class="tubo-picker-backdrop" data-tubo-picker-close aria-label="Fechar lista de tubos"></button>
+            <div class="tubo-picker-panel" id="tubo-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tubo-picker-title" aria-describedby="tubo-picker-desc" hidden>
+              <div class="tubo-picker-head">
+                <div>
+                  <strong id="tubo-picker-title">Tubos e pontos · Curitiba</strong>
+                  <p id="tubo-picker-desc" class="tubo-picker-desc">Sistema integrado URBS · selecione origem ou destino</p>
+                  <div class="tubo-picker-target-switch" role="radiogroup" aria-label="Aplicar seleção em">
+                    <button type="button" class="tubo-picker-target is-active" role="radio" aria-checked="true" data-tubo-target="from">Origem</button>
+                    <button type="button" class="tubo-picker-target" role="radio" aria-checked="false" data-tubo-target="to">Destino</button>
+                  </div>
+                </div>
+                <button type="button" class="tubo-picker-close" data-tubo-picker-close aria-label="Fechar lista de tubos">×</button>
+              </div>
+              <input type="search" class="tubo-picker-filter" placeholder="Buscar tubo, terminal ou estação..." aria-label="Filtrar tubos">
+              <ul class="tubo-picker-list" role="listbox" aria-label="Lista de tubos de Curitiba"></ul>
+              <p class="tubo-picker-foot" data-tubo-source>Carregando pontos...</p>
+            </div>
+          </div>
+          <button type="button" class="location-button" id="use-my-location" aria-label="Usar minha localização como origem">Usar minha localização</button>
           <p class="route-note"><span>✦</span> Você também pode buscar por linha, tubo ou ponto de referência.</p>
         </div>
         <div class="hero-visual" aria-label="Ilustração de um ônibus Buzzu em Curitiba">
@@ -85,15 +114,19 @@
         </div>
       </section>
 
-      <div class="live-header"><div><p class="eyebrow"><span class="eyebrow-line"></span>Agora em Curitiba</p><h2>O pulso da cidade.</h2></div><div class="live-meta"><span class="pulse-dot"></span>Dados atualizados em tempo real <button class="icon-button refresh" aria-label="Atualizar dados">↻</button></div></div>
+      <div class="live-header" id="pulso-cidade"><div><p class="eyebrow"><span class="eyebrow-line"></span>Agora em Curitiba</p><h2>O pulso da cidade.</h2></div><div class="live-meta"><span class="pulse-dot"></span>Dados atualizados em tempo real <button class="icon-button refresh" aria-label="Atualizar dados">↻</button></div></div>
       <section class="live-section" id="status"><div class="live-layout"><div class="map-panel">
 
   <div class="map-toolbar">
     <span>Mapa da operação</span>
-    <button class="filter-button">Centro de Curitiba <span>⌄</span></button>
+    <div class="map-toolbar-actions">
+      <button type="button" class="location-button location-button-toolbar" id="ops-map-use-location" aria-label="Usar minha localização no mapa e no visor de partidas">Minha localização</button>
+      <button type="button" class="filter-button" id="ops-map-region-open" aria-expanded="false" aria-controls="ops-map-region-panel" aria-haspopup="dialog" aria-label="Escolher região ou ponto no mapa da operação"><span data-ops-map-region-label>Centro de Curitiba</span> <span class="filter-button-chevron" aria-hidden="true">⌄</span></button>
+    </div>
   </div>
+  <p class="map-toolbar-hint" id="ops-map-hint" hidden role="status"></p>
 
-  <div class="map-art" id="map-art">
+  <div class="map-art" id="map-art" data-region="centro">
 
     <!-- ══════════════════════════════════════════════════
          SVG MAPA — Centro de Curitiba
@@ -381,11 +414,32 @@
       </div>
     </div>
 
+    <div class="map-user-pin" id="map-user-pin" hidden aria-hidden="true">
+      <span class="map-user-pin-dot" aria-hidden="true">◉</span>
+      <small data-map-user-label>Você</small>
+    </div>
+
   </div><!-- /map-art -->
 </div><!-- /map-panel -->
 
 <div class="departures"><div class="departure-track" id="departure-track"></div></div>
 </div></section>
+
+      <div class="tubo-picker-modal" id="ops-map-modal" hidden>
+        <button type="button" class="tubo-picker-backdrop" data-ops-map-close aria-label="Fechar mapa da operação"></button>
+        <div class="tubo-picker-panel" id="ops-map-region-panel" role="dialog" aria-modal="true" aria-labelledby="ops-map-region-title" aria-describedby="ops-map-region-desc" hidden>
+          <div class="tubo-picker-head">
+            <div>
+              <strong id="ops-map-region-title">Mapa da operação · Curitiba</strong>
+              <p id="ops-map-region-desc" class="tubo-picker-desc">Regiões e pontos do sistema integrado URBS</p>
+            </div>
+            <button type="button" class="tubo-picker-close" data-ops-map-close aria-label="Fechar">×</button>
+          </div>
+          <input type="search" class="tubo-picker-filter" id="ops-map-region-filter" placeholder="Buscar região, tubo ou terminal..." aria-label="Filtrar regiões e pontos">
+          <ul class="tubo-picker-list" id="ops-map-region-list" role="listbox" aria-label="Regiões e pontos de operação"></ul>
+          <p class="tubo-picker-foot" data-ops-map-source>Carregando...</p>
+        </div>
+      </div>
 
       <section class="account-section" id="conta">
         <div class="account-copy">
@@ -498,7 +552,7 @@
         </div>
       </section>
     </main>
-    <footer class="site-footer" id="cidade"><div class="footer-brand"><a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span class="brand-name">buzzu<span>.</span></span></a><p>Movendo Curitiba<br>para frente.</p></div><div class="footer-links"><div><strong>Explorar</strong><a href="#rotas">Rotas e horários</a><a href="#status">Status da operação</a><a href="#cartao">Cartão transporte</a></div><div><strong>Legal</strong><a href="./privacy.html?tab=privacidade">Política de Privacidade</a><a href="./privacy.html?tab=lgpd">LGPD</a><a href="./privacy.html?tab=cookies">Cookies</a></div><div><strong></strong>Suporte</strong><a href="#conta">Central de ajuda</a><a href="#conta">Fale com a gente</a><a href="#conta">Acessibilidade</a></div><div><strong>Siga o Buzzu</strong><a href="#cidade">Instagram ↗</a><a href="#cidade">LinkedIn ↗</a><a href="#cidade">X / Twitter ↗</a></div></div><div class="footer-bottom"><span>© 2025 Buzzu Mobilidade Urbana</span><span><button class="cookie-settings-trigger" aria-label="Configurar cookies">🍪 Configurar cookies</button></span><span>Feito em Curitiba <span class="heart">♥</span></span></div></footer>
+    <footer class="site-footer" id="cidade"><div class="footer-brand"><a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span class="brand-name">buzzu<span>.</span></span></a><p>Movendo Curitiba<br>para frente.</p></div><div class="footer-links"><div><strong>Explorar</strong><a href="#rotas">Rotas e horários</a><a href="#status">Status da operação</a><a href="#cartao">Cartão transporte</a></div><div><strong>Legal</strong><a href="./privacy.html?tab=privacidade">Política de Privacidade</a><a href="./privacy.html?tab=lgpd">LGPD</a><a href="./privacy.html?tab=cookies">Cookies</a></div><div><strong>Suporte</strong><a href="#conta">Central de ajuda</a><a href="#conta">Fale com a gente</a><a href="#conta">Acessibilidade</a></div><div><strong>Siga o Buzzu</strong><a href="#cidade">Instagram ↗</a><a href="#cidade">LinkedIn ↗</a><a href="#cidade">X / Twitter ↗</a></div></div><div class="footer-bottom"><span>© 2025 Buzzu Mobilidade Urbana</span><span><button class="cookie-settings-trigger" aria-label="Configurar cookies">🍪 Configurar cookies</button></span><span>Feito em Curitiba <span class="heart">♥</span></span></div></footer>
   </div>
   <!-- ── Banner de cookies ──────────────────────────────────── -->
   <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Consentimento de cookies" aria-live="polite">
@@ -572,6 +626,7 @@
     </div>
   </div>
 
+  <script src="./src/client/scripts/routeMap.js"></script>
   <script src="./src/client/scripts/app.js"></script>
   <script>
   // ── Gerenciamento de cookies ───────────────────────────────

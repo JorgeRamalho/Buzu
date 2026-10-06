@@ -5,7 +5,8 @@
   "description": "Portal Buzzu com API para mobilidade urbana, autenticação e carteira de transporte.",
   "scripts": {
     "start": "node src/server/server.js",
-    "dev": "node --watch src/server/server.js"
+    "dev": "node --watch src/server/server.js",
+    "test:routes": "node --test tests/route-passenger.test.cjs"
   },
   "engines": {
     "node": ">=20"

@@ -1,9 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
   <title>Marca Buzzu</title>
   <rect width="64" height="64" rx="14" fill="#fffdf9"/>
-  <g transform="translate(14 12) skewX(-14)">
-    <rect width="9" height="28" rx="3" fill="#f05a28"/>
-    <rect x="14" width="9" height="40" rx="3" fill="#102430"/>
-    <rect x="28" width="9" height="34" rx="3" fill="#f05a28"/>
+  <g transform="translate(18.5 19.5)">
+    <g transform="translate(0 25)">
+      <rect x="0" y="-15" width="6" height="15" rx="3" fill="#f05a28" transform="skewX(-14)"/>
+      <rect x="9" y="-23" width="6" height="23" rx="3" fill="#102430" transform="skewX(-14)"/>
+      <rect x="18" y="-19" width="6" height="19" rx="3" fill="#f05a28" transform="skewX(-14)"/>
+    </g>
   </g>
 </svg>

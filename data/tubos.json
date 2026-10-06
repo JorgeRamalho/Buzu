@@ -1,0 +1,649 @@
+{
+  "version": 2,
+  "updatedAt": "2026-09-29T02:00:00.000Z",
+  "source": "urbs-curitiba",
+  "catalogNote": "Tubos, estações e terminais do sistema integrado URBS · Curitiba-PR",
+  "stops": [
+    {
+      "id": "tubo-rodoferroviaria",
+      "name": "Tubo Rodoferroviária",
+      "address": "Av. Presidente Affonso Camargo, s/n",
+      "district": "Centro",
+      "platforms": 12,
+      "lat": -25.4346,
+      "lon": -49.2589
+    },
+    {
+      "id": "tubo-praca-rui-barbosa",
+      "name": "Tubo Praça Rui Barbosa",
+      "address": "Praça Rui Barbosa",
+      "district": "Centro",
+      "platforms": 18,
+      "lat": -25.4284,
+      "lon": -49.2733
+    },
+    {
+      "id": "tubo-passeio-publico",
+      "name": "Tubo Passeio Público",
+      "address": "R. José Bonifácio",
+      "district": "Centro",
+      "platforms": 6,
+      "lat": -25.4235,
+      "lon": -49.268
+    },
+    {
+      "id": "tubo-centro-civico",
+      "name": "Tubo Centro Cívico",
+      "address": "Av. Cândido de Abreu",
+      "district": "Centro Cívico",
+      "platforms": 6,
+      "lat": -25.4196,
+      "lon": -49.2654
+    },
+    {
+      "id": "tubo-batel",
+      "name": "Tubo Batel",
+      "address": "Av. do Batel",
+      "district": "Batel",
+      "platforms": 3,
+      "lat": -25.4417,
+      "lon": -49.2892
+    },
+    {
+      "id": "tubo-cabral",
+      "name": "Tubo Cabral",
+      "address": "R. Carlos de Carvalho",
+      "district": "Cabral",
+      "platforms": 4,
+      "lat": -25.4056,
+      "lon": -49.2536
+    },
+    {
+      "id": "tubo-reboucas",
+      "name": "Tubo Rebouças",
+      "address": "Av. Sete de Setembro",
+      "district": "Rebouças",
+      "platforms": 4,
+      "lat": -25.4477,
+      "lon": -49.2656
+    },
+    {
+      "id": "tubo-agua-verde",
+      "name": "Tubo Água Verde",
+      "address": "Av. República Argentina",
+      "district": "Água Verde",
+      "platforms": 2,
+      "lat": -25.4557,
+      "lon": -49.2864
+    },
+    {
+      "id": "tubo-jardim-botanico",
+      "name": "Tubo Jardim Botânico",
+      "address": "R. Eng. Ostoja Roguski",
+      "district": "Jardim Botânico",
+      "platforms": 2,
+      "lat": -25.4422,
+      "lon": -49.2404
+    },
+    {
+      "id": "tubo-merces",
+      "name": "Tubo Mercês",
+      "address": "R. Padre Agostinho",
+      "district": "Mercês",
+      "platforms": 2,
+      "lat": -25.432,
+      "lon": -49.2945
+    },
+    {
+      "id": "tubo-hugo-lange",
+      "name": "Tubo Hugo Lange",
+      "address": "R. Hugo Lange",
+      "district": "Juvevê",
+      "platforms": 2,
+      "lat": -25.418,
+      "lon": -49.248
+    },
+    {
+      "id": "tubo-seminario",
+      "name": "Tubo Seminário",
+      "address": "R. Padre Anchieta",
+      "district": "Seminário",
+      "platforms": 2,
+      "lat": -25.422,
+      "lon": -49.282
+    },
+    {
+      "id": "tubo-ahu",
+      "name": "Tubo Ahú",
+      "address": "R. Mateus Leme",
+      "district": "Ahú",
+      "platforms": 2,
+      "lat": -25.41,
+      "lon": -49.242
+    },
+    {
+      "id": "tubo-guadalupe",
+      "name": "Tubo Guadalupe",
+      "address": "Av. Guadalupe",
+      "district": "Guadalupe",
+      "platforms": 4,
+      "lat": -25.462,
+      "lon": -49.248
+    },
+    {
+      "id": "tubo-boqueirao",
+      "name": "Tubo Boqueirão",
+      "address": "Av. Winston Churchill",
+      "district": "Boqueirão",
+      "platforms": 6,
+      "lat": -25.502,
+      "lon": -49.232
+    },
+    {
+      "id": "tubo-capao-raso",
+      "name": "Tubo Capão Raso",
+      "address": "Av. Winston Churchill",
+      "district": "Capão Raso",
+      "platforms": 4,
+      "lat": -25.488,
+      "lon": -49.298
+    },
+    {
+      "id": "tubo-portao",
+      "name": "Tubo Portão",
+      "address": "Av. Rep. Argentina",
+      "district": "Portão",
+      "platforms": 5,
+      "lat": -25.472,
+      "lon": -49.288
+    },
+    {
+      "id": "tubo-pinheirinho",
+      "name": "Tubo Pinheirinho",
+      "address": "Av. Winston Churchill",
+      "district": "Pinheirinho",
+      "platforms": 4,
+      "lat": -25.518,
+      "lon": -49.268
+    },
+    {
+      "id": "tubo-santa-felicidade",
+      "name": "Tubo Santa Felicidade",
+      "address": "R. Isaac Ferreira da Rosa",
+      "district": "Santa Felicidade",
+      "platforms": 4,
+      "lat": -25.392,
+      "lon": -49.318
+    },
+    {
+      "id": "tubo-cajuru",
+      "name": "Tubo Cajuru",
+      "address": "Av. Comendador Franco",
+      "district": "Cajuru",
+      "platforms": 3,
+      "lat": -25.468,
+      "lon": -49.248
+    },
+    {
+      "id": "tubo-boa-vista",
+      "name": "Tubo Boa Vista",
+      "address": "Av. Paraná",
+      "district": "Boa Vista",
+      "platforms": 3,
+      "lat": -25.398,
+      "lon": -49.258
+    },
+    {
+      "id": "tubo-cic",
+      "name": "Tubo Cidade Industrial",
+      "address": "Av. Comendador Franco",
+      "district": "CIC",
+      "platforms": 4,
+      "lat": -25.528,
+      "lon": -49.328
+    },
+    {
+      "id": "tubo-sitio-cercado",
+      "name": "Tubo Sítio Cercado",
+      "address": "Av. Winston Churchill",
+      "district": "Sítio Cercado",
+      "platforms": 4,
+      "lat": -25.538,
+      "lon": -49.288
+    },
+    {
+      "id": "tubo-uberaba",
+      "name": "Tubo Uberaba",
+      "address": "Av. Comendador Franco",
+      "district": "Uberaba",
+      "platforms": 3,
+      "lat": -25.488,
+      "lon": -49.218
+    },
+    {
+      "id": "tubo-xaxim",
+      "name": "Tubo Xaxim",
+      "address": "Av. Comendador Franco",
+      "district": "Xaxim",
+      "platforms": 3,
+      "lat": -25.508,
+      "lon": -49.308
+    },
+    {
+      "id": "tubo-tatuquara",
+      "name": "Tubo Tatuquara",
+      "address": "Av. Tito Mufato",
+      "district": "Tatuquara",
+      "platforms": 3,
+      "lat": -25.478,
+      "lon": -49.338
+    },
+    {
+      "id": "tubo-tingui",
+      "name": "Tubo Tingui",
+      "address": "Av. Comendador Franco",
+      "district": "Tingui",
+      "platforms": 2,
+      "lat": -25.378,
+      "lon": -49.338
+    },
+    {
+      "id": "tubo-fazendinha",
+      "name": "Tubo Fazendinha",
+      "address": "Av. Comendador Franco",
+      "district": "Fazendinha",
+      "platforms": 2,
+      "lat": -25.458,
+      "lon": -49.318
+    },
+    {
+      "id": "tubo-orleans",
+      "name": "Tubo Orleans",
+      "address": "Av. Comendador Franco",
+      "district": "Orleans",
+      "platforms": 2,
+      "lat": -25.498,
+      "lon": -49.278
+    },
+    {
+      "id": "tubo-santa-candida",
+      "name": "Tubo Santa Cândida",
+      "address": "Av. Comendador Franco",
+      "district": "Santa Cândida",
+      "platforms": 4,
+      "lat": -25.368,
+      "lon": -49.248
+    },
+    {
+      "id": "tubo-atuba",
+      "name": "Tubo Atuba",
+      "address": "Av. Comendador Franco",
+      "district": "Atuba",
+      "platforms": 2,
+      "lat": -25.358,
+      "lon": -49.228
+    },
+    {
+      "id": "tubo-bacacheri",
+      "name": "Tubo Bacacheri",
+      "address": "Av. Comendador Franco",
+      "district": "Bacacheri",
+      "platforms": 2,
+      "lat": -25.378,
+      "lon": -49.218
+    },
+    {
+      "id": "tubo-bairro-alto",
+      "name": "Tubo Bairro Alto",
+      "address": "R. Deputado Leopoldo Jacomel",
+      "district": "Bairro Alto",
+      "platforms": 2,
+      "lat": -25.412,
+      "lon": -49.238
+    },
+    {
+      "id": "estacao-marechal-floriano",
+      "name": "Estação Marechal Floriano",
+      "address": "Av. Marechal Floriano Peixoto",
+      "district": "Centro",
+      "platforms": 2,
+      "kind": "estacao",
+      "lat": -25.431,
+      "lon": -49.271
+    },
+    {
+      "id": "estacao-cabral",
+      "name": "Estação Cabral",
+      "address": "R. Carlos de Carvalho",
+      "district": "Cabral",
+      "platforms": 2,
+      "kind": "estacao",
+      "lat": -25.406,
+      "lon": -49.254
+    },
+    {
+      "id": "estacao-batel",
+      "name": "Estação Batel",
+      "address": "Av. do Batel",
+      "district": "Batel",
+      "platforms": 3,
+      "kind": "estacao",
+      "lat": -25.44,
+      "lon": -49.288
+    },
+    {
+      "id": "tubo-campo-comprido",
+      "name": "Tubo Campo Comprido",
+      "address": "Av. Visconde de Guarapuava",
+      "district": "Campo Comprido",
+      "platforms": 4,
+      "lat": -25.448,
+      "lon": -49.288
+    },
+    {
+      "id": "tubo-champagnat",
+      "name": "Tubo Champagnat",
+      "address": "R. Deputado Leopoldo Jacomel",
+      "district": "Champagnat",
+      "platforms": 2,
+      "lat": -25.435,
+      "lon": -49.292
+    },
+    {
+      "id": "tubo-cristo-rei",
+      "name": "Tubo Cristo Rei",
+      "address": "R. Mateus Leme",
+      "district": "Cristo Rei",
+      "platforms": 3,
+      "lat": -25.424,
+      "lon": -49.252
+    },
+    {
+      "id": "tubo-santa-quiteria",
+      "name": "Tubo Santa Quitéria",
+      "address": "R. Bruno Filgueira",
+      "district": "Santa Quitéria",
+      "platforms": 2,
+      "lat": -25.438,
+      "lon": -49.282
+    },
+    {
+      "id": "tubo-parigot-de-souza",
+      "name": "Tubo Parigot de Souza",
+      "address": "Av. Parigot de Souza",
+      "district": "Portão",
+      "platforms": 2,
+      "lat": -25.476,
+      "lon": -49.292
+    },
+    {
+      "id": "tubo-abranches",
+      "name": "Tubo Abranches",
+      "address": "Av. Comendador Franco",
+      "district": "Abranches",
+      "platforms": 2,
+      "lat": -25.388,
+      "lon": -49.302
+    },
+    {
+      "id": "tubo-panorama",
+      "name": "Tubo Panorama",
+      "address": "Av. Winston Churchill",
+      "district": "Panorama",
+      "platforms": 2,
+      "lat": -25.512,
+      "lon": -49.252
+    },
+    {
+      "id": "tubo-hauer",
+      "name": "Tubo Hauer",
+      "address": "Av. Presidente Kennedy",
+      "district": "Hauer",
+      "platforms": 3,
+      "lat": -25.482,
+      "lon": -49.262
+    },
+    {
+      "id": "tubo-vila-izabel",
+      "name": "Tubo Vila Izabel",
+      "address": "Av. Prefeito Omar Sabag",
+      "district": "Vila Izabel",
+      "platforms": 2,
+      "lat": -25.402,
+      "lon": -49.272
+    },
+    {
+      "id": "tubo-mossungue",
+      "name": "Tubo Mossunguê",
+      "address": "Av. Rep. Argentina",
+      "district": "Mossunguê",
+      "platforms": 2,
+      "lat": -25.452,
+      "lon": -49.302
+    },
+    {
+      "id": "tubo-ufpr",
+      "name": "Tubo UFPR",
+      "address": "R. XV de Novembro",
+      "district": "Centro",
+      "platforms": 2,
+      "lat": -25.426,
+      "lon": -49.265
+    },
+    {
+      "id": "tubo-lindoia",
+      "name": "Tubo Lindóia",
+      "address": "Av. Comendador Franco",
+      "district": "Lindóia",
+      "platforms": 2,
+      "lat": -25.492,
+      "lon": -49.252
+    },
+    {
+      "id": "tubo-novo-mundo",
+      "name": "Tubo Novo Mundo",
+      "address": "Av. Presidente Kennedy",
+      "district": "Novo Mundo",
+      "platforms": 2,
+      "lat": -25.468,
+      "lon": -49.272
+    },
+    {
+      "id": "tubo-caiua",
+      "name": "Tubo Caiuá",
+      "address": "Av. Winston Churchill",
+      "district": "Caiuá",
+      "platforms": 2,
+      "lat": -25.522,
+      "lon": -49.282
+    },
+    {
+      "id": "tubo-guaira",
+      "name": "Tubo Guaíra",
+      "address": "Av. Comendador Franco",
+      "district": "Guaíra",
+      "platforms": 2,
+      "lat": -25.498,
+      "lon": -49.262
+    },
+    {
+      "id": "tubo-kennedy",
+      "name": "Tubo Kennedy",
+      "address": "Av. Presidente Kennedy",
+      "district": "Kennedy",
+      "platforms": 3,
+      "lat": -25.478,
+      "lon": -49.268
+    },
+    {
+      "id": "tubo-major-heitor",
+      "name": "Tubo Major Heitor",
+      "address": "R. Major Heitor",
+      "district": "São Francisco",
+      "platforms": 2,
+      "lat": -25.416,
+      "lon": -49.278
+    },
+    {
+      "id": "tubo-bom-retiro",
+      "name": "Tubo Bom Retiro",
+      "address": "Av. Comendador Franco",
+      "district": "Bom Retiro",
+      "platforms": 2,
+      "lat": -25.392,
+      "lon": -49.288
+    },
+    {
+      "id": "tubo-pilarzinho",
+      "name": "Tubo Pilarzinho",
+      "address": "Av. Comendador Franco",
+      "district": "Pilarzinho",
+      "platforms": 2,
+      "lat": -25.362,
+      "lon": -49.238
+    },
+    {
+      "id": "tubo-sao-braz",
+      "name": "Tubo São Braz",
+      "address": "Av. Comendador Franco",
+      "district": "São Braz",
+      "platforms": 2,
+      "lat": -25.382,
+      "lon": -49.258
+    },
+    {
+      "id": "tubo-lamenha-pequena",
+      "name": "Tubo Lamenha Pequena",
+      "address": "Av. Comendador Franco",
+      "district": "Lamenha Pequena",
+      "platforms": 2,
+      "lat": -25.372,
+      "lon": -49.268
+    },
+    {
+      "id": "tubo-vila-capanema",
+      "name": "Tubo Vila Capanema",
+      "address": "Av. Comendador Franco",
+      "district": "Vila Capanema",
+      "platforms": 2,
+      "lat": -25.462,
+      "lon": -49.258
+    },
+    {
+      "id": "tubo-higienopolis",
+      "name": "Tubo Higienópolis",
+      "address": "Av. Comendador Franco",
+      "district": "Higienópolis",
+      "platforms": 2,
+      "lat": -25.442,
+      "lon": -49.268
+    },
+    {
+      "id": "tubo-jardim-das-americas",
+      "name": "Tubo Jardim das Américas",
+      "address": "Av. Comendador Franco",
+      "district": "Jardim das Américas",
+      "platforms": 2,
+      "lat": -25.452,
+      "lon": -49.278
+    },
+    {
+      "id": "tubo-alto-da-xv",
+      "name": "Tubo Alto da XV",
+      "address": "R. XV de Novembro",
+      "district": "Centro",
+      "platforms": 2,
+      "lat": -25.429,
+      "lon": -49.271
+    },
+    {
+      "id": "tubo-augusta",
+      "name": "Tubo Augusta",
+      "address": "R. Augusta",
+      "district": "Rebouças",
+      "platforms": 2,
+      "lat": -25.444,
+      "lon": -49.268
+    },
+    {
+      "id": "terminal-boqueirao",
+      "name": "Terminal Boqueirão",
+      "address": "Av. Winston Churchill",
+      "district": "Boqueirão",
+      "platforms": 8,
+      "kind": "terminal",
+      "lat": -25.505,
+      "lon": -49.228
+    },
+    {
+      "id": "terminal-campo-comprido",
+      "name": "Terminal Campo Comprido",
+      "address": "Av. Visconde de Guarapuava",
+      "district": "Campo Comprido",
+      "platforms": 10,
+      "kind": "terminal",
+      "lat": -25.45,
+      "lon": -49.292
+    },
+    {
+      "id": "terminal-pinheirinho",
+      "name": "Terminal Pinheirinho",
+      "address": "Av. Winston Churchill",
+      "district": "Pinheirinho",
+      "platforms": 8,
+      "kind": "terminal",
+      "lat": -25.52,
+      "lon": -49.272
+    },
+    {
+      "id": "terminal-santa-candida",
+      "name": "Terminal Santa Cândida",
+      "address": "Av. Comendador Franco",
+      "district": "Santa Cândida",
+      "platforms": 6,
+      "kind": "terminal",
+      "lat": -25.37,
+      "lon": -49.252
+    },
+    {
+      "id": "terminal-cic",
+      "name": "Terminal CIC",
+      "address": "Av. Comendador Franco",
+      "district": "CIC",
+      "platforms": 8,
+      "kind": "terminal",
+      "lat": -25.53,
+      "lon": -49.332
+    },
+    {
+      "id": "terminal-cabral",
+      "name": "Terminal Cabral",
+      "address": "R. Carlos de Carvalho",
+      "district": "Cabral",
+      "platforms": 6,
+      "kind": "terminal",
+      "lat": -25.404,
+      "lon": -49.252
+    },
+    {
+      "id": "terminal-bairro-alto",
+      "name": "Terminal Bairro Alto",
+      "address": "R. Deputado Leopoldo Jacomel",
+      "district": "Bairro Alto",
+      "platforms": 4,
+      "kind": "terminal",
+      "lat": -25.41,
+      "lon": -49.236
+    },
+    {
+      "id": "terminal-atuba",
+      "name": "Terminal Atuba",
+      "address": "Av. Comendador Franco",
+      "district": "Atuba",
+      "platforms": 4,
+      "kind": "terminal",
+      "lat": -25.356,
+      "lon": -49.226
+    }
+  ]
+}

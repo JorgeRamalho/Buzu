@@ -4,7 +4,8 @@
 
 .location-button {
   display: block;
-  margin: 12px 0 0 19px;
+  margin: 12px auto 0;
+  max-width: 720px;
   border: 0;
   background: transparent;
   color: var(--coral);
@@ -19,6 +20,17 @@
   text-decoration: underline;
 }
 
+.location-button:disabled {
+  opacity: .65;
+  cursor: wait;
+  text-decoration: none;
+}
+
+.location-button.is-active {
+  color: var(--coral-dark);
+  font-weight: 700;
+}
+
 .location-button:focus-visible {
   outline: 3px solid rgba(255, 111, 84, .28);
   outline-offset: 3px;
@@ -30,4 +42,76 @@
     position: static;
     margin: 12px 0 0 17px;
   }
+}
+
+.map-toolbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.location-button-toolbar {
+  display: inline-flex;
+  margin: 0;
+  max-width: none;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  font: 600 9px var(--mono);
+  text-decoration: none;
+}
+
+.location-button-toolbar:hover {
+  text-decoration: none;
+  border-color: var(--coral);
+  background: #fff5f1;
+}
+
+.map-toolbar-hint {
+  margin: 0;
+  padding: 0 24px 8px;
+  font-size: 10px;
+  color: var(--coral-dark);
+}
+
+.map-art.has-user-location .map-user-pin {
+  display: flex;
+}
+
+.map-user-pin {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 4;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 253, 249, 0.94);
+  border: 1px solid var(--coral);
+  box-shadow: 0 4px 14px rgba(16, 36, 48, 0.12);
+  pointer-events: none;
+}
+
+.map-user-pin-dot {
+  color: var(--coral);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.map-user-pin small {
+  font: 600 9px var(--mono);
+  color: var(--ink);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tubo-picker-option-location .tubo-picker-option-name {
+  color: var(--coral-dark);
 }
