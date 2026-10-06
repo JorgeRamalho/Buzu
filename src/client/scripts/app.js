@@ -4,12 +4,17 @@ const searchClose = document.querySelector('[data-search-close]');
 const globalSearch = document.querySelector('#global-search');
 const routeInputs = document.querySelectorAll('.route-field input');
 
+function isLocalBuzzuDev() {
+  const { hostname, port } = window.location;
+  return (hostname === 'localhost' || hostname === '127.0.0.1') && port && port !== '3000';
+}
+
 function resolveApiBases() {
   const bases = new Set();
   if (window.__BUZZU_API__) bases.add(String(window.__BUZZU_API__).replace(/\/$/, ''));
   bases.add('/api');
-  const { protocol, hostname, port } = window.location;
-  if (port && port !== '3000') {
+  if (isLocalBuzzuDev()) {
+    const { protocol, hostname } = window.location;
     bases.add(`${protocol}//${hostname}:3000/api`);
     bases.add('http://127.0.0.1:3000/api');
   }
@@ -18,16 +23,22 @@ function resolveApiBases() {
 
 const API = resolveApiBases()[0];
 
-async function readJsonResponse(response) {
+async function parseResponseJson(response) {
   const text = await response.text();
-  if (!text.trim()) {
-    throw new Error('Resposta vazia do servidor. Inicie com npm start e abra http://localhost:3000');
-  }
+  if (!text.trim()) return null;
   try {
     return JSON.parse(text);
   } catch {
-    throw new Error('Resposta inválida do servidor. Use http://localhost:3000 (npm start).');
+    return null;
   }
+}
+
+async function readJsonResponse(response) {
+  const data = await parseResponseJson(response);
+  if (data == null) {
+    throw new Error('API_UNAVAILABLE');
+  }
+  return data;
 }
 
 async function requestRoutePlan(payload) {
@@ -40,7 +51,18 @@ async function requestRoutePlan(payload) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const data = await readJsonResponse(response);
+      const text = await response.text();
+      let data = null;
+      try {
+        data = text.trim() ? JSON.parse(text) : null;
+      } catch {
+        lastError = new Error('API_UNAVAILABLE');
+        continue;
+      }
+      if (!data || typeof data !== 'object') {
+        lastError = new Error('API_UNAVAILABLE');
+        continue;
+      }
       if (!response.ok) {
         throw new Error(data.error || 'Não foi possível calcular a rota.');
       }
@@ -52,10 +74,138 @@ async function requestRoutePlan(payload) {
       lastError = error;
     }
   }
-  throw lastError || new Error('Não foi possível contactar a API de rotas.');
+  throw lastError || new Error('API_UNAVAILABLE');
+}
+
+async function fetchTransitStopsPayload() {
+  for (const base of resolveApiBases()) {
+    try {
+      const response = await fetch(`${base}/transit/stops`);
+      if (!response.ok) continue;
+      const payload = await parseResponseJson(response);
+      if (payload?.stops?.length) return payload;
+    } catch {
+      // tenta próxima base
+    }
+  }
+  const local = await fetchJsonAsset('/data/tubos.json');
+  if (local?.stops?.length) return local;
+  const seedStops = window.__BUZZU_ROUTE_SEED__?.stops;
+  if (Array.isArray(seedStops) && seedStops.length) {
+    return { source: 'embedded', stops: seedStops };
+  }
+  return null;
+}
+
+async function fetchJsonAsset(relativePath) {
+  const assetPath = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
+  const origins = new Set([window.location.origin]);
+  if (isLocalBuzzuDev()) {
+    origins.add(`${window.location.protocol}//${window.location.hostname}:3000`);
+    origins.add('http://127.0.0.1:3000');
+    origins.add('http://localhost:3000');
+  }
+
+  for (const origin of origins) {
+    try {
+      const response = await fetch(`${origin}${assetPath}`);
+      if (!response.ok) continue;
+      const text = await response.text();
+      if (!text.trim()) continue;
+      return JSON.parse(text);
+    } catch {
+      // tenta próxima origem
+    }
+  }
+  return null;
+}
+
+async function loadLocalRouteDataFromFiles() {
+  const linesPayload = await fetchJsonAsset('/data/linhas.json');
+  if (linesPayload?.lines?.length) {
+    transitLinesCatalog = linesPayload.lines;
+    transitLinesMeta = linesPayload;
+    window.__buzzuExtendTransitLines?.(transitLinesCatalog);
+  }
+
+  if (!window.__buzzuTransitStops?.length) {
+    const stopsPayload = await fetchJsonAsset('/data/tubos.json');
+    if (stopsPayload?.stops?.length) {
+      window.__buzzuTransitStops = stopsPayload.stops;
+      window.__buzzuExtendPlaceCatalog?.(stopsPayload.stops);
+      window.dispatchEvent(new CustomEvent('buzzu:stops-loaded', { detail: stopsPayload.stops }));
+    }
+  }
+
+  return transitLinesCatalog.length > 0;
+}
+
+function applyEmbeddedRouteSeed() {
+  const seed = window.__BUZZU_ROUTE_SEED__;
+  if (!seed) return transitLinesCatalog.length > 0;
+
+  if (!transitLinesCatalog.length && Array.isArray(seed.lines) && seed.lines.length) {
+    transitLinesCatalog = seed.lines;
+    transitLinesMeta = { source: 'embedded', updatedAt: seed.updatedAt || null };
+    window.__buzzuExtendTransitLines?.(transitLinesCatalog);
+  }
+
+  if (!window.__buzzuTransitStops?.length && Array.isArray(seed.stops) && seed.stops.length) {
+    window.__buzzuTransitStops = seed.stops;
+    window.__buzzuExtendPlaceCatalog?.(seed.stops);
+    window.dispatchEvent(new CustomEvent('buzzu:stops-loaded', { detail: seed.stops }));
+  }
+
+  return transitLinesCatalog.length > 0;
+}
+
+async function ensureRoutePlanningData() {
+  if (!transitLinesCatalog.length) {
+    await loadTransitLinesCatalog();
+  }
+  if (!transitLinesCatalog.length) {
+    await loadLocalRouteDataFromFiles();
+  }
+  if (!window.__buzzuTransitStops?.length) {
+    await loadLocalRouteDataFromFiles();
+  }
+  applyEmbeddedRouteSeed();
+}
+
+function normalizeRouteSearchError(error) {
+  const message = String(error?.message || '');
+  if (
+    message.includes('Resposta inválida') ||
+    message.includes('Resposta vazia') ||
+    message.includes('API_UNAVAILABLE') ||
+    message.includes('contactar a API')
+  ) {
+    return 'Informe origem e destino (tubos, bairros ou pontos). A localização GPS é opcional.';
+  }
+  return message || 'Não foi possível calcular a rota.';
+}
+
+function buildClientRoutePlan({ from, to, fromLabel, originLatLng }) {
+  if (typeof window.buildBuzzuFallbackPlan !== 'function') {
+    throw new Error('Não foi possível calcular a rota. Recarregue a página (Ctrl+F5).');
+  }
+  const plan = window.buildBuzzuFallbackPlan({
+    from,
+    to,
+    fromLabel,
+    originLatLng: originLatLng || null,
+    lines: transitLinesCatalog,
+    stops: window.__buzzuTransitStops || [],
+    meta: transitLinesMeta,
+  });
+  if (!plan?.options?.length) {
+    throw new Error('Não encontramos rota para essa origem e destino. Tente tubos, bairros ou pontos conhecidos.');
+  }
+  return plan;
 }
 let transitLinesCatalog = [];
 let transitLinesMeta = { source: 'local' };
+applyEmbeddedRouteSeed();
 
 const neighborhoodNames = [
   'Abranches', 'Água Verde', 'Ahú', 'Alto Boqueirão', 'Alto da Glória', 'Alto da XV',
@@ -198,18 +348,23 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;');
 }
 
+const MIN_ROUTE_FIELD_CHARS = 2;
+
 function validateRouteSearch({ from, to, hasOriginCoords }) {
-  if ((!from && !hasOriginCoords) || !to) {
+  const origin = String(from || '').trim();
+  const destination = String(to || '').trim();
+
+  if ((!origin && !hasOriginCoords) || !destination) {
     return 'Informe origem e destino para calcular sua rota.';
   }
-  if (from && to && from.toLocaleLowerCase('pt-BR') === to.toLocaleLowerCase('pt-BR')) {
+  if (origin && destination && origin.toLocaleLowerCase('pt-BR') === destination.toLocaleLowerCase('pt-BR')) {
     return 'Escolha pontos diferentes para calcular sua rota.';
   }
-  if ((!from || from.length < 3) && !hasOriginCoords) {
-    return 'Digite uma origem mais completa ou use sua localização.';
+  if ((!origin || origin.length < MIN_ROUTE_FIELD_CHARS) && !hasOriginCoords) {
+    return 'Digite a origem com pelo menos 2 caracteres.';
   }
-  if (to.length < 3) {
-    return 'Digite um destino mais completo.';
+  if (destination.length < MIN_ROUTE_FIELD_CHARS) {
+    return 'Digite o destino com pelo menos 2 caracteres.';
   }
   return null;
 }
@@ -255,8 +410,9 @@ async function loadTransitLinesCatalog() {
     try {
       const response = await fetch(`${base}/transit/lines`);
       if (!response.ok) continue;
-      const payload = await readJsonResponse(response);
-      transitLinesCatalog = payload.lines || [];
+      const payload = await parseResponseJson(response);
+      if (!payload?.lines?.length) continue;
+      transitLinesCatalog = payload.lines;
       transitLinesMeta = payload;
       window.__buzzuExtendTransitLines?.(transitLinesCatalog);
       return;
@@ -264,10 +420,18 @@ async function loadTransitLinesCatalog() {
       // tenta próxima base
     }
   }
-  console.warn('Linhas URBS/Buzzu indisponíveis no momento.');
+  applyEmbeddedRouteSeed();
+  if (!transitLinesCatalog.length) {
+    console.warn('Linhas URBS/Buzzu indisponíveis; usando catálogo embutido se existir.');
+  }
 }
 
-loadTransitLinesCatalog();
+loadTransitLinesCatalog().then(() => {
+  ensureRoutePlanningData();
+  if (transitLinesCatalog.length) {
+    window.__buzzuExtendTransitLines?.(transitLinesCatalog);
+  }
+});
 
 const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 };
 
@@ -794,9 +958,7 @@ document.querySelector('[data-route-search]')?.addEventListener('click', async (
     if (resultsPanel) resultsPanel.innerHTML = '';
     return;
   }
-  if (!transitLinesCatalog.length) await loadTransitLinesCatalog();
-
-  const fromLabel = from || 'Minha localização';
+  const fromLabel = from || (hasOriginCoords ? 'Minha localização' : 'Origem');
   const now = new Date();
   const departures = [
     'Agora',
@@ -809,33 +971,37 @@ document.querySelector('[data-route-search]')?.addEventListener('click', async (
   button.innerHTML = 'Calculando rota <span>…</span>';
 
   let plan = null;
+  let usedLocalPlanner = false;
   try {
-    let originLatLng = originInput?.dataset.coordinates || null;
-    if (typeof originLatLng === 'string' && originLatLng.includes(',')) {
-      const [lat, lon] = originLatLng.split(',').map(Number);
-      if (Number.isFinite(lat) && Number.isFinite(lon)) originLatLng = { lat, lon };
-    }
-    try {
-      plan = await requestRoutePlan({ from, to, originLatLng });
-    } catch (apiError) {
-      if (typeof window.buildBuzzuFallbackPlan === 'function') {
-        plan = window.buildBuzzuFallbackPlan({
-          from,
-          to,
-          fromLabel,
-          originLatLng,
-          lines: transitLinesCatalog,
-          stops: window.__buzzuTransitStops || [],
-          meta: transitLinesMeta,
-        });
-        if (!plan?.options?.length) throw apiError;
-        setRouteNote('Modo local: mapa e itinerários calculados no navegador (API indisponível).');
-      } else {
-        throw apiError;
+    await ensureRoutePlanningData();
+    applyEmbeddedRouteSeed();
+
+    let originLatLng = null;
+    if (hasOriginCoords && originInput?.dataset.coordinates) {
+      originLatLng = originInput.dataset.coordinates;
+      if (typeof originLatLng === 'string' && originLatLng.includes(',')) {
+        const [lat, lon] = originLatLng.split(',').map(Number);
+        if (Number.isFinite(lat) && Number.isFinite(lon)) originLatLng = { lat, lon };
       }
     }
+
+    const apiPayload = { from, to };
+    if (originLatLng) apiPayload.originLatLng = originLatLng;
+
+    plan = buildClientRoutePlan({ from, to, fromLabel, originLatLng });
+    usedLocalPlanner = true;
+
+    try {
+      const apiPlan = await requestRoutePlan(apiPayload);
+      if (apiPlan?.options?.length) {
+        plan = apiPlan;
+        usedLocalPlanner = false;
+      }
+    } catch {
+      // mantém plano calculado no navegador (origem + destino)
+    }
   } catch (error) {
-    setRouteNote(error.message);
+    setRouteNote(normalizeRouteSearchError(error));
     resultsPanel?.classList.remove('is-visible');
     if (resultsPanel) resultsPanel.innerHTML = '';
     button.disabled = false;
@@ -861,7 +1027,12 @@ document.querySelector('[data-route-search]')?.addEventListener('click', async (
     button.innerHTML = 'Encontrar rota <span>→</span>';
     button.style.background = '';
   }, 2600);
-  setRouteNote(`${fromLabel} → ${to} · ${plan.options[0].timeMinutes} min. Veja o mapa e as etapas abaixo.`);
+  const routeSummary = `${fromLabel} → ${to} · ${plan.options[0].timeMinutes} min. Veja o mapa e as etapas abaixo.`;
+  setRouteNote(
+    usedLocalPlanner
+      ? `${routeSummary} (calculado com origem e destino — localização GPS é opcional.)`
+      : routeSummary
+  );
 });
 
 document.querySelector('[data-route-focus]')?.addEventListener('click', () => {
@@ -1188,7 +1359,9 @@ routeInputs.forEach((input) => input.addEventListener('keydown', (event) => {
     }
 
     input.addEventListener('focus', () => {
-      // Não abre sugestões automáticas no focus — preserva acessibilidade e layout
+      if (input.value.trim().length >= MIN_QUERY_CHARS) {
+        render(input.value);
+      }
     });
 
     input.addEventListener('input', () => {
@@ -1247,6 +1420,13 @@ routeInputs.forEach((input) => input.addEventListener('keydown', (event) => {
   };
 
   window.__buzzuExtendTransitLines(transitLinesCatalog);
+
+  if (window.__buzzuTransitStops?.length) {
+    window.__buzzuExtendPlaceCatalog(window.__buzzuTransitStops);
+  }
+  window.addEventListener('buzzu:stops-loaded', (event) => {
+    window.__buzzuExtendPlaceCatalog?.(event.detail || []);
+  });
 })();
 
 (function initRouteTuboPicker() {
@@ -1388,16 +1568,9 @@ routeInputs.forEach((input) => input.addEventListener('keydown', (event) => {
   });
 
   (async () => {
-    for (const base of resolveApiBases()) {
-      try {
-        const response = await fetch(`${base}/transit/stops`);
-        if (!response.ok) continue;
-        return readJsonResponse(response);
-      } catch {
-        // tenta próxima base
-      }
-    }
-    throw new Error('Falha ao carregar tubos');
+    const payload = await fetchTransitStopsPayload();
+    if (!payload) throw new Error('Falha ao carregar tubos');
+    return payload;
   })()
     .then((payload) => {
       stops = payload.stops || [];
@@ -1791,18 +1964,9 @@ routeInputs.forEach((input) => input.addEventListener('keydown', (event) => {
     hydrate(window.__buzzuTransitStops);
   } else {
     (async () => {
-      for (const base of resolveApiBases()) {
-        try {
-          const response = await fetch(`${base}/transit/stops`);
-          if (!response.ok) continue;
-          const payload = await readJsonResponse(response);
-          if (!catalog.length) hydrate(payload.stops || []);
-          return;
-        } catch {
-          // tenta próxima base
-        }
-      }
-      if (!catalog.length) hydrate([]);
+      const payload = await fetchTransitStopsPayload();
+      if (payload?.stops?.length && !catalog.length) hydrate(payload.stops);
+      else if (!catalog.length) hydrate([]);
     })();
   }
 })();

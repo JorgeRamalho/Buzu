@@ -8,7 +8,9 @@ const PORT = Number(process.env.PORT || 3000);
 const ROOT = path.resolve(__dirname, '../..');
 const CLIENT_DIR = path.join(ROOT, 'src', 'client');
 const DATA_DIR = path.join(ROOT, 'data');
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const USERS_FILE = process.env.VERCEL
+  ? path.join('/tmp', 'buzzu-users.json')
+  : path.join(DATA_DIR, 'users.json');
 const TUBOS_FILE = path.join(DATA_DIR, 'tubos.json');
 const LINHAS_FILE = path.join(DATA_DIR, 'linhas.json');
 const { planRoute } = require('./routePlanner');
@@ -36,7 +38,10 @@ function loadEnv() {
     if (match && !process.env[match[1]]) process.env[match[1]] = match[2].replace(/^['"]|['"]$/g, '');
   }
 }
-function ensureData() { if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true }); if (!fs.existsSync(USERS_FILE)) fs.writeFileSync(USERS_FILE, '[]'); }
+function ensureData() {
+  if (!process.env.VERCEL && !fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (!fs.existsSync(USERS_FILE)) fs.writeFileSync(USERS_FILE, '[]');
+}
 function users() { ensureData(); return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8')); }
 function saveUsers(value) { ensureData(); fs.writeFileSync(USERS_FILE, JSON.stringify(value, null, 2)); }
 function send(res, status, body, headers = {}) {
@@ -203,7 +208,7 @@ async function transitStatus() {
 }
 function serveStatic(req, res, pathname) { const file = pathname === '/' ? 'index.html' : pathname.slice(1); const safe = path.normalize(file).replace(/^\.\.(?:[\\/]|$)/, ''); const rootTarget = path.join(ROOT, safe); const clientTarget = path.join(CLIENT_DIR, safe); const target = pathname === '/' || fs.existsSync(rootTarget) ? rootTarget : clientTarget; const base = target === rootTarget ? ROOT : CLIENT_DIR; const relative = path.relative(base, target); if (relative.startsWith('..') || path.isAbsolute(relative) || !fs.existsSync(target) || fs.statSync(target).isDirectory()) return send(res, 404, { error: 'Não encontrado' }); const ext = path.extname(target); const contentType = MIME[ext] || 'application/octet-stream'; let cacheHeader; if (ext === '.html') { cacheHeader = 'no-store, no-cache, must-revalidate, max-age=0, proxy-revalidate'; } else if (ext === '.css' || ext === '.js') { cacheHeader = 'no-cache, max-age=60, must-revalidate'; } else { cacheHeader = 'public, max-age=3600'; } const stat = fs.statSync(target); const etag = `W/"${stat.size.toString(16)}-${stat.mtimeMs.toString(16)}"`; const reqEtag = req.headers['if-none-match']; if (reqEtag === etag) { res.writeHead(304, { 'Cache-Control': cacheHeader, 'ETag': etag }); return res.end(); } res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': cacheHeader, 'Pragma': ext === '.html' ? 'no-cache' : '', 'Expires': ext === '.html' ? '0' : '', 'ETag': etag, 'Last-Modified': stat.mtime.toUTCString() }); fs.createReadStream(target).pipe(res); }
 
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res) {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   try {
     if (url.pathname === '/api/health') return send(res, 200, { ok: true, service: 'buzu-api', mode: process.env.PAYMENT_PROVIDER || 'mock' });
@@ -232,7 +237,7 @@ const server = http.createServer(async (req, res) => {
         const [lat, lon] = body.originLatLng.split(',').map(Number);
         if (Number.isFinite(lat) && Number.isFinite(lon)) originLatLng = { lat, lon };
       }
-      if (!to && !from && !originLatLng) {
+      if ((!from && !originLatLng) || !to) {
         return send(res, 400, { error: 'Informe origem e destino.' });
       }
       const [linesPayload, stopsPayload] = await Promise.all([transitLines(), transitStops()]);
@@ -275,7 +280,18 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname.startsWith('/api/')) return send(res, 404, { error: 'Rota de API não encontrada.' });
     return serveStatic(req, res, url.pathname);
   } catch (error) { console.error(error); send(res, 500, { error: 'Erro interno do servidor.' }); }
+}
+
+const server = http.createServer((req, res) => {
+  handleRequest(req, res).catch((error) => {
+    console.error(error);
+    if (!res.headersSent) send(res, 500, { error: 'Erro interno do servidor.' });
+  });
 });
 
 ensureData();
-server.listen(PORT, () => console.log(`Buzu em http://localhost:${PORT}`));
+if (require.main === module) {
+  server.listen(PORT, () => console.log(`Buzu em http://localhost:${PORT}`));
+}
+
+module.exports = { handleRequest, server, PORT };

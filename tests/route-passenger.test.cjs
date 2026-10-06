@@ -45,8 +45,9 @@ const simulatedJourneys = [
 test('validação rejeita origem/destino inválidos', () => {
   assert.equal(validateRouteSearch({ from: '', to: 'Tubo Batel', hasOriginCoords: false }), 'Informe origem e destino para calcular sua rota.');
   assert.equal(validateRouteSearch({ from: 'Tubo Batel', to: 'Tubo Batel', hasOriginCoords: false }), 'Escolha pontos diferentes para calcular sua rota.');
-  assert.equal(validateRouteSearch({ from: 'ab', to: 'Tubo Batel', hasOriginCoords: false }), 'Digite uma origem mais completa ou use sua localização.');
-  assert.equal(validateRouteSearch({ from: 'Tubo Rodoferroviária', to: 'xy', hasOriginCoords: false }), 'Digite um destino mais completo.');
+  assert.equal(validateRouteSearch({ from: 'ab', to: 'Tubo Batel', hasOriginCoords: false }), null);
+  assert.equal(validateRouteSearch({ from: 'a', to: 'Tubo Batel', hasOriginCoords: false }), 'Digite a origem com pelo menos 2 caracteres.');
+  assert.equal(validateRouteSearch({ from: 'Tubo Rodoferroviária', to: 'x', hasOriginCoords: false }), 'Digite o destino com pelo menos 2 caracteres.');
   assert.equal(validateRouteSearch({ from: '', to: 'Tubo Batel', hasOriginCoords: true }), null);
 });
 
