@@ -1,10 +1,10 @@
-# Dispara deploy na Vercel a cada push na main (requer secrets no GitHub).
-# Settings → Secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+# Deploy manual na Vercel (evita falha em todo push sem secrets configurados).
+# GitHub → Settings → Secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+# Depois: Actions → Vercel Production → Run workflow
 name: Vercel Production
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
