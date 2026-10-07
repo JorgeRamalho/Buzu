@@ -27,6 +27,19 @@ npm start
 
 Abra `http://localhost:3000`.
 
+## Deploy na Vercel (produção)
+
+O site em [https://buzzu.vercel.app/](https://buzzu.vercel.app/) deve espelhar a branch `main` do repositório `JorgeRamalho/Buzu`.
+
+1. No painel Vercel → **Project Settings → Git**: confirme repositório correto e **Production Branch = `main`**.
+2. Cada `git push origin main` deve disparar um deploy. Se produção ficar atrás do localhost, abra **Deployments** e confira se o último commit falhou (build vermelho).
+3. Após o deploy, valide:
+   - `GET https://buzzu.vercel.app/api/health` — deve incluir `commit` com o SHA do Git.
+   - A página deve conter `route-street-modal` e Leaflet (mapa de ruas).
+4. Variáveis opcionais: `GOOGLE_MAPS_API_KEY`, `OSRM_BASE_URL` (ver `.env.example`).
+
+Deploy manual (se o Git não disparar): `npx vercel login` e `npx vercel deploy --prod`.
+
 ## Integrações
 
 - `GET /api/transit/status`: tenta consultar `URBS_REALTIME_URL`; sem URL configurada retorna dados de demonstração identificados como `demo`.

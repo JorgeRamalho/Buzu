@@ -212,7 +212,16 @@ function serveStatic(req, res, pathname) { const file = pathname === '/' ? 'inde
 async function handleRequest(req, res) {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   try {
-    if (url.pathname === '/api/health') return send(res, 200, { ok: true, service: 'buzu-api', mode: process.env.PAYMENT_PROVIDER || 'mock' });
+    if (url.pathname === '/api/health') {
+      return send(res, 200, {
+        ok: true,
+        service: 'buzu-api',
+        mode: process.env.PAYMENT_PROVIDER || 'mock',
+        commit: process.env.VERCEL_GIT_COMMIT_SHA || null,
+        branch: process.env.VERCEL_GIT_COMMIT_REF || null,
+        build: process.env.BUZZU_BUILD_ID || null,
+      });
+    }
     if (url.pathname === '/api/transit/status' && req.method === 'GET') return send(res, 200, await transitStatus());
     if (url.pathname === '/api/transit/lines' && req.method === 'GET') return send(res, 200, await transitLines());
     if (url.pathname === '/api/transit/stops' && req.method === 'GET') return send(res, 200, await transitStops());
