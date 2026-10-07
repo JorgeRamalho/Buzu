@@ -956,6 +956,8 @@ document.querySelector('[data-route-search]')?.addEventListener('click', async (
     setRouteNote(validationError);
     resultsPanel?.classList.remove('is-visible');
     if (resultsPanel) resultsPanel.innerHTML = '';
+    const streetModal = document.getElementById('route-street-modal');
+    if (streetModal) streetModal.hidden = true;
     return;
   }
   const fromLabel = from || (hasOriginCoords ? 'Minha localização' : 'Origem');
@@ -1004,6 +1006,8 @@ document.querySelector('[data-route-search]')?.addEventListener('click', async (
     setRouteNote(normalizeRouteSearchError(error));
     resultsPanel?.classList.remove('is-visible');
     if (resultsPanel) resultsPanel.innerHTML = '';
+    const streetModal = document.getElementById('route-street-modal');
+    if (streetModal) streetModal.hidden = true;
     button.disabled = false;
     button.innerHTML = previousLabel;
     return;
@@ -1012,7 +1016,7 @@ document.querySelector('[data-route-search]')?.addEventListener('click', async (
   if (resultsPanel && typeof window.renderBuzzuRouteResults === 'function') {
     window.renderBuzzuRouteResults(plan, resultsPanel, departures);
     resultsPanel.classList.add('is-visible');
-    resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('route-street-modal')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } else if (resultsPanel) {
     setRouteNote('Painel de mapa não carregou. Recarregue a página (Ctrl+F5).');
     button.disabled = false;

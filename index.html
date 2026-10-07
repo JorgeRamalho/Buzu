@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="./src/client/styles/account-form.css">
   <link rel="stylesheet" href="./src/client/styles/departures.css">
   <link rel="stylesheet" href="./src/client/styles/privacy.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 </head>
 <body>
   <div class="site-shell">
@@ -74,6 +75,22 @@
                 <button type="button" class="tubo-picker-trigger" id="tubo-picker-open" aria-expanded="false" aria-controls="tubo-picker-panel" aria-haspopup="dialog" aria-label="Abrir lista de tubos e estações de Curitiba"><span class="tubo-picker-trigger-label">TUBO</span><span class="tubo-picker-trigger-chevron" aria-hidden="true">⌄</span></button>
                 <button type="button" class="button button-coral route-button" data-route-search>Encontrar rota <span>→</span></button>
               </div>
+            </div>
+            <div class="route-street-modal" id="route-street-modal" hidden>
+              <section class="route-street-card" role="region" aria-labelledby="route-street-title">
+                <header class="route-street-head">
+                  <div>
+                    <strong id="route-street-title">Mapa do trajeto</strong>
+                    <p data-route-street-summary>Ligando origem e destino pelas ruas</p>
+                  </div>
+                  <button type="button" class="route-street-close" data-route-street-close aria-label="Fechar mapa">×</button>
+                </header>
+                <div class="route-street-od">
+                  <p><i class="route-street-dot origin" aria-hidden="true"></i><span data-route-street-from></span></p>
+                  <p><i class="route-street-dot dest" aria-hidden="true"></i><span data-route-street-to></span></p>
+                </div>
+                <div class="route-street-canvas" data-route-street-map role="application" aria-label="Mapa com o trajeto nas ruas de Curitiba"></div>
+              </section>
             </div>
             <div class="route-results-panel" id="route-results-panel" role="region" aria-label="Resultados da rota" aria-live="polite"></div>
           </div>
@@ -627,9 +644,10 @@
     </div>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
   <script src="./src/client/scripts/routePlanningSeed.js"></script>
-  <script src="./src/client/scripts/routeMap.js"></script>
-  <script src="./src/client/scripts/app.js"></script>
+  <script src="./src/client/scripts/routeMap.js" defer></script>
+  <script src="./src/client/scripts/app.js" defer></script>
   <script>
   // ── Gerenciamento de cookies ───────────────────────────────
   (function initCookieConsent() {

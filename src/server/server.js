@@ -14,6 +14,7 @@ const USERS_FILE = process.env.VERCEL
 const TUBOS_FILE = path.join(DATA_DIR, 'tubos.json');
 const LINHAS_FILE = path.join(DATA_DIR, 'linhas.json');
 const { planRoute } = require('./routePlanner');
+const { tryHandleMaps } = require('./mapsRoutes');
 const SESSION_SECRET = process.env.SESSION_SECRET || 'development-only-change-me';
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml' };
 
@@ -255,6 +256,7 @@ async function handleRequest(req, res) {
         return send(res, 400, { error: error.message || 'Não foi possível montar a rota.' });
       }
     }
+    if (await tryHandleMaps(url, req, res, send, readBody)) return;
     if (url.pathname === '/api/geo/reverse' && req.method === 'GET') {
       try {
         return send(res, 200, await reverseGeocode(url.searchParams.get('lat'), url.searchParams.get('lon')));

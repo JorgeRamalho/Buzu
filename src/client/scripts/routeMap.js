@@ -141,7 +141,401 @@
       .filter((step) => step.type === 'transit')
       .map((step) => `<span class="route-map-legend-item"><i style="background:${step.color}"></i> Linha ${step.lineCode}</span>`)
       .join('');
-    return `<div class="route-map-legend"><span class="route-map-legend-item route-map-legend-walk"><i></i> A pé</span>${items}</div>`;
+    return `<div class="route-map-legend"><span class="route-map-legend-item route-map-legend-primary"><i></i> Trajeto</span><span class="route-map-legend-item route-map-legend-walk"><i></i> A pé</span>${items}</div>`;
+  }
+
+  const MAP_STYLE = {
+    routeBlue: '#4285F4',
+    routeBlueDark: '#1967D2',
+    origin: '#4285F4',
+    destination: '#EA4335',
+    tileUrl: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    tileAttribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  };
+
+  function collectRouteLatLngs(plan, option) {
+    const points = [
+      [plan.origin.lat, plan.origin.lon],
+      [plan.destination.lat, plan.destination.lon],
+    ];
+    option.steps.forEach((step) => {
+      (step.path || []).forEach((p) => points.push([p.lat, p.lon]));
+    });
+    return points;
+  }
+
+  function ensureMapShell(stage) {
+    if (stage.querySelector('[data-route-leaflet]')) return stage;
+    stage.innerHTML = `
+      <div class="route-map-od-bar" aria-label="Origem e destino">
+        <button type="button" class="route-map-od-row" data-route-focus-origin title="Origem">
+          <span class="route-map-od-dot origin" aria-hidden="true"></span>
+          <span class="route-map-od-text">
+            <small>Origem</small>
+            <strong data-route-origin-label></strong>
+          </span>
+        </button>
+        <button type="button" class="route-map-od-row" data-route-focus-dest title="Destino">
+          <span class="route-map-od-dot dest" aria-hidden="true"></span>
+          <span class="route-map-od-text">
+            <small>Destino</small>
+            <strong data-route-dest-label></strong>
+          </span>
+        </button>
+      </div>
+      <div class="route-map-leaflet-host" data-route-leaflet role="application" aria-label="Mapa interativo da rota"></div>`;
+    return stage;
+  }
+
+  function createMarkerIcon(label, variant) {
+    const cls = variant === 'dest' ? 'route-map-pin route-map-pin-dest' : 'route-map-pin route-map-pin-origin';
+    return global.L.divIcon({
+      className: 'route-map-pin-wrap',
+      html: `<span class="${cls}"><span class="route-map-pin-label">${label}</span></span>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
+  }
+
+  function drawRouteOnMap(map, plan, option) {
+    const routeGroup = global.L.layerGroup().addTo(map);
+    const streetPath = option._directionsPath?.length > 1 ? option._directionsPath : null;
+
+    if (streetPath) {
+      const latlngs = streetPath.map((point) => [point.lat, point.lon]);
+      global.L.polyline(latlngs, {
+        color: '#ffffff',
+        weight: 10,
+        opacity: 0.95,
+        lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(routeGroup);
+      global.L.polyline(latlngs, {
+        color: MAP_STYLE.routeBlue,
+        weight: 6,
+        opacity: 1,
+        lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(routeGroup);
+    }
+
+    if (!streetPath) option.steps.forEach((step) => {
+      const latlngs = (step.path || [])
+        .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lon))
+        .map((p) => [p.lat, p.lon]);
+      if (latlngs.length < 2) return;
+
+      if (step.type === 'walk') {
+        global.L.polyline(latlngs, {
+          color: MAP_STYLE.routeBlue,
+          weight: 5,
+          opacity: 0.9,
+          dashArray: '8 8',
+          lineCap: 'round',
+          lineJoin: 'round',
+        }).addTo(routeGroup);
+        return;
+      }
+
+      global.L.polyline(latlngs, {
+        color: '#ffffff',
+        weight: 10,
+        opacity: 0.95,
+        lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(routeGroup);
+      global.L.polyline(latlngs, {
+        color: MAP_STYLE.routeBlue,
+        weight: 6,
+        opacity: 1,
+        lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(routeGroup);
+    });
+
+    global.L.marker([plan.origin.lat, plan.origin.lon], {
+      icon: createMarkerIcon('A', 'origin'),
+      title: plan.origin.label,
+      zIndexOffset: 500,
+    }).addTo(routeGroup);
+
+    global.L.marker([plan.destination.lat, plan.destination.lon], {
+      icon: createMarkerIcon('B', 'dest'),
+      title: plan.destination.label,
+      zIndexOffset: 600,
+    }).addTo(routeGroup);
+
+    return routeGroup;
+  }
+
+  function mountRouteLeafletMap(stage, plan, option) {
+    if (!stage) return false;
+
+    if (!global.L) {
+      stage.innerHTML = renderMapSvg(plan, option);
+      return false;
+    }
+
+    ensureMapShell(stage);
+    const host = stage.querySelector('[data-route-leaflet]');
+    if (!host) return false;
+    if (host._buzzuGoogleMap && !global.__BUZZU_GOOGLE_MAPS_FAILED__) return true;
+
+    let map = host._buzzuLeafletMap;
+    if (!map) {
+      map = global.L.map(host, {
+        zoomControl: true,
+        attributionControl: true,
+        scrollWheelZoom: true,
+      });
+      global.L.tileLayer(MAP_STYLE.tileUrl, {
+        attribution: MAP_STYLE.tileAttribution,
+        subdomains: 'abcd',
+        maxZoom: 20,
+      }).addTo(map);
+      host._buzzuLeafletMap = map;
+    }
+
+    if (host._buzzuRouteLayer) {
+      map.removeLayer(host._buzzuRouteLayer);
+    }
+    host._buzzuRouteLayer = drawRouteOnMap(map, plan, option);
+
+    const bounds = collectRouteLatLngs(plan, option);
+    if (bounds.length) {
+      map.fitBounds(bounds, { padding: [36, 36], maxZoom: 16 });
+    }
+
+    requestAnimationFrame(() => {
+      map.invalidateSize({ animate: false });
+    });
+
+    return true;
+  }
+
+  function updateOdPanel(container, plan) {
+    const originEl = container.querySelector('[data-route-origin-label]');
+    const destEl = container.querySelector('[data-route-dest-label]');
+    if (originEl) originEl.textContent = plan.origin.label;
+    if (destEl) destEl.textContent = plan.destination.label;
+  }
+
+  let mapsConfigPromise = null;
+  let mapDrawToken = 0;
+
+  function loadMapsConfig() {
+    if (!mapsConfigPromise) {
+      mapsConfigPromise = fetch('/api/maps/config')
+        .then((response) => (response.ok ? response.json() : null))
+        .catch(() => null)
+        .then((data) => data || { googleMaps: false, browserKey: null, directions: false });
+    }
+    return mapsConfigPromise;
+  }
+
+  function samplePath(path, max = 6) {
+    const clean = (path || []).filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lon));
+    if (clean.length <= max) return clean;
+    const sampled = [];
+    for (let index = 0; index < max; index += 1) {
+      const pointIndex = Math.round((index * (clean.length - 1)) / (max - 1));
+      sampled.push(clean[pointIndex]);
+    }
+    return sampled;
+  }
+
+  async function snapStepWithOsrm(step) {
+    const coordinates = samplePath(step.path);
+    if (coordinates.length < 2) return step.path || [];
+    try {
+      const response = await fetch('/api/maps/osrm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profile: step.type === 'walk' ? 'foot' : 'driving',
+          coordinates,
+        }),
+      });
+      if (!response.ok) return step.path || [];
+      const data = await response.json();
+      if (Array.isArray(data.path) && data.path.length > 1) return data.path;
+    } catch {
+      // O traçado reto continua visível se o OSRM não responder.
+    }
+    return step.path || [];
+  }
+
+  async function snapOptionWithOsrm(option) {
+    if (option._osrmSnapped) return option;
+    const steps = await Promise.all(option.steps.map(async (step) => ({
+      ...step,
+      path: await snapStepWithOsrm(step),
+    })));
+    option.steps = steps;
+    option._osrmSnapped = true;
+    return option;
+  }
+
+  function loadGoogleMapsScript(key) {
+    if (global.google?.maps) return Promise.resolve(global.google.maps);
+    if (global.__BUZZU_GOOGLE_MAPS_FAILED__) return Promise.reject(new Error('google-auth'));
+    if (!global.__BUZZU_GOOGLE_MAPS_PROMISE__) {
+      global.__BUZZU_GOOGLE_MAPS_PROMISE__ = new Promise((resolve, reject) => {
+        global.gm_authFailure = () => {
+          global.__BUZZU_GOOGLE_MAPS_FAILED__ = true;
+          reject(new Error('google-auth'));
+        };
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&v=weekly&language=pt-BR&region=BR`;
+        script.async = true;
+        script.onload = () => {
+          if (global.google?.maps) resolve(global.google.maps);
+          else reject(new Error('google-missing'));
+        };
+        script.onerror = () => reject(new Error('google-script'));
+        document.head.appendChild(script);
+      }).catch((error) => {
+        global.__BUZZU_GOOGLE_MAPS_PROMISE__ = null;
+        throw error;
+      });
+    }
+    return global.__BUZZU_GOOGLE_MAPS_PROMISE__;
+  }
+
+  function setMapProviderLabel(container, text) {
+    const label = container.querySelector('[data-route-map-provider]');
+    if (label) label.textContent = text;
+  }
+
+  function routePoints(plan, option) {
+    if (option._directionsPath?.length > 1) return option._directionsPath;
+    return collectRouteLatLngs(plan, option).map(([lat, lon]) => ({ lat, lon }));
+  }
+
+  function drawGoogleRoute(map, maps, plan, option) {
+    const overlays = [];
+    const addLine = (path, dashed) => {
+      if (path.length < 2) return;
+      overlays.push(new maps.Polyline({
+        path: path.map((point) => ({ lat: point.lat, lng: point.lon })),
+        strokeColor: MAP_STYLE.routeBlue,
+        strokeOpacity: dashed ? 0 : 1,
+        strokeWeight: dashed ? 4 : 6,
+        icons: dashed ? [{
+          icon: { path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 3 },
+          offset: '0',
+          repeat: '14px',
+        }] : undefined,
+        map,
+      }));
+    };
+
+    if (option._directionsPath?.length > 1) {
+      addLine(option._directionsPath, false);
+    } else {
+      option.steps.forEach((step) => addLine(step.path || [], step.type === 'walk'));
+    }
+
+    const markerIcon = (color) => ({
+      path: maps.SymbolPath.CIRCLE,
+      scale: 14,
+      fillColor: color,
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 2,
+    });
+
+    overlays.push(new maps.Marker({
+      position: { lat: plan.origin.lat, lng: plan.origin.lon },
+      map,
+      title: plan.origin.label,
+      label: { text: 'A', color: '#ffffff', fontWeight: '700' },
+      icon: markerIcon(MAP_STYLE.origin),
+    }));
+    overlays.push(new maps.Marker({
+      position: { lat: plan.destination.lat, lng: plan.destination.lon },
+      map,
+      title: plan.destination.label,
+      label: { text: 'B', color: '#ffffff', fontWeight: '700' },
+      icon: markerIcon(MAP_STYLE.destination),
+    }));
+    return overlays;
+  }
+
+  async function mountGoogleMap(host, plan, option, key) {
+    const maps = await loadGoogleMapsScript(key);
+    if (host._buzzuLeafletMap) {
+      host._buzzuLeafletMap.remove();
+      host._buzzuLeafletMap = null;
+      host.replaceChildren();
+    }
+
+    let map = host._buzzuGoogleMap;
+    if (!map) {
+      map = new maps.Map(host, {
+        center: { lat: plan.origin.lat, lng: plan.origin.lon },
+        zoom: 13,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true,
+        clickableIcons: false,
+      });
+      host._buzzuGoogleMap = map;
+    }
+
+    (host._buzzuGoogleOverlays || []).forEach((overlay) => overlay.setMap(null));
+    host._buzzuGoogleOverlays = drawGoogleRoute(map, maps, plan, option);
+
+    const bounds = new maps.LatLngBounds();
+    routePoints(plan, option).forEach((point) => {
+      if (Number.isFinite(point.lat) && Number.isFinite(point.lon)) {
+        bounds.extend({ lat: point.lat, lng: point.lon });
+      }
+    });
+    if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
+    return true;
+  }
+
+  function renderActiveMap(stage, plan, option, config) {
+    ensureMapShell(stage);
+    const host = stage.querySelector('[data-route-leaflet]');
+    const useGoogle = Boolean(config?.googleMaps && config.browserKey && !global.__BUZZU_GOOGLE_MAPS_FAILED__);
+    if (useGoogle) {
+      return mountGoogleMap(host, plan, option, config.browserKey).catch(() => {
+        global.__BUZZU_GOOGLE_MAPS_FAILED__ = true;
+        if (host._buzzuGoogleMap) {
+          host._buzzuGoogleMap = null;
+          host.replaceChildren();
+        }
+        mountRouteLeafletMap(stage, plan, option);
+      });
+    }
+    mountRouteLeafletMap(stage, plan, option);
+    return Promise.resolve();
+  }
+
+  async function fetchDirectionsPath(plan) {
+    if (plan._directionsResult) return plan._directionsResult;
+    const origin = `${plan.origin.lat},${plan.origin.lon}`;
+    const destination = `${plan.destination.lat},${plan.destination.lon}`;
+    try {
+      const response = await fetch(`/api/maps/directions?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
+      const data = response.ok ? await response.json() : null;
+      plan._directionsResult = data;
+      return data;
+    } catch {
+      plan._directionsResult = null;
+      return null;
+    }
+  }
+
+  function bindOdPanelFocus(container) {
+    container.querySelector('[data-route-focus-origin]')?.addEventListener('click', () => {
+      document.getElementById('from')?.focus();
+    });
+    container.querySelector('[data-route-focus-dest]')?.addEventListener('click', () => {
+      document.getElementById('to')?.focus();
+    });
   }
 
   function bindOptionSelection(container, plan, onSelect) {
@@ -156,10 +550,34 @@
   }
 
   function updateMapStage(container, plan, option) {
+    const token = (mapDrawToken += 1);
     const stage = container.querySelector('[data-route-map-stage]');
     const stepsList = container.querySelector('[data-route-steps-list]');
     const summary = container.querySelector('[data-route-map-summary]');
-    if (stage) stage.innerHTML = renderMapSvg(plan, option);
+    if (stage) renderActiveMap(stage, plan, option, null);
+    setMapProviderLabel(container, 'Ajustando ruas…');
+    updateOdPanel(container, plan);
+
+    loadMapsConfig().then(async (config) => {
+      if (token !== mapDrawToken) return;
+      let directions = null;
+      if (config.directions) directions = await fetchDirectionsPath(plan);
+      if (token !== mapDrawToken) return;
+
+      if (directions?.status === 'OK' && directions.path?.length > 1) {
+        option._directionsPath = directions.path;
+        setMapProviderLabel(container, 'Google Maps · Directions');
+      } else {
+        await snapOptionWithOsrm(option);
+        if (token !== mapDrawToken) return;
+        setMapProviderLabel(container, config.googleMaps ? 'Google Maps · OSRM' : 'Ruas · OSRM');
+      }
+
+      if (stage) await renderActiveMap(stage, plan, option, config);
+    }).catch(() => {
+      if (token !== mapDrawToken) return;
+      setMapProviderLabel(container, 'Ruas · OpenStreetMap');
+    });
     if (stepsList) stepsList.innerHTML = renderStepsList(option.steps);
     if (summary) {
       summary.textContent = `${option.timeMinutes} min · ${option.lines.map((l) => `Linha ${l.code}`).join(' → ')} · ${option.transfers} baldeação(ões)`;
@@ -167,6 +585,122 @@
     const legend = container.querySelector('[data-route-map-legend]');
     if (legend) legend.innerHTML = renderLegend(option);
   }
+
+  async function fetchStreetPath(origin, destination) {
+    const coordinates = [
+      { lat: origin.lat, lon: origin.lon },
+      { lat: destination.lat, lon: destination.lon },
+    ];
+    try {
+      const response = await fetch('/api/maps/osrm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile: 'driving', coordinates }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (Array.isArray(data.path) && data.path.length > 1) return data.path;
+      }
+    } catch {
+      // tenta o OSRM direto
+    }
+
+    try {
+      const endpoint = `https://router.project-osrm.org/route/v1/driving/${origin.lon},${origin.lat};${destination.lon},${destination.lat}?overview=full&geometries=geojson`;
+      const response = await fetch(endpoint);
+      if (response.ok) {
+        const data = await response.json();
+        const geometry = data?.routes?.[0]?.geometry?.coordinates;
+        if (Array.isArray(geometry) && geometry.length > 1) {
+          return geometry.map(([lon, lat]) => ({ lat, lon }));
+        }
+      }
+    } catch {
+      // mantém a reta entre os dois pontos
+    }
+
+    return coordinates;
+  }
+
+  function drawStreetRoute(map, plan, path) {
+    if (map._buzzuStreetLayer) map.removeLayer(map._buzzuStreetLayer);
+    const layer = global.L.layerGroup().addTo(map);
+    const latlngs = path.map((point) => [point.lat, point.lon]);
+    global.L.polyline(latlngs, {
+      color: '#ffffff',
+      weight: 10,
+      opacity: 0.95,
+      lineCap: 'round',
+      lineJoin: 'round',
+    }).addTo(layer);
+    global.L.polyline(latlngs, {
+      color: '#4285F4',
+      weight: 6,
+      opacity: 1,
+      lineCap: 'round',
+      lineJoin: 'round',
+    }).addTo(layer);
+    global.L.marker([plan.origin.lat, plan.origin.lon], {
+      icon: createMarkerIcon('A', 'origin'),
+      title: plan.origin.label,
+    }).addTo(layer);
+    global.L.marker([plan.destination.lat, plan.destination.lon], {
+      icon: createMarkerIcon('B', 'dest'),
+      title: plan.destination.label,
+    }).addTo(layer);
+    map._buzzuStreetLayer = layer;
+    map.fitBounds(latlngs, { padding: [36, 36], maxZoom: 16 });
+  }
+
+  function bindStreetModalClose() {
+    const modal = document.getElementById('route-street-modal');
+    if (!modal || modal.dataset.bound === 'true') return;
+    modal.dataset.bound = 'true';
+    modal.querySelector('[data-route-street-close]')?.addEventListener('click', () => {
+      modal.hidden = true;
+    });
+  }
+
+  global.openBuzzuStreetMap = async function openBuzzuStreetMap(plan) {
+    const modal = document.getElementById('route-street-modal');
+    const canvas = modal?.querySelector('[data-route-street-map]');
+    const summary = modal?.querySelector('[data-route-street-summary]');
+    if (!modal || !canvas || !plan?.origin || !plan?.destination) return;
+
+    bindStreetModalClose();
+    modal.hidden = false;
+    const fromLabel = modal.querySelector('[data-route-street-from]');
+    const toLabel = modal.querySelector('[data-route-street-to]');
+    if (fromLabel) fromLabel.textContent = plan.origin.label;
+    if (toLabel) toLabel.textContent = plan.destination.label;
+    if (summary) summary.textContent = 'Traçando o caminho pelas ruas…';
+
+    if (!global.L) {
+      if (summary) summary.textContent = 'Não foi possível abrir o mapa. Recarregue a página.';
+      return;
+    }
+
+    if (!canvas._buzzuStreetMap) {
+      const map = global.L.map(canvas, { zoomControl: true, scrollWheelZoom: true });
+      global.L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 20,
+      }).addTo(map);
+      canvas._buzzuStreetMap = map;
+    }
+
+    const map = canvas._buzzuStreetMap;
+    requestAnimationFrame(() => map.invalidateSize());
+    const path = await fetchStreetPath(plan.origin, plan.destination);
+    drawStreetRoute(map, plan, path);
+    requestAnimationFrame(() => map.invalidateSize());
+    if (summary) {
+      summary.textContent = path.length > 2
+        ? 'Origem e destino ligados pelas ruas e avenidas'
+        : 'Trajeto direto entre os dois pontos';
+    }
+  };
 
   global.renderBuzzuRouteResults = function renderBuzzuRouteResults(plan, resultsPanel, departures) {
     if (!resultsPanel || !plan?.options?.length) return;
@@ -205,17 +739,10 @@
           `).join('')}
         </ol>
         <div class="route-results-detail">
-          <section class="route-map-panel is-visible" aria-label="Mapa detalhado da rota">
-            <header class="route-map-panel-head">
-              <div>
-                <strong>Trajeto no mapa</strong>
-                <p data-route-map-summary></p>
-              </div>
-            </header>
-            <div class="route-map-stage" data-route-map-stage></div>
-            <div data-route-map-legend></div>
+          <section class="route-steps-panel" aria-label="Etapas da viagem">
+            <header class="route-steps-panel-head"><strong>Detalhes do percurso</strong></header>
+            <ol class="route-steps-list" data-route-steps-list></ol>
           </section>
-          <ol class="route-steps-list" data-route-steps-list></ol>
         </div>
       </div>
       <footer class="route-results-footer">
@@ -224,8 +751,13 @@
     `;
 
     const defaultOption = plan.options[0];
-    updateMapStage(resultsPanel, plan, defaultOption);
-    bindOptionSelection(resultsPanel, plan, (option) => updateMapStage(resultsPanel, plan, option));
+    const stepsList = resultsPanel.querySelector('[data-route-steps-list]');
+    if (stepsList) stepsList.innerHTML = renderStepsList(defaultOption.steps);
+    bindOptionSelection(resultsPanel, plan, (option) => {
+      const list = resultsPanel.querySelector('[data-route-steps-list]');
+      if (list) list.innerHTML = renderStepsList(option.steps);
+    });
+    global.openBuzzuStreetMap(plan);
   };
 
   const LINE_COLORS = {

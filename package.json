@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server/server.js",
     "dev": "node --watch src/server/server.js",
-    "test:routes": "node --test tests/route-passenger.test.cjs"
+    "test:routes": "node --test tests/route-passenger.test.cjs tests/maps-routing.test.cjs"
   },
   "engines": {
     "node": ">=20"
